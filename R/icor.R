@@ -199,10 +199,14 @@ is.Lib <- function(obj) {
   return(class(obj) == "Lib")
 }
 
-`+.Lib` <- function(e1, e2){
+plus <- function(e1, e2){
     print(e1)
     tg(library(e2))
     return(Lib())
      #NextMethod(e1,e2)
 }
 lib = Lib()
+
+.onLoad <- function(...) {
+  registerS3method("+", "Lib", plus)
+}
