@@ -14,5 +14,7 @@ Imports:
     data.table, 
     tibble, 
     Hmisc, 
-    Matrix
+    Matrix,
+    ppcor
 RoxygenNote: 6.1.1.9000
+Remotes: cran/ppcor
