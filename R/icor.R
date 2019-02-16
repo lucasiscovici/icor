@@ -219,3 +219,11 @@ lib = Lib()
 .onLoad <- function(...) {
   registerS3method("+", "Lib", plus)
 }
+
+plotWH= function(w,h)options(repr.plot.width=w,repr.plot.height=h)
+showWarning=function(f)options(warn=ifelse(f,0,-1))
+lapplys = function(data,...){a=data;for(i in list(...)){ a=i(a)};return(a)}
+startsWithGet=function(tab,pat)tab[startsWith(tab,pat)]
+`%.%` = function(a,b){
+    paste0(a,b)
+}                                                 
