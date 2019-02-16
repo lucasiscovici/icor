@@ -179,6 +179,14 @@ icor.corrToStudent = function(r,dll){
 }
                                                   blib=base::library
 library = function(pkg){
+    if(nchar(pkg) > 4) {
+        if(substr(pkg,1,4)=="git:"){
+            pkg=substr(pkg,5,nchar(pkg))
+            devtools::install_github(pkg)
+            tg(blib(basename(pkg),character.only = TRUE, quietly = TRUE))
+            return(NULL)
+        }
+    }
     if(!require(pkg,character.only = TRUE)){
         install.packages(pkg)
     }
