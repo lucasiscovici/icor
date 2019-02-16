@@ -17,4 +17,4 @@ Imports:
     Matrix,
     ppcor
 RoxygenNote: 6.1.1.9000
-Remotes: cran/ppcor@v1.0.1
+Remotes: cran/ppcor@1.1
