@@ -32,7 +32,7 @@ icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,sign
         if (seuil_!=0.3) print("WHEN criticalSup, is set, seuil_, is not considerer")
       seuil = icor.critical.r(nrow(data)) 
       seuilPcor = icor.critical.r(nrow(data)-1) 
-        cat(paste("seuil: ",seuil,"\nseuilPcor",seuilPcor))
+        cat(paste("seuil: ",seuil,"\nseuilPcor",seuilPcor,"\n"))
       }
     
     dataColsName = colnames(data)
@@ -41,7 +41,7 @@ icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,sign
    
     dataCorSum=Matrix::summary(as(dataCor,"dgCMatrix"))
     data.table::setDT(dataCorSum)
-    print(class(dataCorSum))
+    # print(class(dataCorSum))
     #On garde les cor >= seuil
     dataCorT= dataCorSum[!is.na(x) & abs(x)>=seuil,]
     #print("ici")
