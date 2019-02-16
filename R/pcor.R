@@ -1,5 +1,5 @@
 # partial correlation
-pcor.test <- function(x,y,z,use="mat",method="p",na.rm=T,pvalueFun=pnorm){
+old.pcor.test <- function(x,y,z,use="mat",method="p",na.rm=T){
 	# The partial correlation coefficient between x and y given z
 	#
 	# pcor.test is free and comes with ABSOLUTELY NO WARRANTY.
@@ -29,10 +29,10 @@ pcor.test <- function(x,y,z,use="mat",method="p",na.rm=T,pvalueFun=pnorm){
 
 	if(use == "mat"){
 		p.use <- "Var-Cov matrix"
-		pcor = pcor.mat(x,y,z,method=method,na.rm=na.rm)
+		pcor = old.pcor.mat(x,y,z,method=method,na.rm=na.rm)
 	}else if(use == "rec"){
 		p.use <- "Recursive formula"
-		pcor = pcor.rec(x,y,z,method=method,na.rm=na.rm)
+		pcor = old.pcor.rec(x,y,z,method=method,na.rm=na.rm)
 	}else{
 		stop("\'use\' should be either \"rec\" or \"mat\"!\n")
 	}
@@ -55,21 +55,20 @@ pcor.test <- function(x,y,z,use="mat",method="p",na.rm=T,pvalueFun=pnorm){
 	gn <- dim(z)[2]
 
 	# p-value
-    pvalueFunc = pvalueFun
 	if(p.method == "Kendall"){
 		statistic <- pcor/sqrt(2*(2*(n-gn)+5)/(9*(n-gn)*(n-1-gn)))
-		p.value <- 2*pvalueFunc(-abs(statistic))
+		p.value <- 2*pnorm(-abs(statistic))
 
 	}else{
 		statistic <- pcor*sqrt((n-2-gn)/(1-pcor^2))
-  		p.value <- 2*pvalueFunc(-abs(statistic))
+  		p.value <- 2*pt(-abs(statistic),(n-2-gp))
 	}
 
 	data.frame(estimate=pcor,p.value=p.value,statistic=statistic,n=n,gn=gn,Method=p.method,Use=p.use)
 }			
 
 # By using var-cov matrix
-pcor.mat <- function(x,y,z,method="p",na.rm=T){
+old.pcor.mat <- function(x,y,z,method="p",na.rm=T){
 
 	x <- c(x)
 	y <- c(y)
@@ -111,7 +110,7 @@ pcor.mat <- function(x,y,z,method="p",na.rm=T){
 }
 
 # By using recursive formula
-pcor.rec <- function(x,y,z,method="p",na.rm=T){
+old.pcor.rec <- function(x,y,z,method="p",na.rm=T){
 	# 
 
 	x <- c(x)
@@ -156,7 +155,7 @@ pcor.rec <- function(x,y,z,method="p",na.rm=T){
 		return(rxy.z)
 	}			
 }
-pcor_ <- function(x, method = c("pearson", "kendall", "spearman"))
+old.pcor_ <- function(x, method = c("pearson", "kendall", "spearman"))
 {
   # correlation method
   method <- match.arg(method)
@@ -203,7 +202,7 @@ pcor_ <- function(x, method = c("pearson", "kendall", "spearman"))
 }
 
 # semi-partial (part) correlation
-spcor <- function(x, method = c("pearson", "kendall", "spearman"))
+old.spcor <- function(x, method = c("pearson", "kendall", "spearman"))
 {
   # correlation method
   method <- match.arg(method)
@@ -250,7 +249,7 @@ spcor <- function(x, method = c("pearson", "kendall", "spearman"))
 }
 
 # pairwise partial correlation
-pcor.test_ <- function(x,y,z,method=c("pearson", "kendall", "spearman"))
+old.pcor.test_ <- function(x,y,z,method=c("pearson", "kendall", "spearman"))
 {
   # The partial correlation coefficient between x and y given z
   #
@@ -277,7 +276,7 @@ pcor.test_ <- function(x,y,z,method=c("pearson", "kendall", "spearman"))
 }	
 
 # pairwise semi-partial (part) correlation
-spcor.test <- function(x,y,z,method=c("pearson", "kendall", "spearman"))
+old.spcor.test <- function(x,y,z,method=c("pearson", "kendall", "spearman"))
 {
   # The semi-partial (part) correlation coefficient between x and y given z
   #
