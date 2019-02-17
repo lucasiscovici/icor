@@ -15,5 +15,6 @@ Imports:
     tibble, 
     Hmisc, 
     Matrix,
-    ppcor
+    ppcor,
+    devtools
 RoxygenNote: 6.1.1.9000
