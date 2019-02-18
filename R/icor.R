@@ -216,9 +216,7 @@ plus <- function(e1, e2){
 }
 lib = Lib()
 
-.onLoad <- function(...) {
-  registerS3method("+", "Lib", plus)
-}
+
 
 plotWH= function(w,h)options(repr.plot.width=w,repr.plot.height=h)
 showWarning=function(f)options(warn=ifelse(f,0,-1))
@@ -237,4 +235,70 @@ embed = function(x, height) {
     rawHTML = base64enc::dataURI(mime = "text/html;charset=utf-8", file = tmp)
     display_html(paste("<iframe src=", rawHTML, "width=100% height=", height, "id=","igraph", "scrolling=","yes","seamless=","seamless", "frameBorder=","0","></iframe>", sep = "\""))
     unlink(tmp)
+}
+                                                  
+                                                  
+EQ=function(a,b,ops="+"){
+  x <- list()
+  x["ops"]=ops
+  x["a"]=a
+  x["b"]=b
+    class(x) <- "EQ"
+    return(x)
+}
+
+sup <- function(e1, e2){
+    #print(class(e1))
+    #print(class(e2))
+    
+    return(do.call(e1$ops,list(e1$a > e2,e1$b > e2)))
+     #NextMethod(e1,e2)
+}
+eq <- function(e1, e2){
+    return(do.call(e1$ops,list(e1$a == e2,e1$b == e2)))
+     #NextMethod(e1,e2)
+}
+supEq <- function(e1, e2){
+    return(do.call(e1$ops,list(e1$a >= e2,e1$b >= e2)))
+     #NextMethod(e1,e2)
+}
+infEq <- function(e1, e2){
+    return(do.call(e1$ops,list(e1$a <= e2,e1$b <= e2)))
+     #NextMethod(e1,e2)
+} 
+inf <- function(e1, e2){
+    #print(class(e1))
+    #print(class(e2))
+    
+    return(do.call(e1$ops,list(e1$a < e2,e1$b < e2)))
+     #NextMethod(e1,e2)
+}
+`%&%` = function(rhs,lhs){
+  #print(rhs)
+   #print(lhs)
+   return(EQ(rhs,lhs,"&"))
+}
+`%|%` = function(rhs,lhs){
+  #print(rhs)
+   #print(lhs)
+   return(EQ(rhs,lhs,"|"))
+}
+`%&&%` = function(rhs,lhs){
+  #print(rhs)
+   #print(lhs)
+   return(EQ(rhs,lhs,"&&"))
+}
+`%||%` = function(rhs,lhs){
+  #print(rhs)
+   #print(lhs)
+   return(EQ(rhs,lhs,"||"))
+}
+                                                  
+.onLoad <- function(...) {
+  registerS3method("+", "Lib", plus)
+  registerS3method(">", "EQ", sup)
+  registerS3method(">=", "EQ", supEq)
+    registerS3method("==", "EQ", eq)
+    registerS3method("<", "EQ", inf)
+    registerS3method("<=", "EQ", infEq)
 }
