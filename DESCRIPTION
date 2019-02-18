@@ -16,5 +16,6 @@ Imports:
     Hmisc, 
     Matrix,
     ppcor,
-    devtools
+    devtools,
+    roperators
 RoxygenNote: 6.1.1.9000
