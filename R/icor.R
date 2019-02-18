@@ -240,9 +240,9 @@ embed = function(x, height) {
                                                   
 EQ=function(a,b,ops="+"){
   x <- list()
-  x["ops"]=ops
-  x["a"]=a
-  x["b"]=b
+  x$ops=ops
+  x$a=a
+  x$b=b
     class(x) <- "EQ"
     return(x)
 }
