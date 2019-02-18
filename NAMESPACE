@@ -11,3 +11,5 @@ import(data.table)
 import(tibble)
 import(ppcor)
 import(devtools)
+import(roperators)
+
