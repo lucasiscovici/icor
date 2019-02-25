@@ -17,5 +17,6 @@ Imports:
     Matrix,
     ppcor,
     devtools,
-    roperators
+    roperators,
+    tidyverse
 RoxygenNote: 6.1.1.9000
