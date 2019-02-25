@@ -301,10 +301,40 @@ inf <- function(e1, e2){
     registerS3method("==", "EQ", eq)
     registerS3method("<", "EQ", inf)
     registerS3method("<=", "EQ", infEq)
+      registerS3method("+", "L", plusL)
+
 }
                                                   
+
 each = function(lst,fn){
-  sapply(lst,fn)
+  datas = lst %>% ifelse(is.list(.),.,list(.))
+  fns = fn %>% ifelse(is.list(.),fn,list(.))
+  
+  sapply(datas,function(data)sapply(fns,function(fn)fn(data)))
 }
 `%each%` = each
 `%map%` = each
+l_=list
+
+L = function(le,xc){
+  x <- list()
+  x$list = le
+  x$c=xc
+  class(x) <- "L"
+  return(x)
+}
+l=L(list(),1L)
+is.L <- function(obj) {
+  return(class(obj) == "L")
+}
+plusL = function(left,rigth){
+  
+  leftt=ifelse(is.L(left),left$list,ifelse(is.list(left),left,list(left)))
+  #append(leftt,rigth)
+  
+  leftt[[left$c]]=rigth
+  return(L(leftt,left$c+1L))
+}       
+print.L = function(obj){
+    obj$list  
+  }
