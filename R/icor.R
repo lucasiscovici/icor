@@ -177,6 +177,7 @@ icor.studentToCorr = function(t,dll){
 icor.corrToStudent = function(r,dll){
     r * sqrt(dll/(1-(r^2)))
 }
+                                                  
                                                   blib=base::library
 library = function(pkg){
     if(nchar(pkg) > 4) {
@@ -192,6 +193,7 @@ library = function(pkg){
     }
     tg(blib(pkg,character.only = TRUE, quietly = TRUE))
 }
+load=library                                            
 tg = function(f){
     suppressMessages(suppressPackageStartupMessages(suppressWarnings(f)))
 }
