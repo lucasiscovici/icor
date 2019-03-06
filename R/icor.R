@@ -308,7 +308,7 @@ inf <- function(e1, e2){
     registerS3method("==", "EQ", eq)
     registerS3method("<", "EQ", inf)
     registerS3method("<=", "EQ", infEq)
-      registerS3method("+", "L", plusL)
+       #registerS3method("+", "L", plusL)
 
 }
                                                   
