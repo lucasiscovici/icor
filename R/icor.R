@@ -206,13 +206,13 @@ Lib <- function(){
 by = function(right,left){
     rr=right
   #if(is.list(right))rr=rr[[names(rr)[1]]]
-  by(rr,left)
+  base::by(rr,left)
 }
 `%by%` = by 
  byGrp = function(right,left){
     rr=right
   #if(is.list(right))rr=rr[[names(rr)[1]]]
-   graphCatCon(rr,left)
+  invisible(graphCatCon(rr,left))
   by(rr,left)
 }
 `%byGrp%` = byGrp 
