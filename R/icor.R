@@ -383,7 +383,8 @@ signif.corrCatCon = function(corr,cat,con){
     #n ind, p groupes
     K= (corr*(n-p))/((p-1)*(1-corr))
     quantilF=qf(0.05,p-1,n-p,lower.tail=FALSE)
-    list(K=K,quantileF=quantilF,reject=quantilF<K)
+    pval=pf(K,p-1,n-p, lower.tail = FALSE)
+    list(K=K,quantileF=quantilF,reject=quantilF<K,pval=pval)
 }    
 corrCatCon = function(cat,con,signif=FALSE){
     res=varinter(con, cat)/vartot(con)
