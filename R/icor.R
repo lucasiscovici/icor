@@ -205,10 +205,17 @@ Lib <- function(){
 }
 by = function(right,left){
     rr=right
-  if(is.list(right))rr=rr[[names(rr)[1]]]
+  #if(is.list(right))rr=rr[[names(rr)[1]]]
   by(rr,left)
 }
 `%by%` = by 
+ byGrp = function(right,left){
+    rr=right
+  #if(is.list(right))rr=rr[[names(rr)[1]]]
+   graphCatCon(rr,left)
+  by(rr,left)
+}
+`%byGrp%` = byGrp 
 print.Lib <- function(e1,e2=NULL) {
   return("OK")
 }
@@ -353,3 +360,11 @@ detachFast = function(name){
 #print.L = function(obj){
 #    obj$list  
 ##  }
+graphCatCon <- function(x, gpe) { 
+    stripchart(x ~ gpe) 
+    points(tapply(x, gpe, mean), 1:length(levels(gpe)), col = "red", pch = 19, cex = 1.5) 
+    abline(v = mean(x), lty = 2) 
+    moyennes <- tapply(x, gpe, mean) 
+    traitnf <- function(n) segments(moyennes[n], n, mean(x), n, col = "blue", lwd = 2) 
+    sapply(1:length(levels(gpe)), traitnf) 
+}
