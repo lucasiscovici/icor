@@ -386,7 +386,7 @@ signif.corrCatCon = function(corr,cat,con){
     list(K=K,quantileF=quantilF,reject=quantilF<K)
 }    
 corrCatCon = function(cat,con,signif=FALSE){
-    res=varinter(x, gpe)/vartot(x)
+    res=varinter(con, cat)/vartot(con)
     if(signif)return(list(corr=res,signif=signif.corrCatCon(res,cat,con)))
     else res
 }
