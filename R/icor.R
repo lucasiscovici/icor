@@ -204,7 +204,9 @@ Lib <- function(){
     return(x)
 }
 by = function(right,left){
-  split(right,left)
+    rr=right
+  if(is.list(right))rr=rr[[names(rr)[1]]]
+  by(rr,left)
 }
 `%by%` = by 
 print.Lib <- function(e1,e2=NULL) {
