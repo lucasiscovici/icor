@@ -326,6 +326,9 @@ each = function(lst,fn){
 `%map%` = each
 l_=list
 l=l_
+detachFast = function(name){
+    detach("package:"%.%name, unload=TRUE)
+ }  
 #L = function(le,xc){
 #  x <- list()
 #  x$list = le
