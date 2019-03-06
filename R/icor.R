@@ -180,6 +180,7 @@ icor.corrToStudent = function(r,dll){
                                                   
                                                   blib=base::library
 library = function(pkg){
+    pkgg=pkg
     if(nchar(pkg) > 4) {
         if(substr(pkg,1,4)=="git:"){
             pkg=substr(pkg,5,nchar(pkg))
@@ -188,10 +189,10 @@ library = function(pkg){
             return(NULL)
         }
     }
-    if(!require(pkg,character.only = TRUE)){
-        install.packages(pkg)
+    if(!require(pkgg,character.only = TRUE)){
+        install.packages(pkgg)
     }
-    tg(blib(pkg,character.only = TRUE, quietly = TRUE))
+    tg(blib(pkgg,character.only = TRUE, quietly = TRUE))
 }
 load=library                                            
 tg = function(f){
@@ -202,6 +203,10 @@ Lib <- function(){
     class(x) <- "Lib"
     return(x)
 }
+by = function(right,left){
+  split(right,left)
+}
+`%by%` = by 
 print.Lib <- function(e1,e2=NULL) {
   return("OK")
 }
@@ -320,26 +325,26 @@ each = function(lst,fn){
 `%each%` = each
 `%map%` = each
 l_=list
-
-L = function(le,xc){
-  x <- list()
-  x$list = le
-  x$c=xc
-  class(x) <- "L"
-  return(x)
-}
-l=L(list(),1L)
-is.L <- function(obj) {
-  return(class(obj) == "L")
-}
-plusL = function(left,rigth){
+l=l_
+#L = function(le,xc){
+#  x <- list()
+#  x$list = le
+#  x$c=xc
+#  class(x) <- "L"
+#  return(x)
+#}
+#l=L(list(),1L)
+#is.L <- function(obj) {
+#  return(class(obj) == "L")
+#}
+#plusL = function(left,rigth){
   
-  leftt=ifelse(is.L(left),left$list,ifelse(is.list(left),left,list(left)))
+#  leftt=ifelse(is.L(left),left$list,ifelse(is.list(left),left,list(left)))
   #append(leftt,rigth)
   
-  leftt[[left$c]]=rigth
-  return(L(leftt,left$c+1L))
-}       
-print.L = function(obj){
-    obj$list  
-  }
+#  leftt[[left$c]]=rigth
+#  return(L(leftt,left$c+1L))
+#}       
+#print.L = function(obj){
+#    obj$list  
+##  }
