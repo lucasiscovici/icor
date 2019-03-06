@@ -241,8 +241,8 @@ startsWithGet=function(tab,pat)tab[startsWith(tab,pat)]
 `%.%` = function(a,b){
     paste0(a,b)
 }                                                 
-update = function(){
-    devtools::install_github("luluperet/icor")
+update = function(...){
+    devtools::install_github("luluperet/icor",...)
  }
 embed = function(x, height) {
     library(IRdisplay)
