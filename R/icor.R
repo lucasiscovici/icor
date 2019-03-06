@@ -206,7 +206,7 @@ Lib <- function(){
 by = function(right,left){
     rr=right
   #if(is.list(right))rr=rr[[names(rr)[1]]]
-  return(base::by(rr,left))
+  return(base::split(rr,left))
 }
 `%by%` = by 
  byGrp = function(right,left){
