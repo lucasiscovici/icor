@@ -368,3 +368,27 @@ graphCatCon <- function(x, gpe) {
     traitnf <- function(n) segments(moyennes[n], n, mean(x), n, col = "blue", lwd = 2) 
     sapply(1:length(levels(gpe)), traitnf) 
 }
+#http://www.pacea.u-bordeaux1.fr/IMG/pdf/rapport_correl.pdf
+vartot <- function(x) {
+    sum((x - mean(x))^2)/length(x)
+}
+varinter <- function(x, gpe) {
+    moyennes <- tapply(x, gpe, mean)
+    effectifs <- tapply(x, gpe, length)
+    (sum(effectifs * (moyennes - mean(x))^2))/length(x)
+}
+signif.corrCatCon = function(corr,cat,con){
+    n=length(con)
+    p=length(levels(cat))
+    #n ind, p groupes
+    K= (corr*(n-p))/((p-1)*(1-corr))
+    quantilF=qf(0.05,p-1,n-p,lower.tail=FALSE)
+    list(K=K,quantileF=quantilF,reject=quantilF<K)
+}    
+corrCatCon = function(cat,con,signif=FALSE){
+    res=varinter(x, gpe)/vartot(x)
+    if(signif)return(list(corr=res,signif=signif.corrCatCon(res,cat,con)))
+    else res
+}
+                                    
+                                 
