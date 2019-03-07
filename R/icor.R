@@ -423,4 +423,36 @@ notCatCol = function(a,b=NULL){
 `%!numericCol%`= notNumericCol
 `%catCol%`= catCol  
                                     
-`%!catCol%`= notCatCol                  
+`%!catCol%`= notCatCol
+library("rlist")                                   
+Args = function(args=list()){
+
+  x <- list()
+  x$args=args
+  class(x) <- "Args"
+  x
+}
+is.Args=function(cl){
+  inherits(cl,"Args")
+}
+`%,%` = function(ll,rr){
+  listElems=if(is.Args(ll)) ll$args
+            else list(ll)
+  listElems %<>% list.append(.,rr)
+  return(Args(listElems))
+}
+
+`%->%` = function(ll,rr){
+  if(!is.Args(ll)) warning("pb left n'est pas un Args")
+  else do.call(rr,ll$args)
+}
+
+ reloadIcor = function(){
+    detachFast("icor")
+    lib + "icor" 
+  }
+                                    
+  updateReloadIcor=function(){
+   update()
+      reloadIcor()
+   }
