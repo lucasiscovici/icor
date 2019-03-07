@@ -336,7 +336,7 @@ each = function(lst,fn){
 l_=list
 l=l_
 detachFast = function(name){
-    detach("package:"%.%name, unload=TRUE)
+    detach("package:"%.%name, unload=TRUE,character.only=TRUE)
  }  
 #L = function(le,xc){
 #  x <- list()
