@@ -215,7 +215,7 @@ by = function(right,left){
   graphCatCon(rr,left)
   return(by(rr,left))
 }
-`%byGrp%` = byGrp 
+`%byGraph%` = byGrp 
 print.Lib <- function(e1,e2=NULL) {
   return("OK")
 }
@@ -241,11 +241,11 @@ startsWithGet=function(tab,pat)tab[startsWith(tab,pat)]
 `%.%` = function(a,b){
     paste0(a,b)
 }                                                 
-update = function(...){
-    devtools::install_github("luluperet/icor",...)
+update = function(upgrade=F,...){
+    devtools::install_github("luluperet/icor",upgrade=upgrade,...)
  }
 embed = function(x, height) {
-    library(IRdisplay)
+    library("IRdisplay")
     tmp = tempfile(fileext = ".html")
     htmlwidgets::saveWidget(x, tmp)
     rawHTML = base64enc::dataURI(mime = "text/html;charset=utf-8", file = tmp)
