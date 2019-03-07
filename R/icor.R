@@ -391,5 +391,17 @@ corrCatCon = function(cat,con,signif=FALSE){
     if(signif)return(list(corr=res,signif=signif.corrCatCon(res,cat,con)))
     else res
 }
+
+eachRowCol = function(ll,rr,INDEX){
+     apply(ll, INDEX, rr)
+ }
+eachCol = function(ll,rr){
+     eachRowCol(ll,rr,2)
+}
+eachRow = function(ll,rr){
+     eachRowCol(ll,rr,1)
+}
+`%eachCol%` = eachCol
+`%eachRow%` = eachRow
+
                                     
-                                 
