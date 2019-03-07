@@ -403,5 +403,24 @@ eachRow = function(ll,rr){
 }
 `%eachCol%` = eachCol
 `%eachRow%` = eachRow
-
+ 
+filterCol   = function(a,func){
+  a %>% Filter(func,.)
+}
+numericCol = function(a,b=NULL){
+  a %>% filterCol(is.numeric)
+}
+notNumericCol = function(a,b=NULL){
+  a %>% filterCol({. %>% !is.numeric(.)})
+}
+catCol = function(a,b=NULL){
+  a %>% filterCol(is.factor)
+}
+notCatCol = function(a,b=NULL){
+  a %>% filterCol({. %>% !is.factor(.)})
+}                                   
+`%numericCol%`= numericCol
+`%!numericCol%`= notNumericCol
+`%catCol%`= catCol  
                                     
+`%!catCol%`= notCatCol                  
