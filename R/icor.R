@@ -427,7 +427,7 @@ notCatCol = function(a,b=NULL){
 library("rlist")                                   
 
 `%,%` = function(ll,rr){
-  listElems=if(is.Args(ll)) ll$args
+  listElems=if(is.list(ll)) ll
             else list(ll)
   listElems %<>% list.append(.,rr)
   return(listElems)
