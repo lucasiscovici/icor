@@ -443,12 +443,12 @@ is.Args=function(cl){
 }
 
 `%->%` = function(ll,rr){
-  if(!is.Args(ll)) do.call(rr,ll)
+  if(!is.Args(ll)) do.call(rr,if(is.list(ll)) ll else list(ll))
   else do.call(rr,ll$args)
 }
 
- reloadIcor = function(...){
-    detachFast("icor",...)
+ reloadIcor = function(){
+    detachFast("icor")
     blib("icor") 
   }
                                     
