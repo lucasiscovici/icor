@@ -443,7 +443,7 @@ is.Args=function(cl){
 }
 
 `%->%` = function(ll,rr){
-  if(!is.Args(ll)) warning("pb left n'est pas un Args")
+  if(!is.Args(ll)) do.call(rr,ll)
   else do.call(rr,ll$args)
 }
 
