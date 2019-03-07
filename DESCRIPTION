@@ -18,5 +18,6 @@ Imports:
     ppcor,
     devtools,
     roperators,
-    tidyverse
+    tidyverse,
+    rlist
 RoxygenNote: 6.1.1.9000
