@@ -449,7 +449,7 @@ is.Args=function(cl){
 
  reloadIcor = function(...){
     detachFast("icor",...)
-    lib + "icor" 
+    library("icor") 
   }
                                     
   updateReloadIcor=function(...){
