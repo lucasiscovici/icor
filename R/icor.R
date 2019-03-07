@@ -430,6 +430,7 @@ library("rlist")
   listElems=if(is.list(ll) && inherits(ll,"Args")) ll
             else list(ll)
   listElems %<>% list.append(.,rr)
+   class(listElems) = append(class(listElems),"Args")
   return(listElems)
 }
 
