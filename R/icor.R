@@ -447,12 +447,12 @@ is.Args=function(cl){
   else do.call(rr,ll$args)
 }
 
- reloadIcor = function(){
-    detachFast("icor")
+ reloadIcor = function(...){
+    detachFast("icor",...)
     lib + "icor" 
   }
                                     
-  updateReloadIcor=function(){
-   update()
+  updateReloadIcor=function(...){
+    update(...)
       reloadIcor()
    }
