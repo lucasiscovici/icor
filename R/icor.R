@@ -425,26 +425,17 @@ notCatCol = function(a,b=NULL){
                                     
 `%!catCol%`= notCatCol
 library("rlist")                                   
-Args = function(args=list()){
 
-  x <- list()
-  x$args=args
-  class(x) <- "Args"
-  x
-}
-is.Args=function(cl){
-  inherits(cl,"Args")
-}
 `%,%` = function(ll,rr){
   listElems=if(is.Args(ll)) ll$args
             else list(ll)
   listElems %<>% list.append(.,rr)
-  return(Args(listElems))
+  return(listElems)
 }
 
 `%->%` = function(ll,rr){
-  if(!is.Args(ll)) do.call(rr,if(is.list(ll)) ll else list(ll))
-  else do.call(rr,ll$args)
+  if(is.list(ll)) do.call(rr,ll)
+  else do.call(rr,list(ll))
 }
 
  reloadIcor = function(){
