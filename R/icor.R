@@ -325,8 +325,10 @@ inf <- function(e1, e2){
 each = function(lst,fn){
   fns=fn
   datas=lst
-  if(!is.list(datas)) datas=as.list(datas)
-  if(!is.list(fns)) fns=as.list(fns)
+  if(!is.list(datas) && !(length(datas)>1) ) datas=as.list(datas)
+  else if(!is.list(datas) ) datas=list(datas)
+  
+      if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
   sapply(datas,function(data)sapply(fns,function(fn)fn(data)))
