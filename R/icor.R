@@ -431,8 +431,10 @@ library("rlist")
 `%,%` = function(ll,rr){
   listElems=if(is.list(ll) && inherits(ll,"Args")) ll
             else list(ll)
+  class(listElems) = append(class(listElems),"Args")
+  if(substitute(rr)==".") return(listElems)
   listElems %<>% list.append(.,rr)
-   class(listElems) = append(class(listElems),"Args")
+    class(listElems) = append(class(listElems),"Args")
   return(listElems)
 }
 
