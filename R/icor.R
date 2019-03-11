@@ -464,3 +464,7 @@ library("rlist")
     update(...)
       reloadIcor()
    }
+ll=function(...)l(l(...))                               
+mapFns = function(left,right){
+    invoke_map(right,left)
+    }
