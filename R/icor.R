@@ -331,10 +331,14 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  sapply(datas,function(data)sapply(fns,function(fn)fn(data)))
+  sapply(datas,function(data)sapply(fns,function(fn)as_mapper(fn)(data)))
 }
 `%each%` = each
-`%map%` = each
+                                    
+ eachMap = function(left,right){
+      left %>% map( right )
+ }
+`%map%` = eachMap
 l_=list
 l=l_
 detachFast = function(name){
