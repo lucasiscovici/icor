@@ -335,8 +335,16 @@ each = function(lst,fn){
 }
 `%each%` = each
                                     
- eachMap = function(left,right){
-      left %>% map( right )
+ eachMap = function(lst,fn){
+      fns=fn
+  datas=lst
+  if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
+  else if(!is.list(datas) ) datas=as.list(datas)
+  
+      if(!is.list(fns)) fns=list(fns)
+  #print(sapply(fns,function(fn)str(fn)))
+  
+  lapply(datas,function(data)lapply(fns,function(fn)as_mapper(fn)(data)))
  }
 `%map%` = eachMap
 l_=list
