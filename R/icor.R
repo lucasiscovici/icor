@@ -467,7 +467,7 @@ library("rlist")
    }
 ll=function(...)l(l(...))                               
 mapFns = function(left,right){
-    library("tidyverse")
+    tg(library("tidyverse"))
      fns=right
   datas=left
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
