@@ -3,6 +3,7 @@
 #' @import Hmisc
 #' @import Matrix
 #' @import ppcor
+#' @import tidyverse
 #" @export
 icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,signeOK=T,pcorOK=T,criticalSup=T){
     data=data_
@@ -489,3 +490,4 @@ toDFt=function(left,right=NULL){
   data.frame(matrix(unlist(left), ncol=length(left), byrow=F),stringsAsFactors=FALSE)
 }
 `%toDFt%` = toDFt
+lib + "tidyverse"
