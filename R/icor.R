@@ -11,8 +11,7 @@
  library("Hmisc")
   library("Matrix")
     library("MASS")
-   library("tibble")
-
+library("magrittr")
 }
 
 icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,signeOK=T,pcorOK=T,criticalSup=T){
@@ -504,3 +503,12 @@ toDFt=function(left,right=NULL){
 `%toDFt%` = toDFt
 
                             
+add_row_with_name = function(data,name="X",...){
+  d=nrow(data)
+  data2=data
+  data2%<>%add_row(...)
+  rownamess=rownames(data2)
+  rownamess[d+1]=name
+  rownames(data2)=rownamess
+  return(data2)
+}
