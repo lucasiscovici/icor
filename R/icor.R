@@ -466,6 +466,11 @@ library("rlist")
    }
 ll=function(...)l(l(...))                               
 mapFns = function(left,right){
-    invoke_map(right,left)
+     fns=right
+  datas=left
+  if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
+  else if(!is.list(datas) ) datas=as.list(datas)
+      
+    invoke_map(lapply(right,as.mapper),left)
     }
 `%mapFns%`=mapFns
