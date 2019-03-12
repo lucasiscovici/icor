@@ -476,6 +476,9 @@ mapFns = function(left,right){
                                   
 `%mapFns%`=mapFns
 toDF=function(left,right=NULL){
+    if(substitute(right)=="."){
+        right=NULL  
+    }
   if(!is.null(right) && (rigth=="t" || substitute(right)=="t"))
     return(toDFt(left))
   return(data.frame(matrix(unlist(left), nrow=length(left), byrow=T),stringsAsFactors=FALSE))
