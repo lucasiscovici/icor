@@ -487,7 +487,7 @@ mapFns = function(left,right){
                                   
 `%mapFns%`=mapFns
 toDF=function(left,rr=NULL){
-  if(!is.null(right) && substitute(rr)==".")rr=NULL
+  if(!is.null(rr) && substitute(rr)==".")rr=NULL
   right=rr
   if(!is.null(right) && substitute(rr)==".")right=NULL
   if(is.matrix(left))return(if(!is.null(right) && (rigth=="t" || substitute(rr)=="t")) t(as.data.frame(left))else as.data.frame(left) )
