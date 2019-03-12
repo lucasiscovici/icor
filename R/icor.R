@@ -487,7 +487,7 @@ mapFns = function(left,right){
                                   
 `%mapFns%`=mapFns
 toDF=function(left,rr=NULL){
-  if(substitute(rr)==".")rr=NULL
+  if(!is.null(right) && substitute(rr)==".")rr=NULL
   right=rr
   if(!is.null(right) && substitute(rr)==".")right=NULL
   if(is.matrix(left))return(if(!is.null(right) && (rigth=="t" || substitute(rr)=="t")) t(as.data.frame(left))else as.data.frame(left) )
@@ -506,7 +506,9 @@ toDFt=function(left,right=NULL){
 add_row_with_name = function(data,name="X",...){
   d=nrow(data)
   data2=data
-  data2%<>%add_row(...)
+  dd=list(...)
+  if(is.list(dd[[1]]))dd=dd[[1]]
+  data2=rbind(data2,dd)
   rownamess=rownames(data2)
   rownamess[d+1]=name
   rownames(data2)=rownamess
