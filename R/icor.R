@@ -471,6 +471,6 @@ mapFns = function(left,right){
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
       
-    invoke_map(lapply(right,as.mapper),left)
+    invoke_map(lapply(right,as_mapper),left)
     }
 `%mapFns%`=mapFns
