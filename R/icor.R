@@ -5,6 +5,16 @@
 #' @import ppcor
 #' @import tidyverse
 #" @export
+.onAttach <- function(...) {
+ library("tidyverse")
+ library("data.table")
+ library("Hmisc")
+  library("Matrix")
+    library("MASS")
+   library("tibble")
+
+}
+
 icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,signeOK=T,pcorOK=T,criticalSup=T){
     data=data_
     if(!is.matrix(data)) data=as.matrix(data)
