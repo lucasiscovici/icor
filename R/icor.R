@@ -475,15 +475,16 @@ mapFns = function(left,right){
     }
                                   
 `%mapFns%`=mapFns
-toDF=function(left,right=NULL){
-    if(substitute(right)=="."){
-        right=NULL  
-    }
-  if(!is.null(right) && (rigth=="t" || substitute(right)=="t"))
+toDF=function(left,rr=NULL){
+  right=rr
+  if(!is.null(right) && substitute(rr)==".")right=NULL
+  if(is.matrix(left))return(if(!is.null(right) && (rigth=="t" || substitute(rr)=="t")) t(as.data.frame(left))else as.data.frame(left) )
+  if(!is.null(right) && (rigth=="t" || substitute(rr)=="t"))
     return(toDFt(left))
   return(data.frame(matrix(unlist(left), nrow=length(left), byrow=T),stringsAsFactors=FALSE))
 }
-`%toDF%` = toDF
+
+`%toDF%`=toDF
 toDFt=function(left,right=NULL){
   data.frame(matrix(unlist(left), ncol=length(left), byrow=F),stringsAsFactors=FALSE)
 }
