@@ -467,6 +467,7 @@ library("rlist")
    }
 ll=function(...)l(l(...))                               
 mapFns = function(left,right){
+    library("tidyverse")
      fns=right
   datas=left
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
@@ -490,4 +491,5 @@ toDFt=function(left,right=NULL){
   data.frame(matrix(unlist(left), ncol=length(left), byrow=F),stringsAsFactors=FALSE)
 }
 `%toDFt%` = toDFt
-library("tidyverse")
+
+                            
