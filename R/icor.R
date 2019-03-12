@@ -493,12 +493,16 @@ toDF=function(left,rr=NULL){
   if(is.matrix(left))return(if(!is.null(right) && (rigth=="t" || substitute(rr)=="t")) t(as.data.frame(left))else as.data.frame(left) )
   if(!is.null(right) && (rigth=="t" || substitute(rr)=="t"))
     return(toDFt(left))
-  return(data.frame(matrix(unlist(left), nrow=length(left), byrow=T),stringsAsFactors=FALSE))
+  df=data.frame(matrix(unlist(left),nrow=length(left), byrow=T),stringsAsFactors=FALSE)
+  row.names(df)=names(left)
+  return(df)
 }
 
 `%toDF%`=toDF
 toDFt=function(left,right=NULL){
-  data.frame(matrix(unlist(left), ncol=length(left), byrow=F),stringsAsFactors=FALSE)
+  df=data.frame(matrix(unlist(left),ncol=length(left), byrow=F),stringsAsFactors=FALSE)
+  colnames(df)=names(left)
+  return(df)
 }
 `%toDFt%` = toDFt
 
