@@ -473,4 +473,15 @@ mapFns = function(left,right){
       
     invoke_map(lapply(right,as_mapper),left)
     }
+                                  
 `%mapFns%`=mapFns
+toDF=function(left,right=NULL){
+  if(!is.null(right) && (rigth=="t" || substitute(right)=="t"))
+    return(toDFt(left))
+  return(data.frame(matrix(unlist(left), nrow=length(left), byrow=T),stringsAsFactors=FALSE))
+}
+`%toDF%` = toDF
+toDFt=function(left,right=NULL){
+  data.frame(matrix(unlist(left), ncol=length(left), byrow=F),stringsAsFactors=FALSE)
+}
+`%toDFt%` = toDFt
