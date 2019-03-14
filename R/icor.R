@@ -12,6 +12,8 @@
   library("Matrix")
     library("MASS")
 library("magrittr")
+ library("rlist")   
+ library("R6") 
 }
 
 icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,signeOK=T,pcorOK=T,criticalSup=T){
@@ -448,7 +450,7 @@ notCatCol = function(a,b=NULL){
 `%catCol%`= catCol  
                                     
 `%!catCol%`= notCatCol
-library("rlist")                                   
+                                
 
 `%,%` = function(ll,rr){
   listElems=if(is.list(ll) && inherits(ll,"Args")) ll
@@ -518,3 +520,56 @@ add_row_with_name = function(data,name="X",...){
   rownames(data2)=rownamess
   return(data2)
 }
+
+int.hist = function(x,ylab="Frequency",perc=FALSE,...) {
+  tb=table(factor(x,levels=min(x):max(x)))
+  ptb=prop.table(tb)
+  ims=function(i)if(perc){100*i}else{i}
+  percc=if(perc)"%"else ""
+  names(tb) = lapply(min(x):max(x),function(l)l%.%"("%.%ims(ptb[l])%.%percc%.%")")
+  barplot(tb,space=0,ylab=ylab,...)
+}
+                     
+Aleatoire <- R6Class("Aleatoire",
+                 public = list(
+                   initialize = function(a=16807,
+                                         b=0,
+                                         m=0x7FFFFFFF) {
+                     private$m_a=a
+                     private$m_b=b
+                     private$m_m=m
+                     private$m_nombre=as.numeric(Sys.time());
+                   },
+                   generer = function(min=0.0,max=private$m_m,double=FALSE) {
+                     private$m_nombre = (private$m_a*private$m_nombre + private$m_b) %% private$m_m;
+                     m_nombre2=if(double){private$m_nombre/(as.double(0x7FFFFFFF))*(max-min)+min} else {as.integer(private$m_nombre)%%as.integer(max-min) + min}
+                     m_nombre2
+                   },
+                    loi_discrete=function(loi,taille=NULL){
+                      if (is.null(taille)) taille=length(loi)
+                     i=1;
+                     x=self$generer(0,1,T);
+                    somme=loi[i];
+                    
+                    while(somme < x && i < taille){
+                      somme = somme+ loi[i+1];
+                      i=i+1
+                    }
+                    return(i);
+                   }
+                   
+                 ),
+                 private = list(
+                   m_a=integer(),
+                   m_b=integer(),
+                   m_m=integer(),
+                   m_nombre=integer()
+                 )
+)
+
+#al = Aleatoire$new()
+#al$generer()
+#al$generer(max=10)
+#{1:100 %each% ~al$generer(max=10,double = T) }%>% hist
+
+#1:100 %each% ~al$loi_discrete(c(0.05,0.05,0.1,0.6,0,0.2))
