@@ -526,7 +526,8 @@ int.hist = function(x,ylab="Frequency",perc=FALSE,...) {
   ptb=prop.table(tb)
   ims=function(i)if(perc){100*i}else{i}
   percc=if(perc)"%"else ""
-  names(tb) = lapply(min(x):max(x),function(l)l%.%"("%.%ims(ptb[l])%.%percc%.%")")
+  ll=c(min(x),max(x))
+  names(tb) = lapply(1:length(ll),function(l)ll[l]%.%"("%.%ims(ptb[l])%.%percc%.%")")
   barplot(tb,space=0,ylab=ylab,...)
 }
                      
@@ -556,6 +557,15 @@ Aleatoire <- R6Class("Aleatoire",
                       i=i+1
                     }
                     return(i);
+                   },
+                   bernouli = function(p){
+                     self$loi_discrete(c(1-p,p))-1
+                   },
+                     binomial=function(n,p){
+                      U = matrix(lapply(1:n,.%>%{self$generer(0,1,double=TRUE)}),nrow=1)
+                      Y = (U < p);
+                      X = sum(Y )
+                      X
                    }
                    
                  ),
