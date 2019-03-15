@@ -423,7 +423,9 @@ corrCatCon = function(cat,con,signif=FALSE){
 }
 
 eachRowCol = function(ll,rr,INDEX){
-     apply(ll, INDEX, rr)
+     apply(ll, INDEX, function(row){
+       row %each% rr 
+     })
  }
 eachCol = function(ll,rr){
      eachRowCol(ll,rr,2)
