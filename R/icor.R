@@ -350,7 +350,9 @@ each = function(lst,fn){
 `%each%` = each
                                     
  eachMap = function(lst,fn){
-      fns=fn
+      p=lazyeval::f_capture(fn)
+  if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
+  fns=p
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
