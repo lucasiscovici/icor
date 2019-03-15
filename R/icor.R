@@ -335,7 +335,7 @@ inf <- function(e1, e2){
                                                   
 
 each = function(lst,fn){
-  fns=fn
+  fns=lazyeval::dots_capture(fn)
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
@@ -343,12 +343,12 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  sapply(datas,function(data)sapply(fns,function(fn)as_mapper(fn)(data)))
+  sapply(datas,function(data)sapply(fns,function(fn)fn(data)))
 }
 `%each%` = each
                                     
  eachMap = function(lst,fn){
-      fns=fn
+      fns=lazyeval::dots_capture(fn)
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
@@ -356,7 +356,7 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  lapply(datas,function(data)lapply(fns,function(fn)as_mapper(fn)(data)))
+  lapply(datas,function(data)lapply(fns,function(fn)fn(data)))
  }
 `%map%` = eachMap
 l_=list
@@ -604,11 +604,11 @@ Aleatoire <- R6Class("Aleatoire",
                        normal=function(m=0,sigma=1,nb=1){
                          if(nb==1){
                            x=self$unif();
-                           return ((sum(lapply(1:12, self$unif))-6)*sigma+m)
+                           return ((self$normal(nb=2)[1])*sigma+m)
                          }else if(nb==2){
                            x=self$unif();
                            x2=self$unif();
-                           return(c(sqrt(-2*log(x))*cos(2*pi*x2),sqrt(-2*log(x1))*sin(2*pi*x2)))
+                           return(c(sqrt(-2*log(x))*cos(2*pi*x2),sqrt(-2*log(x))*sin(2*pi*x2)))
                          }
                        },
                        
@@ -651,7 +651,27 @@ Aleatoire <- R6Class("Aleatoire",
                              m_m=integer(),
                              m_nombre=integer()
                            )
-                             )
+                             ) 
+
+
+
+    test_same_distrib = function(sample1,sample2){
+      return(ks.test(sample1,sample2)$p)
+    }
+    runFnXtimes = function(fn,Xtimes=100){
+      p=lazyeval::dots_capture(fn)
+      {1:Xtimes %each% p }
+    }
+    
+    `%Xtimes%` = runFnXtimes
+    eachFn = function(a,b){
+      bb=lazyeval::dots_capture(b)
+      for(i in 1:length(bb)){
+        
+        bb[[i]](a[[i]])
+      }
+    }
+    `%eachFn%` = eachFn
 
 #al = Aleatoire$new()
 #al$generer()
@@ -659,3 +679,4 @@ Aleatoire <- R6Class("Aleatoire",
 #{1:100 %each% ~al$generer(max=10,double = T) }%>% hist
 
 #1:100 %each% ~al$loi_discrete(c(0.05,0.05,0.1,0.6,0,0.2))
+#{1:500 %each% ~rexp(1) }%>% density %>% plot ; {1:500 %each% ~al$exp(1) }%>% density %>% lines(col="red")
