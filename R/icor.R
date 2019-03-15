@@ -343,7 +343,7 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  sapply(datas,function(data)sapply(fns,function(fn)fn(data)))
+  sapply(datas,function(data)sapply(fns,function(fn)as_mapper(fn)(data)))
 }
 `%each%` = each
                                     
@@ -356,7 +356,7 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  lapply(datas,function(data)lapply(fns,function(fn)fn(data)))
+  lapply(datas,function(data)lapply(fns,function(fn)as_mapper(fn)(data)))
  }
 `%map%` = eachMap
 l_=list
