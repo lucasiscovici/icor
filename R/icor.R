@@ -333,31 +333,30 @@ inf <- function(e1, e2){
 
 }
                                                   
-each. = function(d){
- dd=d
- while(is_formula(dd)){
-  dd=as_mapper(dd)
- }
- return(dd)
- }
-each = function(lst,fn){
- p=lazyeval::f_capture(fn)
-  if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
-  fns=p
-  datas=lst
-  if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
-  else if(!is.list(datas) ) datas=as.list(datas)
-  
+    each. = function(d){
+      dd=d
+      while(is_formula(dd)){
+        dd=as_mapper(dd)
+      }
+      return(dd)
+    }
+    each = function(lst,fn){
+      p=lazyeval::f_capture(fn)
+      if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
+      fns=p
+      datas=lst
+      if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
+      else if(!is.list(datas) ) datas=as.list(datas)
+      
       if(!is.list(fns)) fns=list(fns)
-  #print(sapply(fns,function(fn)str(fn)))
-  
-  sapply(datas,function(data)sapply(fns,function(fn)each.(fn)(data)))
-}
-`%each%` = each
-                                    
+      #print(sapply(fns,function(fn)str(fn)))
+      
+      sapply(datas,function(data)sapply(fns,function(fn)each.(as_mapper(fn))(data)))
+    }
+    `%each%` = each                   
  eachMap = function(lst,fn){
       p=lazyeval::f_capture(fn)
-  if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
+  if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
   fns=p
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
@@ -672,7 +671,7 @@ Aleatoire <- R6Class("Aleatoire",
     }
     runFnXtimes = function(fn,Xtimes=100){
       p=fn
-     if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
+     if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
       {1:Xtimes %each% p }
     }
                      
