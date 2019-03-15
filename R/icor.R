@@ -360,7 +360,7 @@ each = function(lst,fn){
  }
 `%map%` = eachMap
 l_=list
-l=l_
+lold=l_
 detachFast = function(name){
     detach("package:"%.%name, unload=TRUE,character.only=TRUE)
  }  
@@ -476,7 +476,7 @@ notCatCol = function(a,b=NULL){
     update(...)
       reloadIcor()
    }
-ll=function(...)l(l(...))                               
+ll=function(...)lold(lold(...))                               
 mapFns = function(left,right){
     tg(library("tidyverse"))
      fns=right
@@ -659,16 +659,20 @@ Aleatoire <- R6Class("Aleatoire",
       return(ks.test(sample1,sample2)$p)
     }
     runFnXtimes = function(fn,Xtimes=100){
-      p=lazyeval::dots_capture(fn)
+      p=fn
       {1:Xtimes %each% p }
     }
-    
+                     
+    l = function(...){
+      lazyeval::dots_capture(...)
+    }
+                     
     `%Xtimes%` = runFnXtimes
     eachFn = function(a,b){
-      bb=lazyeval::dots_capture(b)
+      bb=b
       for(i in 1:length(bb)){
         
-        bb[[i]](a[[i]])
+        as_mapper(bb[[i]])(a[[i]])
       }
     }
     `%eachFn%` = eachFn
