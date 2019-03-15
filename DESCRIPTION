@@ -20,5 +20,6 @@ Imports:
     roperators,
     tidyverse,
     rlist,
-    R6
+    R6,
+    lazyeval
 RoxygenNote: 6.1.1.9000
