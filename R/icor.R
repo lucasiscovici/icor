@@ -333,7 +333,13 @@ inf <- function(e1, e2){
 
 }
                                                   
-
+each. = function(d){
+ dd=d
+ while(is.formula(dd)){
+  dd=as_mapper(dd)
+ }
+ return(dd)
+ }
 each = function(lst,fn){
  p=lazyeval::f_capture(fn)
   if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
@@ -345,7 +351,7 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  sapply(datas,function(data)sapply(fns,function(fn)as_mapper(fn)(data)))
+  sapply(datas,function(data)sapply(fns,function(fn)each.(fn)(data)))
 }
 `%each%` = each
                                     
@@ -360,7 +366,7 @@ each = function(lst,fn){
       if(!is.list(fns)) fns=list(fns)
   #print(sapply(fns,function(fn)str(fn)))
   
-  lapply(datas,function(data)lapply(fns,function(fn)as_mapper(fn)(data)))
+  lapply(datas,function(data)lapply(fns,function(fn)each.(fn)(data)))
  }
 `%map%` = eachMap
 l.=list
