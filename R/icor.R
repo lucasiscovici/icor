@@ -532,50 +532,126 @@ int.hist = function(x,ylab="Frequency",perc=FALSE,...) {
 }
                      
 Aleatoire <- R6Class("Aleatoire",
-                 public = list(
-                   initialize = function(a=16807,
-                                         b=0,
-                                         m=0x7FFFFFFF) {
-                     private$m_a=a
-                     private$m_b=b
-                     private$m_m=m
-                     private$m_nombre=as.numeric(Sys.time());
-                   },
-                   generer = function(min=0.0,max=private$m_m,double=FALSE) {
-                     private$m_nombre = (private$m_a*private$m_nombre + private$m_b) %% private$m_m;
-                     m_nombre2=if(double){private$m_nombre/(as.double(0x7FFFFFFF))*(max-min)+min} else {as.integer(private$m_nombre)%%as.integer(max-min) + min}
-                     m_nombre2
-                   },
-                    loi_discrete=function(loi,taille=NULL){
-                      if (is.null(taille)) taille=length(loi)
-                     i=1;
-                     x=self$generer(0,1,T);
-                    somme=loi[i];
-                    
-                    while(somme < x && i < taille){
-                      somme = somme+ loi[i+1];
-                      i=i+1
-                    }
-                    return(i);
-                   },
-                   bernouli = function(p){
-                     self$loi_discrete(c(1-p,p))-1
-                   },
-                     binomial=function(n,p){
-                      U = matrix(lapply(1:n,.%>%{self$generer(0,1,double=TRUE)}),nrow=1)
-                      Y = (U < p);
-                      X = sum(Y )
-                      X
-                   }
-                   
-                 ),
-                 private = list(
-                   m_a=integer(),
-                   m_b=integer(),
-                   m_m=integer(),
-                   m_nombre=integer()
-                 )
-)
+                     public = list(
+                       initialize = function(a=16807,
+                                             b=0,
+                                             m=0x7FFFFFFF) {
+                         private$m_a=a
+                         private$m_b=b
+                         private$m_m=m
+                         private$m_nombre=as.numeric(Sys.time());
+                       },
+                       generer = function(min=0.0,max=private$m_m,double=FALSE) {
+                         private$m_nombre = (private$m_a*private$m_nombre + private$m_b) %% private$m_m;
+                         m_nombre2=if(double){private$m_nombre/(as.double(0x7FFFFFFF))*(max-min)+min} else {as.integer(private$m_nombre)%%as.integer(max-min) + min}
+                         m_nombre2
+                       },
+                       unif = function(min=0,max=1){
+                         U=self$generer(0,1,double=TRUE)
+                         (max-min)*U + min
+                       },
+                       exp= function(lambda){
+                         #https://stats.stackexchange.com/questions/234544/from-uniform-distribution-to-exponential-distribution-and-vice-versa
+                         U = self$unif();
+                         -(1/lambda)*log(U)
+                       },
+                       poisson =function(lambda=1){
+                         U = self$unif();
+                         -log(U)/lambda
+                       },
+                       gamma = function(a,b=1){
+                         N=1
+                         #http://www.douillet.info/~douillet/simul/Simulations.pdf
+                         if(is.integer(a) && a > 1 ) {
+                           k = 0 
+                           A = 0
+                           w = sqrt(2 * a - 1) 
+                           while(k < N){
+                             u = pi * (self$unif() - 1/2) 
+                             y = tan(u)
+                             x = w * y + a - 1
+                             if (x> 0 && self$unif() < (1 + y^2)*exp((a - 1)* log(x/(a - 1)) - w * y)){
+                               k = k + 1
+                               A=x
+                             }
+                           }
+                           return(A)
+                         }else{
+                           #https://books.google.fr/books?id=dogHCAAAQBAJ&lpg=PA252&ots=tfg2xwcUt7&hl=fr&pg=PA194#v=onepage&q&f=false
+                           k = 0
+                           A = 0
+                           b = 1 + a / exp (-1)
+                           while( k < N) {
+                             p = b * self$unif() 
+                             v = self$unif()
+                             if (p > 1){
+                               x = -log((b - p) /a)
+                               if(v <= (x^(a - 1))) {
+                                 k = k + 1
+                                 A = x
+                               }
+                             }else {
+                               x = p^(1/(a))
+                               if (v < exp(-x)){ 
+                                 k = k + 1 
+                                 A= x
+                               }
+                             }
+                           }
+                           A
+                         }
+                       },
+                       normal=function(m=0,sigma=1,nb=1){
+                         if(nb==1){
+                           x=self$unif();
+                           return ((sum(lapply(1:12, self$unif))-6)*sigma+m)
+                         }else if(nb==2){
+                           x=self$unif();
+                           x2=self$unif();
+                           return(c(sqrt(-2*log(x))*cos(2*pi*x2),sqrt(-2*log(x1))*sin(2*pi*x2)))
+                         }
+                       },
+                       
+                       loi_discrete=function(loi,taille=NULL){
+                         if (is.null(taille)) taille=length(loi)
+                         i=1;
+                         x=self$unif();
+                         somme=loi[i];
+                         
+                         while(somme < x && i < taille){
+                           somme = somme+ loi[i+1];
+                           i=i+1
+                         }
+                         return(i);
+                       },
+                       bernouli = function(p){
+                         self$loi_discrete(c(1-p,p))-1
+                       },
+                       binomial=function(n,p){
+                         U = matrix(lapply(1:n,.%>%{self$unif()}),nrow=1)
+                         Y = (U < p);
+                         X = sum(Y )
+                         X
+                       },
+                       geom =function(p){
+                         X = 1;
+                         U = self$unif();
+                 
+                                 while(U > p){
+                           X = X + 1; 
+                           U = self$unif();
+                         }
+                         X
+                       }
+                       
+                           ),
+                           private = list(
+                             m_a=integer(),
+                             m_b=integer(),
+                             m_m=integer(),
+                             m_nombre=integer()
+                           )
+                             )
 
 #al = Aleatoire$new()
 #al$generer()
