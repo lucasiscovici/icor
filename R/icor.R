@@ -335,7 +335,9 @@ inf <- function(e1, e2){
                                                   
 
 each = function(lst,fn){
-  fns=fn
+ p=lazyeval::f_capture(fn)
+  if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
+  fns=p
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
@@ -359,8 +361,8 @@ each = function(lst,fn){
   lapply(datas,function(data)lapply(fns,function(fn)as_mapper(fn)(data)))
  }
 `%map%` = eachMap
-l_=list
-lold=l_
+l.=list
+l=l.
 detachFast = function(name){
     detach("package:"%.%name, unload=TRUE,character.only=TRUE)
  }  
@@ -476,7 +478,7 @@ notCatCol = function(a,b=NULL){
     update(...)
       reloadIcor()
    }
-ll=function(...)lold(lold(...))                               
+ll=function(...)l.(l.(...))                               
 mapFns = function(left,right){
     tg(library("tidyverse"))
      fns=right
@@ -660,10 +662,11 @@ Aleatoire <- R6Class("Aleatoire",
     }
     runFnXtimes = function(fn,Xtimes=100){
       p=fn
+     if(str_detect(stringr::str_flatten(p),"^~l_\\(.*$"))p=lazyeval::lazy_eval(p)
       {1:Xtimes %each% p }
     }
                      
-    l = function(...){
+    l_ = function(...){
       lazyeval::dots_capture(...)
     }
                      
