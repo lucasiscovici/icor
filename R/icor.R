@@ -670,7 +670,7 @@ Aleatoire <- R6Class("Aleatoire",
       return(ks.test(sample1,sample2)$p)
     }
     runFnXtimes = function(fn,Xtimes=100){
-      p=fn
+      p=lazyeval::f_capture(fn)
      if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
       {1:Xtimes %each% p }
     }
