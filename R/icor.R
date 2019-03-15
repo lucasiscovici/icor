@@ -335,7 +335,7 @@ inf <- function(e1, e2){
                                                   
 
 each = function(lst,fn){
-  fns=lazyeval::dots_capture(fn)
+  fns=fn
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
@@ -348,7 +348,7 @@ each = function(lst,fn){
 `%each%` = each
                                     
  eachMap = function(lst,fn){
-      fns=lazyeval::dots_capture(fn)
+      fns=fn
   datas=lst
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
   else if(!is.list(datas) ) datas=as.list(datas)
