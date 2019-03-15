@@ -335,7 +335,7 @@ inf <- function(e1, e2){
                                                   
 each. = function(d){
  dd=d
- while(is.formula(dd)){
+ while(is_formula(dd)){
   dd=as_mapper(dd)
  }
  return(dd)
