@@ -21,5 +21,6 @@ Imports:
     tidyverse,
     rlist,
     R6,
-    lazyeval
+    lazyeval,
+    magrittr
 RoxygenNote: 6.1.1.9000
