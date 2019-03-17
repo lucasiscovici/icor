@@ -524,6 +524,7 @@ Aleatoire <- R6Class("Aleatoire",
                          -log(U)/lambda
                        },
                        gamma = function(a,b=1){
+                         if(b==1) return(private$gamma_Without_b(a))
                          N=1
                          #http://www.douillet.info/~douillet/simul/Simulations.pdf
                          if(is.integer(a) && a > 1 ) {
@@ -613,10 +614,16 @@ Aleatoire <- R6Class("Aleatoire",
                              m_a=integer(),
                              m_b=integer(),
                              m_m=integer(),
-                             m_nombre=integer()
+                             m_nombre=integer(),
+                             gamma_Without_b = function(a) { 
+                               #loi expo -> F(x) =1-exp(x)
+                               #r=1-exp(-x)
+                               #-ln(r)
+                              
+                               return(-log(prod(sapply(1:a,self$unif))))
+                             }
                            )
                              ) 
-
 
 
       dfRowToList = . %>% t %>% as.data.frame %>% as.list
@@ -761,7 +768,7 @@ Aleatoire <- R6Class("Aleatoire",
       i <- 1L 
       stop=F
       namesL=names(calls)
-      #print(calls)
+      if(is.null(namesL))namesL=1:length(calls)
       for(ii in 1:length(calls)) {
         rhs=calls[[ii]]
         formula=F
@@ -859,6 +866,11 @@ Aleatoire <- R6Class("Aleatoire",
       datas[row,]
     }
     `%getRow%` = getRow
+    
+    getCol = function(datas,col){
+      datas[,col]
+    }
+    `%getCol%` = getCol
     
     getElem = function(datas,row){
       datas[[row]]
