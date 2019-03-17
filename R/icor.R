@@ -190,7 +190,7 @@ icor.corrToStudent = function(r,dll){
     r * sqrt(dll/(1-(r^2)))
 }
                                                   
-                                                  blib=base::library
+blib=base::library
 library = function(pkg,...){
     pkgg=pkg
     if(nchar(pkg) > 4) {
@@ -333,41 +333,7 @@ inf <- function(e1, e2){
 
 }
                                                   
-    each. = function(d){
-      dd=d
-      while(is_formula(dd)){
-        dd=as_mapper(dd)
-      }
-      return(dd)
-    }
-    each = function(lst,fn){
-      p=lazyeval::f_capture(fn)
-      if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
-      fns=p
-      datas=lst
-      if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
-      else if(!is.list(datas) ) datas=as.list(datas)
-      
-      if(!is.list(fns)) fns=list(fns)
-      #print(sapply(fns,function(fn)str(fn)))
-      
-      sapply(datas,function(data)sapply(fns,function(fn)each.(as_mapper(fn))(data)))
-    }
-    `%each%` = each                   
- eachMap = function(lst,fn){
-      p=lazyeval::f_capture(fn)
-  if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
-  fns=p
-  datas=lst
-  if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
-  else if(!is.list(datas) ) datas=as.list(datas)
-  
-      if(!is.list(fns)) fns=list(fns)
-  #print(sapply(fns,function(fn)str(fn)))
-  
-  lapply(datas,function(data)lapply(fns,function(fn)each.(fn)(data)))
- }
-`%map%` = eachMap
+   
 l.=list
 l=l.
 detachFast = function(name){
@@ -427,20 +393,7 @@ corrCatCon = function(cat,con,signif=FALSE){
     else res
 }
 
-eachRowCol = function(ll,rr,INDEX){
-     apply(ll, INDEX, function(row){
-       row %each% rr 
-     })
- }
-eachCol = function(ll,rr){
-     eachRowCol(ll,rr,2)
-}
-eachRow = function(ll,rr){
-     eachRowCol(ll,rr,1)
-}
-`%eachCol%` = eachCol
-`%eachRow%` = eachRow
- 
+
 filterCol   = function(a,func){
   a %>% Filter(func,.)
 }
@@ -489,7 +442,6 @@ notCatCol = function(a,b=NULL){
    }
 ll=function(...)l.(l.(...))                               
 mapFns = function(left,right){
-    tg(library("tidyverse"))
      fns=right
   datas=left
   if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
@@ -666,29 +618,256 @@ Aleatoire <- R6Class("Aleatoire",
 
 
 
+      dfRowToList = . %>% t %>% as.data.frame %>% as.list
+      densityPlt= . %>% density %>% plot
+      densityLines= function(a,...) lines(density(a),...)
+      
+    listToDotsFn =function(liste,fn){
+      do.call(fn, liste)
+    }
+    listToDotsFn_ =function(liste,fn){
+      names(liste)=NULL
+      do.call(fn, liste)
+    }
+    `%listToDotsFn_%` = listToDotsFn_
+    `%listToDotsFn%` = listToDotsFn
     test_same_distrib = function(sample1,sample2){
       return(ks.test(sample1,sample2)$p)
     }
+    capturePrint = function(w){
+      capture.output(print(w))
+    }
     runFnXtimes = function(fn,Xtimes=100){
-      p=lazyeval::f_capture(fn)
-     if(str_detect(stringr::str_flatten(p),"^~l(ist|_)?\\(.*$|^~~.*"))p=lazyeval::f_eval(p)
-      {1:Xtimes %each% p }
+      aa=match.call()
+      aa2=aa[[2]]
+      #Xti=Xtimes
+      #print(capturePrint(aa2))
+      if(str_detect(toString(aa2),"^[0-9]+$")){
+        aa2=aa[[3]]
+        Xti=fn
+        #print("d")
+      }else{
+        Xti=Xtimes
+      }
+      parent <- parent.frame()
+      env    <- new.env(parent = parent)
+      dfn=aa2
+      p=splitArgsl_(dfn,env,parent)
+      if(is.null(p)) p = fn
+      .p.=p
+        1:Xti %each% .p.
     }
-                     
-    l_ = function(...){
-      lazyeval::dots_capture(...)
-    }
-                     
     `%Xtimes%` = runFnXtimes
     eachFn = function(a,b){
-      bb=b
-      for(i in 1:length(bb)){
-        
-        as_mapper(bb[[i]])(a[[i]])
+      aa=match.call()
+      parent <- parent.frame()
+      env    <- new.env(parent = parent)
+      bb=splitArgsl_(aa[[3]],env,parent)
+      listNames=names(a)
+      for(i in 1:length(a)){
+        k=listNames[i]
+        if(is.null(listNames[i]) || listNames[i]==""){
+          k=i
+        }
+        bb[[i]](a[[k]])
       }
     }
     `%eachFn%` = eachFn
-
+    is.doubledot=function(str){
+      if(length(str)==3 && str[[1]] %in% c("$","@"))str=str[[3]]
+      str_detect(str,"^\\..+\\.$")
+    }
+    
+    
+    eachRowCol = function(ll,rr,INDEX){
+      ds=apply(ll, INDEX,rr)
+      return(ds)
+    }
+    eachCol = function(ll,rr){
+      eachRowCol(ll,rr,2)
+    }
+    eachRow = function(ll,rr){
+      eachRowCol(ll,rr,1)
+    }
+    `%eachCol%` = eachCol
+    `%eachRow%` = eachRow
+    
+    
+    test_normal = function(sample1){
+      return(ks.test(sample1,"pnorm",mean=0,sd=1)$p)
+    }
+    
+  
+    map = function(lst,fn,env=NULL){
+      d=match.call()
+      if (is.null(env)){ 
+        parent <- parent.frame()
+        env    <- new.env(parent = parent)
+      }
+      dfn=d[[3L]]
+      p=splitArgsl_(dfn,env,parent)
+      
+      
+      if(is.null(p)) p = eval(fn,env,env)
+      fns=p
+      datas=lst
+      if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
+      else if(!is.list(datas) ) datas=as.list(datas)
+      
+      if(!is.list(fns)) fns=list(fns)
+      lapply(datas,function(data)lapply(fns,function(fn)fn(data)))
+    }
+    
+    `%map%` = map
+    
+    splitArgsl_=function(dfn,env,parent){
+      ae=callToString(dfn)
+      if(is.doubledot(ae))return(NULL)
+      if(!stringr::str_detect(ae,"^l_(_)?.*$")){
+        p=splitArgs(list(dfn),env,parent)
+      }else{
+        p=eval(dfn)
+      }
+      return(p)
+    }
+    each = function(lst,fn,env=NULL){
+      d=match.call()
+      if (is.null(env)){ 
+        parent <- parent.frame()
+        env    <- new.env(parent = parent)
+      }
+      dfn=d[[3L]]
+      p=splitArgsl_(dfn,env,parent)
+      
+      
+      if(is.null(p)) p = eval(fn,env,env)
+      fns=p
+      datas=lst
+      if(!is.list(datas) && !(length(datas)>1) ) datas=list(datas)
+      else if(!is.list(datas) ) datas=as.list(datas)
+      
+      if(!is.list(fns)) fns=list(fns)
+      sapply(datas,function(data)sapply(fns,function(fn)fn(data)))
+    } 
+    
+    `%each%` = each
+    
+    callToString  = function(call){
+      as.character(lazyeval::as_name(call))
+    }
+    splitArgs = function(calls,env,parent,withDotP=F){
+      rhss   <- list()
+      i <- 1L 
+      stop=F
+      namesL=names(calls)
+      #print(calls)
+      for(ii in 1:length(calls)) {
+        rhs=calls[[ii]]
+        formula=F
+        if (is_parenthesized(rhs))
+          rhs <- eval(rhs, env, env)
+        rhs <- 
+          if (is_funexpr(rhs) || withDotP)
+            rhs
+        else if(rlang::is_formula(rhs)){
+          formula=T
+          as.formula(rhs)
+        }
+        else if (is_function(rhs) || is_colexpr(rhs))
+          prepare_function(rhs)
+        else if (is_first(rhs)) 
+          prepare_first(rhs)
+        else {
+          stop=F
+          rhs
+        }
+        if(stop)break
+        
+        if(formula==F){
+          rhs=lazyeval::f_capture(rhs)
+        }
+        rhss[[namesL[i]]]=purrr::as_mapper(rhs)
+        i = i + 1L
+      }
+      if(stop)return(NULL)
+      return(rhss)
+    }
+    l_ = function(...){
+      calls  <- match.call()
+      parent <- parent.frame()
+      
+      env    <- new.env(parent = parent)
+      
+      if(length(calls)<2){
+        return(list())
+      }
+      pls=as.list(calls)
+      splitArgs(pls[-1],env,parent)
+    }
+    l__ = function(...){
+      calls  <- match.call()
+      parent <- parent.frame()
+      
+      env    <- new.env(parent = parent)
+      
+      if(length(calls)<2){
+        return(list())
+      }
+      pls=as.list(calls)
+      splitArgs(pls[-1],env,parent,T)
+    }
+    
+    prepare_function <- function(f)
+    {
+      as.call(list(f, quote(.)))
+    }
+    is_placeholder <- function(symbol)
+    {
+      identical(symbol, quote(.))
+    }
+    
+    is_function <- function(expr)
+    {
+      is.symbol(expr) || is.function(expr)
+    }
+    is_colexpr <- function(expr)
+    {
+      is.call(expr) &&
+        (identical(expr[[1L]], quote(`::`)) || identical(expr[[1L]], quote(`:::`)))
+    }
+    is_funexpr <- function(expr)
+    {
+      is.call(expr) && identical(expr[[1L]], quote(`{`))
+    }
+    is_parenthesized <- function(expr)
+    {
+      is.call(expr) && identical(expr[[1L]], quote(`(`))
+    }
+    
+    prepare_first <- function(expr)
+    {
+      as.call(c(expr[[1L]], quote(.), as.list(expr[-1L])))
+      
+    }
+    is_first <- function(expr)
+    {
+      !any(vapply(expr[-1L], identical, logical(1L), quote(.)))
+    }
+    
+    getRow = function(datas,row){
+      datas[row,]
+    }
+    `%getRow%` = getRow
+    
+    getElem = function(datas,row){
+      datas[[row]]
+    }
+    `%getElem%` = getElem
+    
+    smth = function(...){
+      a=list(...)
+      print(str(a))
+    }
 #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
