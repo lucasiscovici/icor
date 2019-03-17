@@ -12,6 +12,7 @@
   library("Matrix")
     library("MASS")
 library("magrittr")
+ library("dplyr")
  library("rlist")   
  library("R6") 
 }
