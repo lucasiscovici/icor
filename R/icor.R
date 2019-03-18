@@ -881,6 +881,19 @@ Aleatoire <- R6Class("Aleatoire",
       a=list(...)
       print(str(a))
     }
+                                        
+ curry = function(...){
+  a=match.call()
+  parent <- parent.frame()
+  env    <- new.env(parent = parent)
+  a2=a[[-1]]
+  argss=as.list(a2)
+  function_name = argss[[1]]
+  argsFunc=argss[-1]
+  #print(argsFunc)
+  eval(as.call(c(partial,function_name,argsFunc)),env,env)
+}
+                        
 #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
