@@ -194,6 +194,9 @@ icor.corrToStudent = function(r,dll){
 blib=base::library
 library = function(pkg,...){
     pkgg=pkg
+     if(is.list(pkgg)){
+          lapply(pkgg,library)
+      }else{
     if(nchar(pkg) > 4) {
         if(substr(pkg,1,4)=="git:"){
             pkg=substr(pkg,5,nchar(pkg))
@@ -206,6 +209,7 @@ library = function(pkg,...){
         install.packages(pkgg,...)
     }
     tg(blib(pkgg,character.only = TRUE, quietly = TRUE,...))
+      }
 }
 load=library                                            
 tg = function(f){
