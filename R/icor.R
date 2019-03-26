@@ -749,7 +749,11 @@ Aleatoire <- R6Class("Aleatoire",
         env    <- new.env(parent = parent)
       }
       dfn=d[[3L]]
-      p=splitArgsl_(dfn,env,parent)
+      if (is_funexp()){
+       p=splitArgs(list(dfn),env,parent)
+       }else{
+        p=splitArgsl_(dfn,env,parent)
+       }
       
       
       if(is.null(p)) p = eval(fn,env,env)
