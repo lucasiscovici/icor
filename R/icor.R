@@ -750,7 +750,7 @@ Aleatoire <- R6Class("Aleatoire",
       }
       dfn=d[[3L]]
       if (is_funexpr(dfn)){
-       p=splitArgs(dfn,env,parent)
+       p=l_(dfn,env=env,parent=parent)
        }else{
         p=splitArgsl_(dfn,env,parent)
        }
@@ -808,11 +808,11 @@ Aleatoire <- R6Class("Aleatoire",
       if(stop)return(NULL)
       return(rhss)
     }
-    l_ = function(...){
+    l_ = function(...,env=NULL,parent=NULL){
       calls  <- match.call()
-      parent <- parent.frame()
+      parent <- ifelse(parent==NULL,parent.frame(),parent)
       
-      env    <- new.env(parent = parent)
+      env    <- ifelse(env==NULL,new.env(parent = parent),env)
       
       if(length(calls)<2){
         return(list())
