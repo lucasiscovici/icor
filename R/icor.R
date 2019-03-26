@@ -810,9 +810,9 @@ Aleatoire <- R6Class("Aleatoire",
     }
     l_ = function(...,env=NULL,parent=NULL){
       calls  <- match.call()
-      parent <- ifelse(is.null(parent),parent.frame(),parent)
+      parent <- if(is.null(parent)) parent.frame() else parent
       
-      env    <- ifelse(is.null(env),new.env(parent = parent),env)
+      env    <- ifelse(is.null(env)) new.env(parent = parent) else env
       
       if(length(calls)<2){
         return(list())
