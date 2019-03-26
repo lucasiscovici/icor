@@ -717,8 +717,14 @@ Aleatoire <- R6Class("Aleatoire",
         env    <- new.env(parent = parent)
       }
       dfn=d[[3L]]
-      p=splitArgsl_(dfn,env,parent)
-      
+     
+     if (is_funexpr(dfn)){
+       #pls=as.list(d)
+        p=splitArgs(dfn,env,parent,withDotP=T)
+       #p=l_(dfn,env=env,parent=parent)
+       }else{
+       p=splitArgsl_(dfn,env,parent)
+      }
       
       if(is.null(p)) p = eval(fn,env,env)
       fns=p
@@ -750,8 +756,8 @@ Aleatoire <- R6Class("Aleatoire",
       }
       dfn=d[[3L]]
       if (is_funexpr(dfn)){
-       pls=as.list(d)
-       p=splitArgs(pls[[3L]],env,parent,withDotP=T)
+       #pls=as.list(d)
+       p=splitArgs(dfn,env,parent,withDotP=T)
        #p=l_(dfn,env=env,parent=parent)
        }else{
         p=splitArgsl_(dfn,env,parent)
