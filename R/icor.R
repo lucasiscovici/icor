@@ -812,7 +812,7 @@ Aleatoire <- R6Class("Aleatoire",
       calls  <- match.call()
       parent <- if(is.null(parent)) parent.frame() else parent
       
-      env    <- ifelse(is.null(env)) new.env(parent = parent) else env
+      env    <- if(is.null(env)) new.env(parent = parent) else env
       
       if(length(calls)<2){
         return(list())
