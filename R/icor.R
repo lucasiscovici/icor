@@ -750,7 +750,7 @@ Aleatoire <- R6Class("Aleatoire",
       }
       dfn=d[[3L]]
       if (is_funexpr(dfn)){
-       p=splitArgs(list(dfn),env,parent)
+       p=splitArgs(as.list(dfn),env,parent)
        }else{
         p=splitArgsl_(dfn,env,parent)
        }
@@ -881,7 +881,12 @@ Aleatoire <- R6Class("Aleatoire",
     `%getCol%` = getCol
     
     getElem = function(datas,row){
-      datas[[row]]
+     if(length(row) == 1) row=c(row)
+     f=datas
+     for(i in row){
+      f=f[[i]]
+     }
+     return(f)
     }
     `%getElem%` = getElem
     
