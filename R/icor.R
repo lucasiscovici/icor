@@ -757,7 +757,7 @@ Aleatoire <- R6Class("Aleatoire",
       dfn=d[[3L]]
       if (is_funexpr(dfn)){
        pls=as.list(d)
-       p=splitArgs(list(pls[[3L]][-1][[1]]),env,parent,withDotP=T)
+       p=splitArgs(list(pls[[3L]][-1][[1]]),env,parent,withDotP=F)
        #p=l_(dfn,env=env,parent=parent)
        }else{
         p=splitArgsl_(dfn,env,parent)
