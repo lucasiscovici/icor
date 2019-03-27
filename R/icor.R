@@ -667,7 +667,7 @@ Aleatoire <- R6Class("Aleatoire",
       p=splitArgsl_(dfn,env,parent)
       if(is.null(p)) p = fn
       .p.=p
-        1:Xti %each% .p.
+        l(1:Xti) %each% .p.
     }
     `%Xtimes%` = runFnXtimes
     eachFn = function(a,b){
