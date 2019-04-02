@@ -334,7 +334,8 @@ inf <- function(e1, e2){
     registerS3method("==", "EQ", eq)
     registerS3method("<", "EQ", inf)
     registerS3method("<=", "EQ", infEq)
-       #registerS3method("+", "L", plusL)
+   
+       registerS3method("-", "StrCls", minusStrCls)
 
 }
                                                   
@@ -887,12 +888,15 @@ Aleatoire <- R6Class("Aleatoire",
       datas[,col]
     }
     `%getCol%` = getCol
-    
+    getElem. = function(d){
+     
+     }
     getElem = function(datas,row){
      if(length(row) == 1) row=c(row)
      f=datas
      for(i in row){
-      f=f[[i]]
+      
+      f=if(!stringi::stri_detect_regex(i,"^-?[0-9]+$"))f[[i]]
      }
      return(f)
     }
@@ -914,7 +918,76 @@ Aleatoire <- R6Class("Aleatoire",
   #print(argsFunc)
   eval(as.call(c(partial,function_name,argsFunc)),env,env)
 }
-                        
+ .last=StrCls("last")
+
+`%.=%` = function(a,b){
+  aa=match.call()
+  par=parent.frame()
+  aa2=aa%getElem%2
+  aa3=aa%getElem%3
+  #print(l("<-",as.character(aa2),as.character(aa3)))
+  eval(call("<-",as.character(aa2),as.character(a)%.%as.character(aa3)),par,par)
+}
+StrCls=function(a=""){
+  d=list()
+  d$str=a
+  class(d) = append(class(d),"StrCls")
+  d
+}
+StrCls.print=function(l){
+  l$str
+}
+minusStrCls=function(strcls,l){
+  strcls$str =  strcls%.%"-"%.%l
+  return(strcls)
+}
+getElem2 = function(datas,row){
+  if(length(row) == 1) row=c(row)
+  f=datas
+  for(id in row){
+    i=id
+    if (inherits(i,"StrCls") || is.character(i)) {
+      i=if(inherits(i,"StrCls"))i$str else i
+      if(length(i) > 1) {
+        ind=lapply(i,function(e){
+          last=length(f)  
+          nn=stringi::stri_match(e,regex = "[0-9]")
+          #print(nn)
+          if(length(nn)>0 && !is.na(nn[[1]])){
+            last=last-as.numeric(nn)
+          }
+        })
+        ind=as.numeric(ind)
+        f=f[ind]
+      }else{
+        last=length(f)  
+        nn=stringi::stri_match(i,regex="[0-9]")
+        if(length(nn)>0 && !is.na(nn[[1]])){
+          last=last-as.numeric(nn)
+        }
+        f=f[as.numeric(last)]
+      }
+
+    }else if(stringi::stri_detect_regex(i,"^[0-9]+$")){
+      f=f[[i]]
+    }else if(length(i) > 1 || stringi::stri_detect_regex(i,"^-[0-9]+$")){
+      f=f[i]
+    }
+  }
+  return(f)
+}
+"%getElem2%"=getElem2
+getElems = function(datas,row){
+  if(length(row) == 1) row=c(row)
+  f=datas
+  res=list()
+  for(i in row){
+    f=getElem2(datas,i)
+    res=append(res,l(f))
+  }
+  return(res)
+}
+"%getElems%"=getElems                       
 #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
