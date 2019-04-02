@@ -918,6 +918,12 @@ Aleatoire <- R6Class("Aleatoire",
   #print(argsFunc)
   eval(as.call(c(partial,function_name,argsFunc)),env,env)
 }
+                                        StrCls=function(a=""){
+  d=list()
+  d$str=a
+  class(d) = append(class(d),"StrCls")
+  d
+}
  .last=StrCls("last")
 
 `%.=%` = function(a,b){
@@ -928,12 +934,7 @@ Aleatoire <- R6Class("Aleatoire",
   #print(l("<-",as.character(aa2),as.character(aa3)))
   eval(call("<-",as.character(aa2),as.character(a)%.%as.character(aa3)),par,par)
 }
-StrCls=function(a=""){
-  d=list()
-  d$str=a
-  class(d) = append(class(d),"StrCls")
-  d
-}
+
 StrCls.print=function(l){
   l$str
 }
