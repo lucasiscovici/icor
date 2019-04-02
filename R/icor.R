@@ -738,7 +738,7 @@ Aleatoire <- R6Class("Aleatoire",
     }
     
     `%map%` = map
-    lc_=function(...){
+    l___=function(...){
   a=match.call()
   lapply(a[-1],function(a){eval(call("curry",a))})
 }
