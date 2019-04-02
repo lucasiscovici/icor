@@ -995,9 +995,9 @@ getElems = function(datas,row){
 }
    
 formulatoList.= function(ee){
-     l3=as.list(ee[[3]])
+     l3=as.list(ee)
   myList=list()
-  l32=capturePrint(ee[[3]])
+  l32=capturePrint(ee)
   lso=captureListRegex(l32)%getElem%1
   #print(lso)
   for(ii in lso){
@@ -1023,7 +1023,7 @@ formulatoList.= function(ee){
  }
 formulaToList = function(a,e){
   ee=match.call()
-  formulatoList.(ee)
+  formulatoList.(ee[[3]])
   #print("ecalle")
 }
 "%vtl%"=formulaToList
