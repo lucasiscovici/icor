@@ -889,11 +889,6 @@ Aleatoire <- R6Class("Aleatoire",
       !any(vapply(expr[-1L], identical, logical(1L), quote(.)))
     }
     
-    getRow = function(datas,row){
-      datas[row,]
-    }
-    `%getRow%` = getRow
-    
 
     getElem = function(datas,row){
      if(length(row) == 1) row=c(row)
@@ -1035,10 +1030,16 @@ formulaToList = function(a,e){
  
   getCol = function(datas,col){
    ar=match.call()
-   print(formulatoList.(ar))
-      datas[,formulatoList.(col)]
+   #print(formulatoList.(ar))
+      datas[,formulatoList.(ar[[3]])]
     }
     `%getCol%` = getCol
+     
+    getRow = function(datas,row){
+     ar=match.call()
+      datas[formulatoList.(ar[[3]]),]
+    }
+    `%getRow%` = getRow
 #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
