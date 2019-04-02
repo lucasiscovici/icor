@@ -898,9 +898,7 @@ Aleatoire <- R6Class("Aleatoire",
       datas[,col]
     }
     `%getCol%` = getCol
-    getElem. = function(d){
-     
-     }
+
     getElem = function(datas,row){
      if(length(row) == 1) row=c(row)
      f=datas
@@ -910,7 +908,7 @@ Aleatoire <- R6Class("Aleatoire",
      }
      return(f)
     }
-                                        getElem2 = function(datas,row){
+  getElem2 = function(datas,row){
   if(length(row) == 1) row=c(row)
   f=datas
   for(id in row){
@@ -946,7 +944,7 @@ Aleatoire <- R6Class("Aleatoire",
   return(f)
 }
 "%getElem2%"=getElem2
-    `%getElem%` = getElem2
+ `%getElem%` = getElem2
     
     smth = function(...){
       a=list(...)
