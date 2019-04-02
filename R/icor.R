@@ -1031,6 +1031,7 @@ formulaToList = function(a,e){
 "%vtl%"=formulaToList
  
   getCol = function(datas,col){
+   print(formulaToList(col))
       datas[,formulaToList(col)]
     }
     `%getCol%` = getCol
