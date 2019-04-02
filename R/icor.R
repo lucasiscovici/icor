@@ -682,7 +682,7 @@ Aleatoire <- R6Class("Aleatoire",
         if(is.null(listNames[i]) || listNames[i]==""){
           k=i
         }
-        bb[[i]](a[[k]])
+        do.call(bb[[i]],list(a[[k]]))
       }
     }
     `%eachFn%` = eachFn
