@@ -910,6 +910,42 @@ Aleatoire <- R6Class("Aleatoire",
      }
      return(f)
     }
+                                        getElem2 = function(datas,row){
+  if(length(row) == 1) row=c(row)
+  f=datas
+  for(id in row){
+    i=id
+    if (inherits(i,"StrCls") || is.character(i)) {
+      i=if(inherits(i,"StrCls"))i$str else i
+      if(length(i) > 1) {
+        ind=lapply(i,function(e){
+          last=length(f)  
+          nn=stringi::stri_match(e,regex = "[0-9]")
+          #print(nn)
+          if(length(nn)>0 && !is.na(nn[[1]])){
+            last=last-as.numeric(nn)
+          }
+        })
+        ind=as.numeric(ind)
+        f=f[ind]
+      }else{
+        last=length(f)  
+        nn=stringi::stri_match(i,regex="[0-9]")
+        if(length(nn)>0 && !is.na(nn[[1]])){
+          last=last-as.numeric(nn)
+        }
+        f=f[as.numeric(last)]
+      }
+
+    }else if(stringi::stri_detect_regex(i,"^[0-9]+$")){
+      f=f[[i]]
+    }else if(length(i) > 1 || stringi::stri_detect_regex(i,"^-[0-9]+$")){
+      f=f[i]
+    }
+  }
+  return(f)
+}
+"%getElem2%"=getElem2
     `%getElem%` = getElem2
     
     smth = function(...){
@@ -952,42 +988,6 @@ minusStrCls=function(strcls,l){
   strcls$str =  strcls%.%"-"%.%l
   return(strcls)
 }
-getElem2 = function(datas,row){
-  if(length(row) == 1) row=c(row)
-  f=datas
-  for(id in row){
-    i=id
-    if (inherits(i,"StrCls") || is.character(i)) {
-      i=if(inherits(i,"StrCls"))i$str else i
-      if(length(i) > 1) {
-        ind=lapply(i,function(e){
-          last=length(f)  
-          nn=stringi::stri_match(e,regex = "[0-9]")
-          #print(nn)
-          if(length(nn)>0 && !is.na(nn[[1]])){
-            last=last-as.numeric(nn)
-          }
-        })
-        ind=as.numeric(ind)
-        f=f[ind]
-      }else{
-        last=length(f)  
-        nn=stringi::stri_match(i,regex="[0-9]")
-        if(length(nn)>0 && !is.na(nn[[1]])){
-          last=last-as.numeric(nn)
-        }
-        f=f[as.numeric(last)]
-      }
-
-    }else if(stringi::stri_detect_regex(i,"^[0-9]+$")){
-      f=f[[i]]
-    }else if(length(i) > 1 || stringi::stri_detect_regex(i,"^-[0-9]+$")){
-      f=f[i]
-    }
-  }
-  return(f)
-}
-"%getElem2%"=getElem2
 getElems = function(datas,row){
   if(length(row) == 1) row=c(row)
   f=datas
