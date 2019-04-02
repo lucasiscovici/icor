@@ -1035,8 +1035,8 @@ formulaToList = function(a,e){
  
   getCol = function(datas,col){
    ar=match.call()
-   print(formulaToList.(ar))
-      datas[,formulaToList.(col)]
+   print(formulatoList.(ar))
+      datas[,formulatoList.(col)]
     }
     `%getCol%` = getCol
 #al = Aleatoire$new()
