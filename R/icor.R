@@ -894,10 +894,6 @@ Aleatoire <- R6Class("Aleatoire",
     }
     `%getRow%` = getRow
     
-    getCol = function(datas,col){
-      datas[,col]
-    }
-    `%getCol%` = getCol
 
     getElem = function(datas,row){
      if(length(row) == 1) row=c(row)
@@ -996,7 +992,48 @@ getElems = function(datas,row){
   }
   return(res)
 }
-"%getElems%"=getElems                       
+"%getElems%"=getElems      
+   
+   
+ captureListRegex=function(stri){
+  str_extract_all(stri,"~~[^:]:?[^:]+|~[^:]:?[^:]+|[-'\"+*/.0-9a-zA-Z ]+")
+}
+formulaToList = function(a,e){
+  ee=match.call()
+  #print(ee[[3]])
+  l3=as.list(ee[[3]])
+  myList=list()
+  l32=capturePrint(ee[[3]])
+  lso=captureListRegex(l32)%getElem%1
+  #print(lso)
+  for(ii in lso){
+        #print(ii)
+        if(str_detect(ii,"^[0-9.]+$")){
+          myList=append(myList,as.numeric(ii))
+        }else if(str_detect(ii,"^[0-9.]:[0-9.]$")){
+          myList=append(myList,eval(lazyeval::as_call(ii)))
+        }else if(str_detect(ii,"^~[^:]:?[^:]+$")){
+          dd=str_match(ii,"~([^:]:?[^:]+)")
+          dd=dd%getCol%2
+          myList=append(myList,eval(lazyeval::as_call(dd)))
+          
+        }else if(str_detect(ii,"^~~[^:]:?[^:]+$")){
+          dd=str_match(ii,"~~([^:]:?[^:]+)")
+          dd=dd%getCol%2
+          myList=append(myList,as.list(list(eval(lazyeval::as_call(dd)))))
+          
+        }
+  }
+  if(str_detect(l32,"~~")) return(myList)
+  myList %each% l__(.)
+  #print("ecalle")
+}
+"%vtl%"=formulaToList
+ 
+  getCol = function(datas,col){
+      datas[,formulaToList(col)]
+    }
+    `%getCol%` = getCol
 #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
