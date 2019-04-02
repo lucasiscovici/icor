@@ -998,10 +998,9 @@ getElems = function(datas,row){
  captureListRegex=function(stri){
   str_extract_all(stri,"~~[^:]:?[^:]+|~[^:]:?[^:]+|[-'\"+*/.0-9a-zA-Z ]+")
 }
-formulaToList = function(a,e){
-  ee=match.call()
-  #print(ee[[3]])
-  l3=as.list(ee[[3]])
+   
+formulatoList.= function(ee){
+     l3=as.list(ee[[3]])
   myList=list()
   l32=capturePrint(ee[[3]])
   lso=captureListRegex(l32)%getElem%1
@@ -1026,13 +1025,18 @@ formulaToList = function(a,e){
   }
   if(str_detect(l32,"~~")) return(myList)
   myList %each% l__(.)
+ }
+formulaToList = function(a,e){
+  ee=match.call()
+  formulatoList.(ee)
   #print("ecalle")
 }
 "%vtl%"=formulaToList
  
   getCol = function(datas,col){
-   print(formulaToList(col))
-      datas[,formulaToList(col)]
+   ar=match.call()
+   print(formulaToList.(ar))
+      datas[,formulaToList.(col)]
     }
     `%getCol%` = getCol
 #al = Aleatoire$new()
