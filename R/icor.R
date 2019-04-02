@@ -738,11 +738,14 @@ Aleatoire <- R6Class("Aleatoire",
     }
     
     `%map%` = map
-    
+    lc_=function(...){
+  a=match.call()
+  lapply(a[-1],function(a){eval(call("curry",a))})
+}
     splitArgsl_=function(dfn,env,parent){
       ae=callToString(dfn)
       if(is.doubledot(ae))return(NULL)
-      if(!stringr::str_detect(ae,"^l_(_)?.*$")){
+      if(!stringr::str_detect(ae,"^l__?_?.*$")){
         p=splitArgs(list(dfn),env,parent)
       }else{
         p=eval(dfn)
