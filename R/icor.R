@@ -994,33 +994,43 @@ getElems = function(datas,row){
   str_extract_all(stri,"~~[^:]:?[^:]+|~[^:]:?[^:]+|[-'\"+*/.0-9a-zA-Z ]+")
 }
    
+captureCat = function(a){
+  capture.output(cat(a))
+}
 formulatoList.= function(ee){
-     l3=as.list(ee)
+  l3=as.list(ee)
   myList=list()
-  l32=capturePrint(ee)
+  l32=if(class(ee)=="call")capturePrint(ee) else captureCat(ee)
   lso=captureListRegex(l32)%getElem%1
-  #print(lso)
+  #print(l32)
   for(ii in lso){
-        #print(ii)
-        if(str_detect(ii,"^[0-9.]+$")){
-          myList=append(myList,as.numeric(ii))
-        }else if(str_detect(ii,"^[0-9.]:[0-9.]$")){
-          myList=append(myList,eval(lazyeval::as_call(ii)))
-        }else if(str_detect(ii,"^~[^:]:?[^:]+$")){
-          dd=str_match(ii,"~([^:]:?[^:]+)")
-          dd=dd[[2]]
-          myList=append(myList,eval(lazyeval::as_call(dd)))
-          
-        }else if(str_detect(ii,"^~~[^:]:?[^:]+$")){
-          dd=str_match(ii,"~~([^:]:?[^:]+)")
-          dd=dd[[2]]
-          myList=append(myList,as.list(list(eval(lazyeval::as_call(dd)))))
-          
-        }
+    #print(ii)
+   #print(str_detect(ii,"^~[^:]:?[^:]+$"))
+    if(str_detect(ii,"^[0-9.]+$")){
+      myList=append(myList,as.numeric(ii))
+    }else if(str_detect(ii,"^[0-9.]:[0-9.]$")){
+      myList=append(myList,eval(lazyeval::as_call(ii)))
+    }else if(str_detect(ii,"^~[^:]:?[^:]+$")){
+      dd=str_match(ii,"~([^:]:?[^:]+)")
+      #return(dd)
+      dd=dd[[2]]
+      #print(dd)
+      myList=append(myList,eval(lazyeval::as_call(dd)))
+      
+    }else if(str_detect(ii,"^~~[^:]:?[^:]+$")){
+      dd=str_match(ii,"~~([^:]:?[^:]+)")
+      dd=dd%getCol%2
+      myList=append(myList,as.list(list(eval(lazyeval::as_call(dd)))))
+      
+    }
   }
   if(str_detect(l32,"~~")) return(myList)
   myList %each% l__(.)
- }
+}
+
+toMatchCall=function(..){
+  match.call()[[2]]
+}
 formulaToList = function(a,e){
   ee=match.call()
   formulatoList.(ee[[3]])
