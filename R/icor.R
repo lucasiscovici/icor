@@ -17,6 +17,7 @@ library("magrittr")
  library("R6") 
 }
 
+#a finir, avec individus en col, et interaction entre col
 icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,signeOK=T,pcorOK=T,criticalSup=T){
     data=data_
     if(!is.matrix(data)) data=as.matrix(data)
@@ -165,7 +166,7 @@ icor.critical.r <- function( n, alpha = .05 ) {
 }
 
 #table to html table                                     
-icor.dfToHTML = function(df){
+dfToHTML = function(df){
     suppressMessages(library("googleVis"))
     IRdisplay::display_html(icor.repr_html.gvis(gvisTable(df,options=list(page='enable'))))
 }
@@ -220,6 +221,7 @@ Lib <- function(){
     class(x) <- "Lib"
     return(x)
 }
+                                                  
 by = function(right,left){
     rr=right
   #if(is.list(right))rr=rr[[names(rr)[1]]]
@@ -232,7 +234,8 @@ by = function(right,left){
   graphCatCon(rr,left)
   return(by(rr,left))
 }
-`%byGraph%` = byGrp 
+`%byGraph%` = byGrp
+                                                  
 print.Lib <- function(e1,e2=NULL) {
   return("OK")
 }
@@ -407,13 +410,13 @@ numericCol = function(a,b=NULL){
   a %>% filterCol(is.numeric)
 }
 notNumericCol = function(a,b=NULL){
-  a %>% filterCol({. %>% !is.numeric(.)})
+  a %>% filterCol(. %>% {!is.numeric(.)})
 }
 catCol = function(a,b=NULL){
   a %>% filterCol(is.factor)
 }
 notCatCol = function(a,b=NULL){
-  a %>% filterCol({. %>% !is.factor(.)})
+  a %>% filterCol(. %>% {!is.factor(.)})
 }                                   
 `%numericCol%`= numericCol
 `%!numericCol%`= notNumericCol
@@ -820,11 +823,11 @@ Aleatoire <- R6Class("Aleatoire",
       if(stop)return(NULL)
       return(rhss)
     }
-    l_ = function(...,env=NULL,parent=NULL){
+    l_ = function(...){
       calls  <- match.call()
-      parent <- if(is.null(parent)){ parent.frame() }else{ parent}
+      parent <- parent.frame()
       
-      env    <- if(is.null(env)){ new.env(parent = parent) }else {env}
+      env    <- new.env(parent = parent)
       
       if(length(calls)<2){
         return(list())
@@ -832,6 +835,10 @@ Aleatoire <- R6Class("Aleatoire",
       pls=as.list(calls)
       splitArgs(pls[-1],env,parent)
     }
+    l1_ = function(...){
+     l_(...) %getElem% 1
+     
+     }
     l__ = function(...){
       calls  <- match.call()
       parent <- parent.frame()
@@ -903,11 +910,11 @@ Aleatoire <- R6Class("Aleatoire",
      }
      return(f)
     }
-    `%getElem%` = getElem
+    `%getElem%` = getElem2
     
     smth = function(...){
       a=list(...)
-      print(str(a))
+      str(a)
     }
                                         
  curry = function(...){
