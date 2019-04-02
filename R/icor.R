@@ -990,14 +990,14 @@ getElems = function(datas,row){
 "%getElems%"=getElems      
    
    
- captureListRegex=function(stri){
+ captureListRegex.=function(stri){
   str_extract_all(stri,"~~[^:]:?[^:]+|~[^:]:?[^:]+|[-'\"+*/.0-9a-zA-Z ]+")
 }
    
-captureCat = function(a){
+captureCat. = function(a){
   capture.output(cat(a))
 }
-formulatoList.= function(ee){
+formulatoList..= function(ee){
   l3=as.list(ee)
   myList=list()
   l32=if(class(ee)=="call")capturePrint(ee) else captureCat(ee)
@@ -1028,9 +1028,88 @@ formulatoList.= function(ee){
   myList %each% l__(.)
 }
 
-toMatchCall=function(..){
+toMatchCall.=function(..){
   match.call()[[2]]
 }
+ captureCat = function(a){
+  capture.output(cat(a))
+}
+captureListRegex=function(stri){
+  #print(stri)
+  #print(str_extract_all(stri,"~[^:]+:[^:]+"))
+  str_extract_all(stri,"(~~[^:]+:?[^:]+)|(~[^:]+:[^:]+)|([-/'\"+/*/.0-9a-zA-Z ]+)")
+}
+formulatoList.= function(ee){
+  l3=as.list(ee)
+  myList=list()
+  l32=if(class(ee)=="call")capturePrint(ee) else captureCat(ee)
+  lso=captureListRegex(l32) %getElem% 1
+  #print(lso)
+  for(ii in lso){
+    #print(ii)
+   #print(str_detect(ii,"^~[^:]:?[^:]+$"))
+    if(str_detect(ii,"^[0-9.]+$")){
+      myList=append(myList,as.numeric(ii))
+    }else if(str_detect(ii,"^[0-9.]:[0-9.]$")){
+      myList=append(myList,eval(lazyeval::as_call(ii)))
+    }else if(str_detect(ii,"^~[^:]+:[^:]+$")){
+      dd=str_match(ii,"~([^:]+:[^:]+)")
+      #return(dd)
+      dd=dd[[2]]
+      #print(dd)
+      myList=append(myList,eval(lazyeval::as_call(dd)))
+      
+    }else if(str_detect(ii,"^~~[^:]+:[^:]+$")){
+      dd=str_match(ii,"~~([^:]+:[^:]+)")
+      dd=dd%getCol%2
+      myList=append(myList,as.list(list(eval(lazyeval::as_call(dd)))))
+      
+    }
+  }
+  if(str_detect(l32,"~~")) return(myList)
+  myList %each% l__(.)
+}
+
+toMatchCall=function(a){
+ m= match.call()[[2]]
+ mm=if(class(m)=="call")capturePrint(m) else captureCat(m)
+ #print(m)
+ #print(mm)
+  if(str_detect(mm,"^\\..+\\.$")){
+    capturePrint(a)
+  }else{
+    m
+  }
+}
+
+
+
+
+.matchCall = StrCls("matchCall")
+.list=StrCls("list")
+to = function(tow,what){
+  #print(tow)
+  .what.=match.call()[[3]]
+  switch (tow$str,
+    matchCall = toMatchCall(.what.),
+    list=formulatoList.(toMatchCall(.what.))
+  )
+}
+"%from%" = to
+"%each:%" = function(a,b){
+  bb=match.call()[[3]]
+  #print(bb)
+  cpp=capturePrint(bb)
+  cpp=str_sub(cpp,start=2)
+  csl=lapply(str_split(cpp,":")[[1]],function(e)as.formula("~"%.%e))
+  llee="l_("%.%paste(csl,collapse = ",")%.%")"
+  #print(lazyeval::as_name(llee))
+  #env=new.env()
+  #assign("llee", llee, envir = env)
+  eval(call("%each%",a,lazyeval::as_call(llee)))
+ # do.call(`%each%`,list(a,quote(lazyeval::as_name(llee))), envir = env)
+}
+
 formulaToList = function(a,e){
   ee=match.call()
   formulatoList.(ee[[3]])
