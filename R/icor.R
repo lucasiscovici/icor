@@ -1008,12 +1008,12 @@ formulatoList.= function(ee){
           myList=append(myList,eval(lazyeval::as_call(ii)))
         }else if(str_detect(ii,"^~[^:]:?[^:]+$")){
           dd=str_match(ii,"~([^:]:?[^:]+)")
-          dd=dd%getCol%2
+          dd=dd[[2]]
           myList=append(myList,eval(lazyeval::as_call(dd)))
           
         }else if(str_detect(ii,"^~~[^:]:?[^:]+$")){
           dd=str_match(ii,"~~([^:]:?[^:]+)")
-          dd=dd%getCol%2
+          dd=dd[[2]]
           myList=append(myList,as.list(list(eval(lazyeval::as_call(dd)))))
           
         }
