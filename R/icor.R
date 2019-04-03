@@ -256,10 +256,12 @@ lib = Lib()
 
 
 plotWHDefault=function(w,h){list(repr.plot.width=w,repr.plot.height=h)}
-plotWH.= function(w,h){
- options(repr.plot.width=w,repr.plot.height=h)
+plotWH.= function(w=NULL,h=NULL){
+ ww=if(is.null(w))defaultW() else w
+ hh=if(is.null(h))defaultH() else h
+ options(repr.plot.width=ww,repr.plot.height=hh)
  }
-plotWH = function(w,h){
+plotWH = function(w=NULL,h=NULL){
  saved=plotWH.(w,h)
  return(function(){
    options(saved)
