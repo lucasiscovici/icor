@@ -41,11 +41,10 @@
  *Display widget x, in html in jupyter notebook*</br>
  *(DT::datatable)*</br></br>
  ```R
- graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() + geom_point_interactive(aes(data_id=rownames(dataSim)), size = 2) + theme_minimal()
-  graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
+graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() + geom_point_interactive(aes(data_id=rownames(dataSim)), size = 2) + theme_minimal()
+graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
 embed(graphWidget,"500px","70%")
 ```
-</br>
 *(ggirafe)*</br></br>
  **embedDT:** function(dt,height="100%",width="100%",...)</br>
  *Display a data frame in html beautiful table interactive in jupyter notebook*</br>
