@@ -1,3 +1,5 @@
+# ICOR, Correlation and Usefull Functions, Operators and Classes
+
 # EQ</br>
  %||%<br></br>
  %|%<br></br>
@@ -48,7 +50,9 @@ embed(graphWidget,"500px","70%")
 *(see ggirafe)*</br></br>
  **embedDT:** function(dt,height="100%",width="100%",...)</br>
  *Display a data frame in html beautiful table interactive in jupyter notebook*</br>
-  ```R embedDT(dataSim,"500px","100%",filter="top")```</br>
+  ```R 
+  embedDT(dataSim,"500px","100%",filter="top")
+  ```
  *(see embed)*</br>
  **plotWH**</br>
  **showWarning**</br>
