@@ -16,6 +16,7 @@ library("magrittr")
  library("rlist")   
  library("withr") 
  library("R6") 
+ library("future")
 }
 
 #a finir, avec individus en col, et interaction entre col
@@ -286,6 +287,7 @@ embed = function (x, height="100%",width="100%")
     unlink(tmp)
 }
 embedDT=function(dt,height="100%",width="100%",...){
+ tg(lib + "DT")
     embed(DT::datatable(dt,...),height,width)
 }                                    
                                                   
@@ -1124,6 +1126,14 @@ to = function(tow,what){
   eval(call("%each%",a,lazyeval::as_call(llee)))
  # do.call(`%each%`,list(a,quote(lazyeval::as_name(llee))), envir = env)
 }
+             
+`%future%` = function(aa,i){
+    a=match.call()
+    a=do.call("future",list(a[[3]]))
+    value(a)
+}
+             
+suppressWarningsGgplot =  function(s) tg(print(s))
 
 formulaToList = function(a,e){
   ee=match.call()
@@ -1131,7 +1141,11 @@ formulaToList = function(a,e){
   #print("ecalle")
 }
 "%vtl%"=formulaToList
- 
+ loadPlotUsefull = function(){
+  tg(lib + "ggiraph" +
+    "DT"+
+    "git:thomasp85/patchwork")
+  }
   getCol = function(datas,col){
    ar=match.call()
    #print(formulatoList.(ar))
