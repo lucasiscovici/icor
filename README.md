@@ -4,27 +4,26 @@
  *if vector first is tester*</br>
  <, <=, ==, >=, ></br>
  </br>
- %||%<br></br> 
+ %||%</br> 
  ```R
 > c(4,2,1) %||% c(9,4,0)  < 3
 [1] FALSE
   ```
- %|%<br></br>
-  ```R
-  > c(4,2,1) %|% c(9,4,0)  < 3
+ %|%</br>
+ ```R
+   >c(4,2,1) %|% c(9,4,0)  < 3
 [1] FALSE  TRUE  TRUE
-    ```
- %&&%<br></br>
-  ```R
+ ```
+   %&&% </br>
+ ```R
   > c(4,2,1) %&&% c(9,4,0)  < 3
 [1] FALSE
-    ```
- %&%<br></br>
+ ```
+ %&%</br>
   ```R
   > c(4,2,1) %&% c(9,4,0)  < 3
 [1] FALSE FALSE  TRUE
   ```
- </br>
  </br>
  # Params Func</br>
  %,%<br></br>
