@@ -50,10 +50,12 @@ embed(graphWidget,"500px","70%")
 ![Embed](https://raw.githubusercontent.com/luluperet/icor/master/img/embed.png)
 *(see ggirafe)*</br></br>
  **embedDT:**(dt,height="100%",width="100%",...)</br>
- *Display a data frame in html beautiful table interactive in jupyter notebook*</br>
+ *Display a data frame in html beautiful table interactive in **jupyter notebook***</br>
   *DT::datatable(dt,...)*
   ```R 
   embedDT(dataSim,"500px","100%",filter="top")
+  #if Rstudio
+  DT::datatable(iris,filter="top")
   ```
   ![EmbedDT](https://raw.githubusercontent.com/luluperet/icor/master/img/embedDT.png)
  *(see embed)*</br>
@@ -71,10 +73,22 @@ embed(graphWidget,"500px","70%")
  **hideWarning()**</br>
  **toggleWarning()**</br>
  ```R 
- hideWarning() OR toggleWarning()
- ... #some warnings hidded.....
- showWarning() OR toggleWarning()
- ... #some warnings shown.....
+ > testit <- function() warning("testit")
+ > testit() #Warn
+Warning message:
+In testit() : testit
+> hideWarning()
+> testit() #not Warn
+> showWarning()
+> testit() #Warn
+Warning message:
+In testit() : testit
+> toggleWarning()
+> testit() #not Warn
+> toggleWarning()
+> testit() #Warn
+Warning message:
+In testit() : testit
  ```
  **tg:**(smth)</br>
  *hide/suppress warnings and messages*</br>
