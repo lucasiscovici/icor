@@ -276,7 +276,7 @@ with_plotWH = function(w,h,...)with_options(plotWHDefault(w,h),...)
 show_hideWarning.=function(f)options(warn=ifelse(f,0,-1))
 showWarning=function()show_hideWarning.(TRUE)
 hideWarning=function()show_hideWarning.(FALSE)
-toggleWarning=function()show_hideWarning.(ifelse(getOption("warn")==0,-1,0))
+toggleWarning=function()show_hideWarning.(ifelse(getOption("warn")==0,FALSE,TRUE))
 lapplys = function(data,...){a=data;for(i in list(...)){ a=i(a)};return(a)}
 startsWithGet=function(tab,pat)tab[startsWith(tab,pat)]
 `%.%` = function(a,b){
