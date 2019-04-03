@@ -264,15 +264,21 @@ startsWithGet=function(tab,pat)tab[startsWith(tab,pat)]
 update = function(upgrade=F,...){
     devtools::install_github("luluperet/icor",upgrade=upgrade,...)
  }
-embed = function(x, height) {
-    library("IRdisplay")
+embed = function (x, height="100%",width="100%") 
+{
+    tg(library("IRdisplay"))
     tmp = tempfile(fileext = ".html")
     htmlwidgets::saveWidget(x, tmp)
-    rawHTML = base64enc::dataURI(mime = "text/html;charset=utf-8", file = tmp)
-    display_html(paste("<iframe src=", rawHTML, "width=100% height=", height, "id=","igraph", "scrolling=","yes","seamless=","seamless", "frameBorder=","0","></iframe>", sep = "\""))
+    rawHTML = base64enc::dataURI(mime = "text/html;charset=utf-8", 
+        file = tmp)
+    display_html(paste("<iframe src=", rawHTML, "width=",width,"height=", 
+        height, "id=", "igraph", "scrolling=", "yes", "seamless=", 
+        "seamless", "frameBorder=", "0", "></iframe>", sep = "\""))
     unlink(tmp)
 }
-                                                  
+embedDT=function(dt,height="100%",width="100%",...){
+    embed(DT::datatable(dt,...),height,width)
+}                                    
                                                   
 EQ=function(a,b,ops="+"){
   x <- list()
