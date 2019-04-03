@@ -53,6 +53,7 @@ embed(graphWidget,"500px","70%")
   ```R 
   embedDT(dataSim,"500px","100%",filter="top")
   ```
+  ![Embed](https://raw.githubusercontent.com/luluperet/icor/master/img/embedDT.png)
  *(see embed)*</br>
  **plotWH**</br>
  **showWarning**</br>
