@@ -254,10 +254,16 @@ plus <- function(e1, e2){
 }
 lib = Lib()
 
-    
+
 plotWHDefault=function(w,h){list(repr.plot.width=w,repr.plot.height=h)}
-plotWH= function(w,h){
+plotWH.= function(w,h){
  options(repr.plot.width=w,repr.plot.height=h)
+ }
+plotWH = function(w,h){
+ saved=plotWH.(w,h)
+ return(function(){
+   options(saved)
+ })
  }
 defaultW=.%>%{getOption("repr.plot.width")}
 defaultH=.%>%{getOption("repr.plot.height")}
