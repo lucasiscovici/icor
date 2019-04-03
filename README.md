@@ -39,17 +39,17 @@
  ## embed</br>
  **embed:** function (x, height="100%",width="100%") </br>
  *Display widget x, in html in jupyter notebook*</br>
- *(DT::datatable)*</br></br>
+ *(see DT::datatable)*</br></br>
  ```R
 graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() + geom_point_interactive(aes(data_id=rownames(dataSim)), size = 2) + theme_minimal()
 graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
 embed(graphWidget,"500px","70%")
 ```
-*(ggirafe)*</br></br>
+*(see ggirafe)*</br></br>
  **embedDT:** function(dt,height="100%",width="100%",...)</br>
  *Display a data frame in html beautiful table interactive in jupyter notebook*</br>
-  `embedDT(dataSim,"500px","100%",filter="top")`</br>
- *(embed)*</br>
+  ```R embedDT(dataSim,"500px","100%",filter="top")```</br>
+ *(see embed)*</br>
  **plotWH**</br>
  **showWarning**</br>
  **tg**</br>
