@@ -39,8 +39,15 @@
  embed function (x, height="100%",width="100%") </br>
  Display widget x, in html in jupyter notebook</br>
  (DT::datatable)</br>
+ `graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() +
+  geom_point_interactive(aes(data_id=rownames(dataSim)), size = 2) + theme_minimal()
+graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
+embed(graphWidget,"500px","70%")`
+(ggirafe)
  embedDT function(dt,height="100%",width="100%",...)</br>
- Display an DataFrame interactivly</br>
+ Display a data frame in html beautiful table interactive in jupyter notebook</br>
+  `embedDT(dataSim,"500px","100%",filter="top")`
+</br>
  (embed)</br>
  plotWH</br>
  showWarning</br>
@@ -109,5 +116,9 @@
  </br>
  # Future</br>
  (HenrikBengtsson/future)</br>
- `%future%`</br>
+ %future%</br>
  </br>
+ # Usefull Plot </br>
+ loadPlotUsefull</br>
+ 
+//e= d %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
