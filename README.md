@@ -34,13 +34,14 @@
  int.hist<br></br>
  </br>
  # Usefull Utils</br>
+ ## capture</br>
  captureCat capturePrint</br>
  ## embed</br>
  **embed:** function (x, height="100%",width="100%") </br>
  *Display widget x, in html in jupyter notebook*</br>
  *(DT::datatable)*</br></br>
- `graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() + geom_point_interactive(aes(data_id=rownames(dataSim)), size = 2) + theme_minimal()`</br>
-`graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))`</br>
+ `graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() + geom_point_interactive(aes(data_id=rownames(dataSim)), size = 2) + theme_minimal()`</br></br>
+`graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))`</br></br>
 `embed(graphWidget,"500px","70%")`</br>
 *(ggirafe)*</br></br>
  **embedDT:** function(dt,height="100%",width="100%",...)</br>
