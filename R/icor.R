@@ -252,16 +252,15 @@ plus <- function(e1, e2){
 }
 lib = Lib()
 
-defaultW=NULL
-defaultH=NULL
-                                      
+    
+plotWHDefault=function(w,h){list(repr.plot.width=w,repr.plot.height=h)}
 plotWH= function(w,h){
- if(is.null(defaultW))defaultW=getOption("repr.plot.width")
- if(is.null(defaultH))defaultH=getOption("repr.plot.height")
  options(repr.plot.width=w,repr.plot.height=h)
  }
-plotWHDefault=.%>%{plotWH(h = defaultH,w=defaultW)}
-with_plotWH = with_(plotWH,plotWHDefault)
+defaultW=.%>%{getOption("repr.plot.width")}
+defaultH=.%>%{getOption("repr.plot.height")}
+                                                  
+with_plotWH = function(w,h,...)with_options(plotWHDefault(w,h),...)
                                                   
                                                   
 showWarning=function(f)options(warn=ifelse(f,0,-1))
