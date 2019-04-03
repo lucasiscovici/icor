@@ -39,7 +39,7 @@
  ## capture</br>
  captureCat capturePrint</br>
  ## embed</br>
- **embed:**(x, height="100%",width="100%") </br>
+ **embed**(x, height="100%",width="100%") </br>
  *Display widget x, in html in jupyter notebook*</br>
  *(see DT::datatable)*</br></br>
  ```R
@@ -49,7 +49,7 @@ embed(graphWidget,"500px","70%")
 ```
 ![Embed](https://raw.githubusercontent.com/luluperet/icor/master/img/embed.png)
 *(see ggirafe)*</br></br>
- **embedDT:**(dt,height="100%",width="100%",...)</br>
+ **embedDT**(dt,height="100%",width="100%",...)</br>
  *Display a data frame in html beautiful table interactive in **jupyter notebook***</br>
   *DT::datatable(dt,...)*
   ```R 
