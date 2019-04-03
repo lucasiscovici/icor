@@ -263,9 +263,9 @@ plotWH.= function(w=NULL,h=NULL){
  }
 plotWH = function(w=NULL,h=NULL){
  saved=plotWH.(w,h)
- return(function(){
+ return(invisible(function(){
    options(saved)
- })
+ }))
  }
 defaultW=.%>%{getOption("repr.plot.width")}
 defaultH=.%>%{getOption("repr.plot.height")}
