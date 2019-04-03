@@ -39,7 +39,7 @@
  ## capture</br>
  captureCat capturePrint</br>
  ## embed</br>
- **embed:** function (x, height="100%",width="100%") </br>
+ **embed:**(x, height="100%",width="100%") </br>
  *Display widget x, in html in jupyter notebook*</br>
  *(see DT::datatable)*</br></br>
  ```R
@@ -47,18 +47,45 @@ graph=dataSim %>% ggplot(aes(x=time,y=bin1)) + geom_point() + geom_point_interac
 graphWidget= graph %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
 embed(graphWidget,"500px","70%")
 ```
+![Embed](https://raw.githubusercontent.com/luluperet/icor/master/img/embed.png)
 *(see ggirafe)*</br></br>
- **embedDT:** function(dt,height="100%",width="100%",...)</br>
+ **embedDT:**(dt,height="100%",width="100%",...)</br>
  *Display a data frame in html beautiful table interactive in jupyter notebook*</br>
+  *DT::datatable(dt,...)*
   ```R 
   embedDT(dataSim,"500px","100%",filter="top")
   ```
-  ![Embed](https://raw.githubusercontent.com/luluperet/icor/master/img/embedDT.png)
+  ![EmbedDT](https://raw.githubusercontent.com/luluperet/icor/master/img/embedDT.png)
  *(see embed)*</br>
- **plotWH**</br>
- **showWarning**</br>
- **tg**</br>
- **suppressWarningsGgplot**</br>
+ ## plotWH
+ **plotWH**(w=NULL,h=NULL)-> reset(function)</br>
+ *Change Plot Width/height*</br>
+ ```R 
+ resetWH = plotWH(w=10)
+ ... #plot graphique
+ resetWH() # when finish with modified width/height
+ ```
+ *(options repr.plot.(width/height))*</br>
+ ## Warnings 
+ **showWarning()**</br>
+ **hideWarning()**</br>
+ **toggleWarning()**</br>
+ ```R 
+ hideWarning() OR toggleWarning()
+ ... #some warnings hidded.....
+ showWarning() OR toggleWarning()
+ ... #some warnings shown.....
+ ```
+ **tg:**(smth)</br>
+ *hide/suppress warnings and messages*</br>
+ ```R 
+ tg(smthWithWarningsOrMessages)
+ ```
+ **suppressWarningsGgplot**(ggplotToPlot)</br>
+ *hide ggplots warnings*
+ ```R 
+ suppressWarningsGgplot(ggplotPlot)
+ ```
  </br>
  # Usefull plot Density </br>
  densityLines densityPlt</br>
