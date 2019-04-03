@@ -252,9 +252,18 @@ plus <- function(e1, e2){
 }
 lib = Lib()
 
-
-
-plotWH= function(w,h)options(repr.plot.width=w,repr.plot.height=h)
+defaultW=NULL
+defaultH=NULL
+                                      
+plotWH= function(w,h){
+ if(is.null(defaultW))defaultW=getOption("repr.plot.width")
+ if(is.null(defaultH))defaultH=getOption("repr.plot.height")
+ options(repr.plot.width=w,repr.plot.height=h)
+ }
+plotWHDefault=.%>%{plotWH(h = defaultH,w=defaultW)}
+with_plotWH = with_(plotWH,plotWHDefault)
+                                                  
+                                                  
 showWarning=function(f)options(warn=ifelse(f,0,-1))
 lapplys = function(data,...){a=data;for(i in list(...)){ a=i(a)};return(a)}
 startsWithGet=function(tab,pat)tab[startsWith(tab,pat)]
