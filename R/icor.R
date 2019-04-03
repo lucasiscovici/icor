@@ -197,7 +197,7 @@ icor.corrToStudent = function(r,dll){
 blib=base::library
 library = function(pkg,...){
     pkgg=pkg
-     if(is.list(pkgg)){
+     if(is.list(pkgg) || length(pkg) > 1){
           lapply(pkgg,library)
       }else{
     if(nchar(pkg) > 4) {
