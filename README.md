@@ -24,23 +24,20 @@
   > c(4,2,1) %&% c(9,4,0)  < 3
 [1] FALSE FALSE  TRUE
   ```
- </br>
-# Params Func</br>
+# Params Func
  **%,%**</br>
  **%->%**</br>
  
  ```R
  3 %,% 4 %,% l(d=3) %->% smth
  ```
- </br>
-# String Concat</br>
+# String Concat
  A VOIR%.=%</br>
  **%.%**</br>
  ```R
  > "ll"%.%"kk"%.%"kkd"
 [1] "llkkkkd"
  ```
- </br>
 # Usefull</br>
  **curry(fn)**</br>
  ```R
@@ -78,22 +75,18 @@ rnorm(10, ...)
   .. ..- attr(*, ".Environment")=<environment: 0x177e31b0> 
   ..- attr(*, "fn")= symbol rnorm
  ```
- </br>
 # Usefull DataFrame</br>
  toDF %toDF% toDFt %toDFt%<br></br>
  add_row_with_name<br></br>
  dfRowToList<br></br>
  dfToHTML<br></br>
- </br>
  # Aleatoire</br>
  Aleatoire</br>
- </br>
  # Categorical</br>
  %by% %byGraph%<br></br>
  corrCatCon<br></br>
  graphCatCon<br></br>
  int.hist<br></br>
- </br>
  # Usefull Utils</br>
  ## capture</br>
  captureCat capturePrint</br>
@@ -159,21 +152,17 @@ In testit() : testit
  ```R 
  suppressWarningsGgplot(ggplotPlot)
  ```
- </br>
  # Usefull plot Density </br>
  densityLines densityPlt</br>
- </br>
  # Usefull Library</br>
  lib</br>
  load</br>
  print.Lib</br>
- </br>
  # Usefull Packages Icor</br>
  reloadIcor</br>
  update</br>
  updateReloadIcor</br>
  detachFast</br>
- </br>
  # Each + Map</br>
  %each:% %each%</br>
  %eachCol% %eachRow%</br>
@@ -181,23 +170,18 @@ In testit() : testit
  %map%</br>
  %mapFns%</br>
  %Xtimes%</br>
- </br>
  # List Sequence Formula Customize</br>
  formulatoList.</br>
  %from%</br>
- </br>
  # Getter </br>
  %getCol% %getRow%</br>
  %getElem% %getElem2% %getElems%</br>
- </br>
- </br>
  # Icor</br>
  icor</br>
  icor.corrToStudent</br>
  icor.critical.r</br>
  icor.studentToCorr</br>
  icor.graph</br>
- </br>
  # Lists</br>
  l</br>
  ll</br>
@@ -205,25 +189,19 @@ In testit() : testit
  l__</br>
  l___</br>
  %listToDotsFn_% %listToDotsFn%</br>
- </br>
- </br>
  # Select Col</br>
  catCol %catCol% notCatCol %!catCol%</br>
  numericCol %numericCol% notNumericCol %!numericCol%</br>
- </br>
  # StrCls</br>
  StrCls</br>
  </br>
  startsWithGet ?? lapplys ??</br>
- </br>
  # Tests </br>
  test_normal</br>
  test_same_distrib</br>
- </br>
  # Future</br>
  (HenrikBengtsson/future)</br>
  %future%</br>
- </br>
  # Usefull Plot </br>
  loadPlotUsefull</br>
  
