@@ -1238,11 +1238,15 @@ formulaToList = function(a,e){
     }
     `%getRow%` = getRow
      `%getRow.%` = getRow.
-  qplotSameGraphEachCol = function(d,...){ qplot(x = ind, y = values,data=stack(d),...)} #boxplot, violin
-hidePlot= curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
-`%reduce%` = function(x,ops){
+  qplotSameGraphEachCol = function(d,...){ 
+    qplot(x = ind, y = values,data=stack(d),...)
+  } #boxplot, violin
+hidePlot= icor::curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
+             
+ reduce = function(x,ops){
     Reduce(x,f=ops)
 } 
+`%reduce%`=reduce
              #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
