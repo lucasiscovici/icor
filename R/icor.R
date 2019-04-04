@@ -863,10 +863,62 @@ Aleatoire <- R6Class("Aleatoire",
       pls=as.list(calls)
       splitArgs(pls[-1],env,parent)
     }
-    l1_ = function(...){
-     l_(...) %getElem% 1
-     
-     }
+    `%call%` = function(fn,args){
+  return(do.call(fn,args))
+}
+removeParamsInCall=function(params,calls){
+  a=calls
+  al=as.list(a)
+  #print(al)
+  anames=names(al)
+  #print(anames)
+  for(i in 1:length(anames)){
+    if(anames[i] %in% params){
+      al=al[-i]
+    }
+  }
+  al
+}
+l_.=function(...,x=NULL,n=NULL,i=1){
+  a=match.call()
+  fn=a[[1]]
+  fns=lazyeval::as_name(fn)
+  amoins1=a[-1]
+  amoins1=removeParamsInCall(c("x","n"),amoins1)
+  #print(fns)
+  what=NULL
+  if(str_detect(fns,"^l1.*$"))
+    what=1
+  else if(str_detect(fns,"^lx.*$"))
+    what=x
+  else if(str_detect(fns,"^ln.*$"))
+    what=i:n
+  #print(what)
+  if(!is.null(what)){
+    fn=str_replace(fns,"[1xn]","")
+    #fn=lazyeval::as_call(fn)
+  }
+  #print(what)
+  cc=do.call(fn,as.list(amoins1))
+             if(!is.null(what)){
+                if(length(what)>1)
+                  return(cc%getElems%what)
+               else
+                 return(cc%getElem%what)
+             }
+             return(cc)
+} 
+l1_ = l_.
+l1__ = l_.
+l1___ = l_.
+
+lx_ =  l_.
+lx__ =  l_.
+lx___ =  l_.
+ln_ =  l_.
+ln__ =  l_.
+ln___ =  l_.
+   
     l__ = function(...){
       calls  <- match.call()
       parent <- parent.frame()
