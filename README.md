@@ -25,7 +25,7 @@
 [1] FALSE FALSE  TRUE
   ```
  </br>
- # Params Func</br>
+# Params Func</br>
  **%,%**</br>
  **%->%**</br>
  
@@ -33,7 +33,7 @@
  3 %,% 4 %,% l(d=3) %->% smth
  ```
  </br>
- # String Concat</br>
+# String Concat</br>
  A VOIR%.=%</br>
  **%.%**</br>
  ```R
@@ -41,7 +41,7 @@
 [1] "llkkkkd"
  ```
  </br>
- # Usefull</br>
+# Usefull</br>
  **curry(fn)**</br>
  ```R
  > a=curry(rnorm(10))
@@ -79,7 +79,7 @@ rnorm(10, ...)
   ..- attr(*, "fn")= symbol rnorm
  ```
  </br>
- # Usefull DataFrame</br>
+# Usefull DataFrame</br>
  toDF %toDF% toDFt %toDFt%<br></br>
  add_row_with_name<br></br>
  dfRowToList<br></br>
