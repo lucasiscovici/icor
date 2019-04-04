@@ -897,15 +897,15 @@ l_.=function(...,x=NULL,n=NULL,i=1){
   amoins1=removeParamsInCall(c("x","n"),amoins1)
   #print(fns)
   what=NULL
-  if(str_detect(fns,"^l1.*$"))
+  if(stringr::str_detect(fns,"^l1.*$"))
     what=1
-  else if(str_detect(fns,"^lx.*$"))
+  else if(stringr::str_detect(fns,"^lx.*$"))
     what=x
-  else if(str_detect(fns,"^ln.*$"))
+  else if(stringr::str_detect(fns,"^ln.*$"))
     what=i:n
   #print(what)
   if(!is.null(what)){
-    fn=str_replace(fns,"[1xn]","")
+    fn=stringr::str_replace(fns,"[1xn]","")
     #fn=lazyeval::as_call(fn)
   }
   #print(what)
