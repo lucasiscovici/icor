@@ -1241,7 +1241,7 @@ formulaToList = function(a,e){
   qplotSameGraphEachCol = function(d,...){ 
     qplot(x = ind, y = values,data=stack(d),...)
   } #boxplot, violin
-hidePlot= icor::curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
+hidePlot= curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
              
  reduce = function(x,ops){
     Reduce(x,f=ops)
