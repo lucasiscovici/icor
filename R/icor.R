@@ -724,8 +724,11 @@ Aleatoire <- R6Class("Aleatoire",
     
     
     eachRowCol = function(ll,rr,INDEX){
-      ds=apply(ll, INDEX,rr)
-      return(ds)
+      n=if(INDEX==2)colnames(ll)else rownames(ll)
+      lapply(1:length(n),function(i){
+                                    rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
+                                    }
+            )
     }
     eachCol = function(ll,rr){
       eachRowCol(ll,rr,2)
@@ -735,7 +738,11 @@ Aleatoire <- R6Class("Aleatoire",
     }
     `%eachCol%` = eachCol
     `%eachRow%` = eachRow
-    
+                     
+    eachRowCol. = function(ll,rr,INDEX){
+       apply(ll,INDEX,rr)
+    }
+    `%eachRowCol.` = eachRowCol.
     
     test_normal = function(sample1){
       return(ks.test(sample1,"pnorm",mean=0,sd=1)$p)
@@ -1212,19 +1219,31 @@ formulaToList = function(a,e){
     "DT"+
     "git:thomasp85/patchwork")
   }
-  getCol = function(datas,col){
+  getCol. = function(datas,col){
    ar=match.call()
    #print(formulatoList.(ar))
       datas[,formulatoList.(ar[[3]])]
     }
+  getCol. = function(datas,col){
+      datas[,col]
+   }
     `%getCol%` = getCol
-     
-    getRow = function(datas,row){
+     `%getCol.%` = getCol. 
+    getRow. = function(datas,row){
      ar=match.call()
       datas[formulatoList.(ar[[3]]),]
     }
+              getRow = function(datas,row){
+      datas[row,]
+    }
     `%getRow%` = getRow
-#al = Aleatoire$new()
+     `%getRow.%` = getRow.
+  qplotSameGraphEachCol = function(d,...){ qplot(x = ind, y = values,data=stack(d),...)} #boxplot, violin
+hidePlot= curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
+`%reduce%` = function(x,ops){
+    Reduce(x,f=ops)
+} 
+             #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
 #{1:100 %each% ~al$generer(max=10,double = T) }%>% hist
