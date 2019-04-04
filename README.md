@@ -1,8 +1,8 @@
 # ICOR, Correlation and Usefull Functions, Operators and Classes
 
 # EQ</br>
- *if vector first is tester*</br>
- <, <=, ==, >=, ></br>
+ *Test values each in vector*</br>
+ < <= == >= ></br>
  </br>
  **%||%**</br> 
  ```R
@@ -25,11 +25,11 @@
 [1] FALSE FALSE  TRUE
   ```
 # Params Func
- **%,%**</br>
- **%->%**</br>
- 
+ **%,%** pareil que dans l*()</br>
+ **%->%** pareil que listToDotsFn_?</br>
  ```R
- 3 %,% 4 %,% l(d=3) %->% smth
+ 3 %,% 4 %,% l(d=3) %->% lm
+ 1 %,% 2 %,% "kkk" %,% rnorm %,% l1___(rnorm(10))
  ```
 # String Concat
  A VOIR%.=%</br>
@@ -152,8 +152,16 @@ In testit() : testit
  ```R 
  suppressWarningsGgplot(ggplotPlot)
  ```
- # Usefull plot Density </br>
+ ## Reduce
+ **%reduce%(x,ops)**</br>
+ *Reduce list x with operator ops*
+ # Usefull plot </br>
  densityLines densityPlt</br>
+ **qplotSameGraphEachCol(d,...)**</br>
+ *Plot geom asked for each col in d*(boxplot violin)</br>
+ **hidePlot(func)**</br>
+ *Hide plot printed in func*</br>
+ **loadPlotUsefull**</br>
  # Usefull Library</br>
  lib</br>
  load</br>
@@ -165,7 +173,7 @@ In testit() : testit
  detachFast</br>
  # Each + Map</br>
  %each:% %each%</br>
- %eachCol% %eachRow%</br>
+ %eachCol% %eachRow% %eachRowCol.%</br>
  %eachFn%</br>
  %map%</br>
  %mapFns%</br>
@@ -174,7 +182,7 @@ In testit() : testit
  formulatoList.</br>
  %from%</br>
  # Getter </br>
- %getCol% %getRow%</br>
+ %getCol% %getRow% %getCol.% %getRow.%</br>
  %getElem% %getElem2% %getElems%</br>
  # Icor</br>
  icor</br>
@@ -202,7 +210,4 @@ In testit() : testit
  # Future</br>
  (HenrikBengtsson/future)</br>
  %future%</br>
- # Usefull Plot </br>
- loadPlotUsefull</br>
- 
 //e= d %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
