@@ -1224,7 +1224,7 @@ formulaToList = function(a,e){
    #print(formulatoList.(ar))
       datas[,formulatoList.(ar[[3]])]
     }
-  getCol. = function(datas,col){
+  getCol = function(datas,col){
       datas[,col]
    }
     `%getCol%` = getCol
