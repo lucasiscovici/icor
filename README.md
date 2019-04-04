@@ -77,6 +77,11 @@ rnorm(10, ...)
  ```
  **startsWithFromList(list,string)**</br>
  *filter list with element who begin with string*</br>
+ 
+ **addNamesToList(list,names)**</br>
+ *add names to list*</br>
+ **nothing(...)**</br>
+ *nothing*</br>
 # Usefull DataFrame</br>
  toDF %toDF% toDFt %toDFt%<br></br>
  add_row_with_name<br></br>
