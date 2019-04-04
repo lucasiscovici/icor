@@ -38,7 +38,7 @@
  > "ll"%.%"kk"%.%"kkd"
 [1] "llkkkkd"
  ```
-# Usefull</br>
+# Usefull Utils</br>
  **curry(fn)**</br>
  ```R
  > a=curry(rnorm(10))
@@ -75,6 +75,8 @@ rnorm(10, ...)
   .. ..- attr(*, ".Environment")=<environment: 0x177e31b0> 
   ..- attr(*, "fn")= symbol rnorm
  ```
+ **startsWithFromList(list,string)**</br>
+ *filter list with element who begin with string*</br>
 # Usefull DataFrame</br>
  toDF %toDF% toDFt %toDFt%<br></br>
  add_row_with_name<br></br>
@@ -203,7 +205,7 @@ In testit() : testit
  # StrCls</br>
  StrCls</br>
  </br>
- startsWithGet ?? lapplys ??</br>
+?? lapplys ??</br>
  # Tests </br>
  test_normal</br>
  test_same_distrib</br>
