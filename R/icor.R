@@ -1247,6 +1247,14 @@ hidePlot= curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
     Reduce(x,f=ops)
 } 
 `%reduce%`=reduce
+             
+ addNamesToList=function(vec,names){
+    names(vec)=names
+    vec
+}
+
+
+nothing=function(...){}
              #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
