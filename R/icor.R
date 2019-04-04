@@ -742,7 +742,7 @@ Aleatoire <- R6Class("Aleatoire",
     eachRowCol. = function(ll,rr,INDEX){
        apply(ll,INDEX,rr)
     }
-    `%eachRowCol.` = eachRowCol.
+    `%eachRowCol.%` = eachRowCol.
     
     test_normal = function(sample1){
       return(ks.test(sample1,"pnorm",mean=0,sd=1)$p)
