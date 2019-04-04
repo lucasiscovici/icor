@@ -863,7 +863,7 @@ Aleatoire <- R6Class("Aleatoire",
       pls=as.list(calls)
       splitArgs(pls[-1],env,parent)
     }
-    `%call%` = function(fn,args){
+`%call%` = function(fn,args){
   return(do.call(fn,args))
 }
 removeParamsInCall=function(params,calls){
@@ -872,13 +872,16 @@ removeParamsInCall=function(params,calls){
   #print(al)
   anames=names(al)
   #print(anames)
+  if (!is.null(anames)){
   for(i in 1:length(anames)){
     if(anames[i] %in% params){
       al=al[-i]
     }
   }
+  }
   al
 }
+
 l_.=function(...,x=NULL,n=NULL,i=1){
   a=match.call()
   fn=a[[1]]
