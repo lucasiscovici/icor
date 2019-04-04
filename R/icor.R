@@ -1041,7 +1041,7 @@ ln___ =  l_.
   function_name = argss[[1]]
   argsFunc=argss[-1]
   #print(argsFunc)
-  eval(as.call(c(partial,function_name,argsFunc)),env,env)
+  eval(as.call(c(purrr::partial,function_name,argsFunc)),env,env)
 }
                                         StrCls=function(a=""){
   d=list()
