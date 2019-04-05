@@ -24,9 +24,9 @@
   > c(4,2,1) %&% c(9,4,0)  < 3
 [1] FALSE FALSE  TRUE
   ```
-# Params Func
- **%,%** pareil que dans l*()</br>
- **%->%** pareil que listToDotsFn_?</br>
+# Func
+ **%,% %,_%** pareil que dans l*()</br>
+ **%...>%** pareil que listToDotsFn_?</br>
  ```R
  3 %,% 4 %,% l(d=3) %->% lm
  1 %,% 2 %,% "kkk" %,% rnorm %,% l1___(rnorm(10))
@@ -119,7 +119,7 @@ embed(graphWidget,"500px","70%")
   ![EmbedDT](https://raw.githubusercontent.com/luluperet/icor/master/img/embedDT.png)
  *(see embed)*</br>
  ## plotWH
- **plotWH**(w=NULL,h=NULL)-> reset(function)</br>
+ **plotWH**(w=NULL,h=NULL)-> reset (it is a function)</br>
  *Change Plot Width/height*</br>
  ```R 
  resetWH = plotWH(w=10)
@@ -198,12 +198,12 @@ In testit() : testit
  icor.studentToCorr</br>
  icor.graph</br>
  # Lists</br>
- **l**</br>
+ **l %,%**</br>
  *normal list but understand .()*
  **ll**</br>
  *normal list but nested list(list())*
- **l_ l1_**</br>
- *normal list but for each parameters return a function | l1_ return the first*</br>
+ **l_ l1_ %_,_% %_,% %,_% %__,_% %___,_% AND  symetrics **</br>
+ *normal list but for each parameters return a function | l1_ return the first one | %,% *</br>
  *a parameter: function, formula*</br>
  ```R
  > l_(
@@ -234,8 +234,53 @@ function (..., .x = ..1, .y = ..2, . = ..1)
 function (..., .x = ..1, .y = ..2, . = ..1) 
 rnorm(.)
 
- ```
- l__</br>
+> l1_(
+     rnorm(1),
+     ~rnorm(4),
+     { rnorm(mean=4) },
+     rnorm
+ )
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(., 1)
+
+> rnorm(1) %_,_% ~rnorm(4) %_,_% { rnorm(mean=4) } %_,_% rnorm
+[[1]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(., 1)
+
+[[2]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(4)
+
+[[3]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+{
+    rnorm(mean = 4)
+}
+
+[[4]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(.)
+
+# SAME AS l_( rnorm(1), ~rnorm(4), { rnorm(mean=4)}, rnorm)
+
+
+> 3 %,_% rnorm(1) 
+[[1]]
+[1] 3
+
+[[2]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(., 1)
+
+```
+ **l__ %__,__% %__,_% %__,% AND symetrics**</br>
  l___</br>
  %listToDotsFn_% %listToDotsFn%</br>
  # Select Col</br>
