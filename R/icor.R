@@ -858,7 +858,7 @@ Aleatoire <- R6Class("Aleatoire",
       if(stop)return(NULL)
       return(rhss)
     }
-    l_ = function(...){
+    l_ = function(...,.env = parent.frame()){
       calls  <- match.call()
       parent <- parent.frame()
       
@@ -867,7 +867,10 @@ Aleatoire <- R6Class("Aleatoire",
       if(length(calls)<2){
         return(list())
       }
-      pls=as.list(calls)
+      .call2 <- do.call(bquote, list(substitute(list(...)),
+                                                   where = .env),
+                                     envir = .env)
+      pls=as.list(.call2)
       splitArgs(pls[-1],env,parent)
     }
 `%call%` = function(fn,args){
