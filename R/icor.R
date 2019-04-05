@@ -7,6 +7,7 @@
 #" @export
 .onAttach <- function(...) {
  library("tidyverse")
+  library("wrapr")
  library("purrr")
  library("data.table")
  library("Hmisc")
