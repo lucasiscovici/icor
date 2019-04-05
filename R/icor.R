@@ -1472,9 +1472,10 @@ print.rlang_lambda_function <- function(x, ...) {
    # print(srcref)
   attributes(x) <- NULL
   x <- structure(x)
-  capturePrint(x) %getElems% l(l(1,1),l(2,1)) %join% "\n" %>%cat %->%catJ 
+  a=capturePrint(x)
+  a %getElems% 1:(length(a)-1)%each% {.} %>% cat(sep = "\n") %->% catJ
   cat("<icor_list>\n")
-  cat(catJ)  
+  catJ
 }
 
              #al = Aleatoire$new()
