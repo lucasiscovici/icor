@@ -1378,6 +1378,88 @@ layout_build_matrix = function(...){
     b=eval(a)
     layout(b)
 }
+"%rep%" = function(ll,rr){
+    rep(ll,rr) %>% paste0(collapse = '')
+}
+ "%join%" = function(ll,rr){
+    paste0(ll,collapse = rr)
+}
+concatList = function(ll,rr,l1=list,l2=list){
+    .env=parent.frame()
+
+        #print(substitute(l2))
+        call1=as.call(list(substitute(l1),substitute(ll)))
+        call2=as.call(list(substitute(l2),substitute(rr)))
+        #print(do.call(substitute(l2),list(substitute(rr)),envir = .env))
+        eval1=eval(call1,.env,.env)
+        eval2=eval(call2,.env,.env)
+        if(is.list(eval1)){
+            list.append(eval1,eval2)
+        }else{
+            list(eval1,eval2)
+        }
+    
+ }
+
+lConcat_ <- function(e1, e2,l1=l1,l2=l1) {
+  .env <- parent.frame()
+    called=do.call(bquote,list(substitute(list(substitute(e1), substitute(e2))),where=.env),envir=.env)
+    #concatList2=curry(concatList(l1=l1,l2=l2,both=both))
+    #print(concatList2)
+     lsm=eval(called)
+     lsm[["l1"]]=substitute(l1)
+     lsm[["l2"]]=substitute(l2)
+     #print(lsm)
+    do.call(concatList,lsm,envir = .env)
+}
+l1=function(...){l(...)%getElem%1}
+sepConcat = function(ll,rr){
+    a=match.call()
+    aa=a[[1]]
+    aaa=as.character(aa)
+    aaString=str_sub(aaa,2,str_length(aaa)-1)
+    l1i=l1
+    l2i=l1
+    if(!str_detect(aaString,"^_{0,3},_{0,3}$")) stop("respect ^_{,3},_{,3}$")
+    if(str_length(aaString)>1){
+        splits=str_split(aaString,",")
+        splits=splits%getElem%1
+        split1=splits%getElem%1
+        split2=splits%getElem%2
+        #print(str_length(split1))
+        split1nb=str_length(split1)
+        split2nb=str_length(split2)
+        
+        lfn1="_" %rep% split1nb
+        lfn2="_" %rep% split2nb
+        lfn1OK="l1"%.%lfn1
+        lfn2OK="l1"%.%lfn2
+        
+        l1i=as.name(lfn1OK)
+        l2i=as.name(lfn2OK)
+    }
+    do.call(lConcat_,list(l1=l1i,l2=l2i,substitute(ll),substitute(rr)))
+   # lConcat_(l1=l1i,l2=l2i,ll,rr)
+}
+#"%.%"=icor::`%.%`
+"%,%" = sepConcat
+"%_,%" = sepConcat
+"%__,%" = sepConcat
+"%___,%" = sepConcat
+"%,_%" = sepConcat
+"%_,_%" = sepConcat
+"%__,_%" = sepConcat
+"%___,_%" = sepConcat
+"%,__%" = sepConcat
+"%_,__%" = sepConcat
+"%__,__%" = sepConcat
+"%___,__%" = sepConcat
+"%,___%" = sepConcat
+"%_,___%" = sepConcat
+"%__,___%" = sepConcat
+"%___,___%" = sepConcat
+  
+      
              #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
