@@ -1462,7 +1462,19 @@ sepConcat = function(ll,rr){
 "%__,___%" = sepConcat
 "%___,___%" = sepConcat
   
-      
+print.rlang_lambda_function <- function(x, ...) {
+  #cat_line("<lambda>")
+  #x%>%str
+    #UseMethod(x,"fn")
+  #srcref <- attr(x, "srcref")
+   # print(srcref)
+  attributes(x) <- NULL
+  x <- structure(x)
+  capturePrint(x) %getElems% l(l(1,1),l(2,1)) %join% "\n" %>%cat %->% catJ
+  cat("<icor_list>\n")
+  cat(catJ)  
+}
+
              #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
