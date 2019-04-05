@@ -6,7 +6,7 @@
 #' @import tidyverse
 #" @export
 .onAttach <- function(...) {
- library("tidyverse")
+ suppressPackageStartupMessages({library("tidyverse")
   library("wrapr")
  library("purrr")
  library("data.table")
@@ -19,6 +19,7 @@ library("magrittr")
  library("withr") 
  library("R6") 
  library("future")
+                                 })
 }
 
 #a finir, avec individus en col, et interaction entre col
