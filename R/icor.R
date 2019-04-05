@@ -462,7 +462,7 @@ notCatCol = function(a,b=NULL){
 `%!catCol%`= notCatCol
                                 
 
-`%,%` = function(ll,rr){
+`%,.%` = function(ll,rr){
   listElems=if(is.list(ll) && inherits(ll,"Args")) ll
             else list(ll)
   class(listElems) = append(class(listElems),"Args")
@@ -472,7 +472,7 @@ notCatCol = function(a,b=NULL){
   return(listElems)
 }
 
-`%->%` = function(ll,rr){
+`%->.%` = function(ll,rr){
   if(is.list(ll)) do.call(rr,ll)
   else do.call(rr,list(ll))
 }
@@ -1470,7 +1470,7 @@ print.rlang_lambda_function <- function(x, ...) {
    # print(srcref)
   attributes(x) <- NULL
   x <- structure(x)
-  capturePrint(x) %getElems% l(l(1,1),l(2,1)) %join% "\n" %>%cat %->% catJ
+ catJ=  capturePrint(x) %getElems% l(l(1,1),l(2,1)) %join% "\n" %>%cat
   cat("<icor_list>\n")
   cat(catJ)  
 }
