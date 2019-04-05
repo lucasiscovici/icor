@@ -1258,6 +1258,120 @@ hidePlot= curry(with_(l1__(pdf(NULL)),l1__(invisible(dev.off())))(.))
 
 
 nothing=function(...){}
+             
+             
+             build_matrix <- function(..., cf_eval_environment = parent.frame()) {
+  v <- as.list(substitute(list(...))[-1])
+  force(cf_eval_environment)
+  lv <- length(v)
+  # inspect input
+  if(lv<1) {
+    return(data.frame())
+  }
+  # unpack
+  unpack_val <- function(vi) {
+    if(length(vi)<=0) {
+      stop("wrapr::build_frame unexpected NULL/empty element")
+    }
+    if(is.name(vi)) {
+      viv <- cf_eval_environment[[as.character(vi)]]
+      if(is.name(viv)) {
+        stop(paste("wrapr::build_frame name",
+                   vi,
+                   "resolved to another name:",
+                   viv))
+      }
+      if(is.call(viv)) {
+        stop(paste("wrapr::build_frame name",
+                   vi,
+                   "resolved to call",
+                   viv))
+      }
+      if(length(viv)<=0) {
+        stop(paste("wrapr::build_frame name",
+                   vi,
+                   "resolved to NULL"))
+      }
+      vi <- viv
+    }
+    if(is.call(vi)) {
+      if((length(vi)==3) && (is_infix(vi[[1]]))) {
+        vi <- list(unpack_val(vi[[2]]),
+                   as.name("sep"),
+                   unpack_val(vi[[3]]))
+      } else {
+        viv <- eval(vi,
+                   envir = cf_eval_environment,
+                   enclos = cf_eval_environment)
+        if(is.name(viv)) {
+          stop(paste("wrapr::build_frame eval",
+                     vi,
+                     "resolved to another name:",
+                     viv))
+        }
+        if(length(viv)<=0) {
+          stop(paste("wrapr::build_frame eval",
+                     vi,
+                     "resolved to NULL"))
+        }
+        vi <- viv
+      }
+    }
+    Reduce(c, lapply(vi, as.list))
+  }
+  vu <- lapply(v, unpack_val)
+  vu <- Reduce(c, lapply(vu, as.list))
+  ncol <- length(vu)
+  if(ncol<1) {
+    stop("wrapr::build_frame() zero columns")
+  }
+  is_name <- vapply(vu, is.name, logical(1))
+  if(any(is_name)) {
+    ncol <- which(is_name)[[1]]-1
+    vu <- vu[!is_name] # filter out names
+  }
+  nrow <- (length(vu)/ncol) - 1
+  if(abs(nrow - round(nrow))>0.1) {
+    stop("wrapr::build_frame confused as to cell count")
+  }
+  matrix(vu,byrow=T,ncol=ncol)
+}
+
+is_infix <- function(vi) {
+  vi <- as.character(vi)
+  if(nchar(vi)<=0) {
+    return(FALSE)
+  }
+  if(substr(vi,1,1)=="`") {
+    vi <- substr(vi,2,nchar(vi)-1)
+  }
+  if(nchar(vi)<=0) {
+    return(FALSE)
+  }
+  if(substr(vi,1,1)=="%") {
+    return(TRUE)
+  }
+  syms <- c("::", "$", "@", "^", ":",
+            "*", "/", "+", "-",
+            ">", ">=", "<", "<=",  "==", "!=",
+            "&", "&&",
+            "|", "||",
+            "~",
+            "->",  "->>",
+            "=",
+            "<-", "<<-")
+  if(vi %in% syms) {
+    return(TRUE)
+  }
+  return(FALSE)
+}
+
+layout_build_matrix = function(...){
+    a=match.call()
+    a[[1]]=build_matrix
+    b=eval(a)
+    layout(b)
+}
              #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
