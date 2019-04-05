@@ -198,9 +198,43 @@ In testit() : testit
  icor.studentToCorr</br>
  icor.graph</br>
  # Lists</br>
- l</br>
- ll</br>
- l_ l1_</br>
+ **l**</br>
+ *normal list but understand .()*
+ **ll**</br>
+ *normal list but nested list(list())*
+ **l_ l1_**</br>
+ *normal list but for each parameters return a function | l1_ return the first*</br>
+ *a parameter: function, formula*</br>
+ ```R
+ > l_(
+     rnorm(1),
+     ~rnorm(4),
+     { rnorm(mean=4)},
+     rnorm
+ )
+[[1]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(., 1)
+
+[[2]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(4)
+
+[[3]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+{
+    rnorm(mean = 4)
+}
+
+[[4]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(.)
+
+ ```
  l__</br>
  l___</br>
  %listToDotsFn_% %listToDotsFn%</br>
