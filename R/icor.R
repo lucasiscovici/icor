@@ -372,7 +372,13 @@ inf <- function(e1, e2){
                                                   
    
 l.=list
-l=l.
+l.. <- function(...) {
+    .env=parent.frame()
+  eval(do.call(bquote, list(substitute(list(...)),
+                                                   where = .env),
+                                     envir = .env),.env,.env)
+}
+l=l..
 detachFast = function(name){
     detach("package:"%.%name, unload=TRUE,character.only=TRUE)
  }  
