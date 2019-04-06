@@ -470,6 +470,11 @@ ancientBail = function(ll,rr){
   if(is.list(ll)) do.call(rr,ll)
   else do.call(rr,list(ll))
 }
+ `%..._>%` = function(ll,rr){
+  listll = if(!s.list(ll)) ll else list(ll)
+  names(listll)=NULL
+  do.call(rr,listll)
+}
 
  reloadIcor = function(){
     detachFast("icor")
