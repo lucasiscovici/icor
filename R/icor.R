@@ -893,13 +893,13 @@ lintern=function(...,x=NULL,n=NULL,i=1){
     what=x
   else if(stringr::str_detect(fns,"^ln.*$"))
     what=i:n
-  print(fns)
+  #print(fns)
 
    lo=as.list(amoins1)
    if(stringr::str_detect(fns,"^l[1xn]?_{0,4}\\.$")){
     lo=list.append(lo,noQuote=TRUE)
     if(is.null(what)){
-       fn=stringr::str_replace(fns,".","")
+       fn=stringr::str_replace(fns,"\\.","")
      }
     }
    
