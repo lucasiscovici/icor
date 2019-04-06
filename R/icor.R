@@ -903,7 +903,7 @@ lintern=function(...,x=NULL,n=NULL,i=1){
     lo=list.append(lo,noQuote=TRUE)
     fn=stringr::str_replace(fn,".","")
     }
-  #print(what)
+  print(fn)
   cc=do.call(fn,lo)
              if(!is.null(what)){
                 if(length(what)>1)
