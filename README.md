@@ -24,32 +24,56 @@
   > c(4,2,1) %&% c(9,4,0)  < 3
 [1] FALSE FALSE  TRUE
   ```
-# list To Parameters of a function
- **%...>% %listToDotsFn_% %listToDotsFn%**</br>
- *%...>% list to parameters of a function*</br>
- *%listToDotsFn% list to parameters of a function *</br>
- *%listToDotsFn_% list to parameters of a function without names*</br>
+# list To Parameters of a Function
+ *Call function of the right side, with elements of the list passed in the left side*</br>
+## Operators
+ - %...>%(#list|#atomic,#function) (keep names)
+ ```R
+> list(mean=10,n=5,sd = 2) %...>% rnorm
+[1] 12.817348 10.284119 11.355081  7.372176  7.795275
+
+> list(mean=10,n=5,sd = 2) %...>% smth
+List of 3
+ $ mean: num 10
+ $ n   : num 5
+ $ sd  : num 2
+ 
+ 
+ ```
+  - %..._>%(#list|#atomic,#function) (not keep names)
+ ```R
+> list(mean=10,n=5,sd = 2) %..._>% rnorm
+ [1]  4.5024198  8.4893204 10.0372266  4.5468650  3.7732437  4.1219222
+ [7]  3.7688349  0.1318678  0.9097222  7.8097455
+
+> list(mean=10,n=5,sd = 2) %..._>% smth
+List of 3
+ $ : num 10
+ $ : num 5
+ $ : num 2
+ 
+ ```
+ - %listToDotsFn%(#list,#function) (keep names) 
+ ```R
+ > list(mean=10,n=5,sd = 2) %listToDotsFn% rnorm
+[1] 11.396479 10.744122  8.012919 11.297808 12.601390
+ 
+  > list(ind="a",day=3,month=4) %listToDotsFn% smth
+List of 3
+ $ ind  : chr "a"
+ $ day  : num 3
+ $ month: num 4
+ 
+ ```
+ - %listToDotsFn_%(#list,#function) (not keep names) 
  *(see "smth" below)*</br>
  ```R
-> list(ind="a",day=3,month=4) %...>% smth
-List of 3
- $ ind  : chr "a"
- $ day  : num 3
- $ month: num 4
- 
- > list(ind="a",day=3,month=4) %listToDotsFn% smth
-List of 3
- $ ind  : chr "a"
- $ day  : num 3
- $ month: num 4
- 
  > list(ind="a",day=3,month=4) %listToDotsFn_% smth
 List of 3
  $ : chr "a"
  $ : num 3
  $ : num 4
- 
- #EXEMPLE WITH <>
+
  ```
 # String Concat
  A VOIR%.=%</br>
