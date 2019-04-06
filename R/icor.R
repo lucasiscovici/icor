@@ -376,14 +376,6 @@ inf <- function(e1, e2){
 }
                                                   
    
-l.=list
-l.. <- function(...) {
-    .env=parent.frame()
-  eval(do.call(bquote, list(substitute(list(...)),
-                                                   where = .env),
-                                     envir = .env),.env,.env)
-}
-l=l..
 detachFast = function(name){
     detach("package:"%.%name, unload=TRUE,character.only=TRUE)
  }  
@@ -787,10 +779,7 @@ Aleatoire <- R6Class("Aleatoire",
     }
     
     `%map%` = map
-    l___=function(...){
-  a=match.call()
-  lapply(a[-1],function(a){eval(call("curry",a))})
-}
+    
     splitArgsl_=function(dfn,env,parent){
       ae=callToString(dfn)
       if(is.doubledot(ae))return(NULL)
@@ -869,21 +858,8 @@ Aleatoire <- R6Class("Aleatoire",
       if(stop)return(NULL)
       return(rhss)
     }
-    l_ = function(...,.env = parent.frame()){
-      calls  <- match.call()
-      parent <- parent.frame()
-      
-      env    <- new.env(parent = parent)
-      
-      if(length(calls)<2){
-        return(list())
-      }
-      .call2 <- do.call(bquote, list(substitute(list(...)),
-                                                   where = .env),
-                                     envir = .env)
-      pls=as.list(.call2)
-      splitArgs(pls[-1],env,parent)
-    }
+    
+                                        
 `%call%` = function(fn,args){
   return(do.call(fn,args))
 }
@@ -922,8 +898,11 @@ l_.=function(...,x=NULL,n=NULL,i=1){
     fn=stringr::str_replace(fns,"[1xn]","")
     #fn=lazyeval::as_call(fn)
   }
+   lo=as.list(amoins1)
+   if(stringr::str_detect(fns,"^l[1xn]_{0,4}.$"))
+    lo=list.append(lo,noQuote=TRUE)
   #print(what)
-  cc=do.call(fn,as.list(amoins1))
+  cc=do.call(fn,lo)
              if(!is.null(what)){
                 if(length(what)>1)
                   return(cc%getElems%what)
@@ -932,18 +911,54 @@ l_.=function(...,x=NULL,n=NULL,i=1){
              }
              return(cc)
 } 
+                                        
+l1= l_.
 l1_ = l_.
 l1__ = l_.
 l1___ = l_.
+l1____ = l_.
 
+l1.= l_.
+l1_. = l_.
+l1__. = l_.
+l1___. = l_.
+l1____. = l_.
+
+lx =  l_. 
 lx_ =  l_.
 lx__ =  l_.
 lx___ =  l_.
+lx____ =  l_.
+
+ln =  l_. 
 ln_ =  l_.
 ln__ =  l_.
 ln___ =  l_.
-   
-    l__ = function(...){
+ln____ =  l_.
+
+lx. =  l_. 
+lx_. =  l_.
+lx__. =  l_.
+lx___. =  l_.
+lx____. =  l_.
+
+ln. =  l_. 
+ln_. =  l_.
+ln__. =  l_.
+ln___. =  l_.
+ln____. =  l_.
+                                        
+#l.=list
+                                        
+l<- function(...,noQuote=FALSE) {
+    .env=parent.frame()
+ u=if(noQuote) list(...) else eval(do.call(bquote, list(substitute(list(...)),
+                                                   where = .env),
+                                     envir = .env),.env,.env)
+  u
+}
+                                        
+l_ = function(...,.env = parent.frame(),noQuote=FALSE){
       calls  <- match.call()
       parent <- parent.frame()
       
@@ -952,10 +967,34 @@ ln___ =  l_.
       if(length(calls)<2){
         return(list())
       }
-      pls=as.list(calls)
+      .call2 <- if(noQuote) calls else do.call(bquote, list(substitute(list(...)),
+                                                   where = .env),
+                                     envir = .env)
+      pls=as.list(.call2)
+      splitArgs(pls[-1],env,parent)
+    }
+    l__ = function(...,noQuote=FALSE,.env = parent.frame()){
+      calls  <- match.call()
+      parent <- parent.frame()
+      
+      env    <- new.env(parent = parent)
+      
+      if(length(calls)<2){
+        return(list())
+      }
+     .call2 <- if(noQuote) calls else do.call(bquote, list(substitute(list(...)),
+                                                   where = .env),
+                                     envir = .env)
+      pls=as.list(.calls)
       splitArgs(pls[-1],env,parent,T)
     }
-    
+    l___=function(...,noQuote=FALSE){
+        a=match.call()
+       lapply(a[-1],function(a){eval(call("curry",a))})
+     }
+    l____=function(...,noQuote=FALSE){
+         do.call(l__,list(substitute(...)))
+     }
     prepare_function <- function(f)
     {
       as.call(list(f, quote(.)))
@@ -1055,7 +1094,8 @@ ln___ =  l_.
   function_name = argss[[1]]
   argsFunc=argss[-1]
   #print(argsFunc)
-  eval(as.call(c(purrr::partial,function_name,argsFunc)),env,env)
+  e=eval(as.call(c(purrr::partial,function_name,argsFunc)),env,env)
+  e
 }
                                         StrCls=function(a=""){
   d=list()
@@ -1389,7 +1429,7 @@ layout_build_matrix = function(...){
  "%join%" = function(ll,rr){
     paste0(ll,collapse = rr)
 }
-concatList = function(ll,rr,l1=list,l2=list){
+ concatList = function(ll,rr,l1=list,l2=list){
     .env=parent.frame()
 
         #print(substitute(l2))
@@ -1406,64 +1446,178 @@ concatList = function(ll,rr,l1=list,l2=list){
     
  }
 
-lConcat_ <- function(e1, e2,l1=l1,l2=l1) {
+lConcat_ <- function(e1, e2,l1=l1,l2=l1,noQuoteLeft=F,noQuoteR=F) {
   .env <- parent.frame()
-    called=do.call(bquote,list(substitute(list(substitute(e1), substitute(e2))),where=.env),envir=.env)
+    lsub=list()
+    if(!noQuoteLeft)
+        lsub=list.append(lsub,substitute(e1))
+    if(!noQuoteR)
+        lsub=list.append(lsub,substitute(e2))
+    lsm=eval(
+            do.call(
+                bquote,list(
+                    substitute(
+                        lsub
+                    ),where=.env),
+                envir=.env)
+            )
+    if(noQuoteLeft)
+        lsm=list.append(substitute(e1),lsm)
+    if(noQuoteR)
+        lsm=list.append(lsm,substitute(e2))
     #concatList2=curry(concatList(l1=l1,l2=l2,both=both))
-    #print(concatList2)
-     lsm=eval(called)
+   
+     #lsm=(called)
+     #print(lsm)
      lsm[["l1"]]=substitute(l1)
      lsm[["l2"]]=substitute(l2)
      #print(lsm)
-    do.call(concatList,lsm,envir = .env)
+ do.call(concatList,lsm,envir = .env)
 }
 l1=function(...){l(...)%getElem%1}
-sepConcat = function(ll,rr){
+sepConcat = function(ll,rr,callOp=NULL){
+    `%.%` = icor::`%.%`
     a=match.call()
     aa=a[[1]]
-    aaa=as.character(aa)
+    aaa=if(is.null(callOp))as.character(aa)else callOp
     aaString=str_sub(aaa,2,str_length(aaa)-1)
     l1i=l1
     l2i=l1
-    if(!str_detect(aaString,"^_{0,3},_{0,3}$")) stop("respect ^_{,3},_{,3}$")
+    noQuoteLeft=if(str_detect(aaString,"\\._{0,4},_{0,4}\\.?$")) T else F
+    noQuoteR=if(str_detect(aaString,"^\\.?_{0,4},_{0,4}\\.$")) T else F
+    #print(aaString)
+    if(!str_detect(aaString,"^\\.?_{0,4},_{0,4}\\.?$")) stop("^\\.?_{0,4},_{0,4}\\.?$")
     if(str_length(aaString)>1){
         splits=str_split(aaString,",")
         splits=splits%getElem%1
         split1=splits%getElem%1
         split2=splits%getElem%2
         #print(str_length(split1))
-        split1nb=str_length(split1)
-        split2nb=str_length(split2)
+        split1nb=str_length(split1) - ifelse(noQuoteLeft,1,0)
+        split2nb=str_length(split2) - ifelse(noQuoteR,1,0)
         
         lfn1="_" %rep% split1nb
         lfn2="_" %rep% split2nb
-        lfn1OK="l1"%.%lfn1
-        lfn2OK="l1"%.%lfn2
+        lfn1OK="l1"%.%lfn1%.%ifelse(noQuoteLeft,".","")
+        lfn2OK="l1"%.%lfn2%.%ifelse(noQuoteR,".","")
         
         l1i=as.name(lfn1OK)
         l2i=as.name(lfn2OK)
     }
-    do.call(lConcat_,list(l1=l1i,l2=l2i,substitute(ll),substitute(rr)))
+    do.call(lConcat_,list(substitute(ll),substitute(rr),l1=l1i,l2=l2i,noQuoteLeft=noQuoteLeft,noQuoteR=noQuoteR))
    # lConcat_(l1=l1i,l2=l2i,ll,rr)
 }
 #"%.%"=icor::`%.%`
+             
 "%,%" = sepConcat
 "%_,%" = sepConcat
 "%__,%" = sepConcat
 "%___,%" = sepConcat
+"%____,%" = sepConcat
+             
 "%,_%" = sepConcat
 "%_,_%" = sepConcat
 "%__,_%" = sepConcat
 "%___,_%" = sepConcat
+"%____,_%" = sepConcat    
+             
 "%,__%" = sepConcat
 "%_,__%" = sepConcat
 "%__,__%" = sepConcat
 "%___,__%" = sepConcat
+"%____,__%" = sepConcat
+             
 "%,___%" = sepConcat
 "%_,___%" = sepConcat
 "%__,___%" = sepConcat
 "%___,___%" = sepConcat
-  
+"%____,____%" = sepConcat
+"%____,___%" = sepConcat
+
+"%,____%" = sepConcat
+"%_,____%" = sepConcat
+"%__,____%" = sepConcat
+"%___,____%" = sepConcat
+"%____,____%" = sepConcat
+             
+"%.,%" = sepConcat
+"%.,_%" = sepConcat
+"%.,__%" = sepConcat
+"%.,___%" = sepConcat
+"%.,____%" = sepConcat
+"%._,%" = sepConcat
+"%._,_%" = sepConcat
+"%._,__%" = sepConcat
+"%._,___%" = sepConcat
+"%._,____%" = sepConcat
+"%.__,%" = sepConcat
+"%.__,_%" = sepConcat
+"%.__,__%" = sepConcat
+"%.__,___%" = sepConcat
+"%.__,____%" = sepConcat
+"%.___,%" = sepConcat
+"%.___,_%" = sepConcat
+"%.___,__%" = sepConcat
+"%.___,___%" = sepConcat
+"%.___,____%" = sepConcat
+"%.____,%" = sepConcat
+"%.____,_%" = sepConcat
+"%.____,__%" = sepConcat
+"%.____,___%" = sepConcat
+"%.____,____%" = sepConcat
+
+"%,.%" = sepConcat
+"%,_.%" = sepConcat
+"%,__.%" = sepConcat
+"%,___.%" = sepConcat
+"%,____.%" = sepConcat
+"%_,.%" = sepConcat
+"%_,_.%" = sepConcat
+"%_,__.%" = sepConcat
+"%_,___.%" = sepConcat
+"%_,____.%" = sepConcat
+"%__,.%" = sepConcat
+"%__,_.%" = sepConcat
+"%__,__.%" = sepConcat
+"%__,___.%" = sepConcat
+"%__,____.%" = sepConcat
+"%___,.%" = sepConcat
+"%___,_.%" = sepConcat
+"%___,__.%" = sepConcat
+"%___,___.%" = sepConcat
+"%___,____.%" = sepConcat
+"%____,.%" = sepConcat
+"%____,_.%" = sepConcat
+"%____,__.%" = sepConcat
+"%____,___.%" = sepConcat
+"%____,____.%" = sepConcat
+
+"%.,.%" = sepConcat
+"%.,_.%" = sepConcat
+"%.,__.%" = sepConcat
+"%.,___.%" = sepConcat
+"%.,____.%" = sepConcat
+"%._,.%" = sepConcat
+"%._,_.%" = sepConcat
+"%._,__.%" = sepConcat
+"%._,___.%" = sepConcat
+"%._,____.%" = sepConcat
+"%.__,.%" = sepConcat
+"%.__,_.%" = sepConcat
+"%.__,__.%" = sepConcat
+"%.__,___.%" = sepConcat
+"%.__,____.%" = sepConcat
+"%.___,.%" = sepConcat
+"%.___,_.%" = sepConcat
+"%.___,__.%" = sepConcat
+"%.___,___.%" = sepConcat
+"%.___,____.%" = sepConcat
+"%.____,.%" = sepConcat
+"%.____,_.%" = sepConcat
+"%.____,__.%" = sepConcat
+"%.____,___.%" = sepConcat
+"%.____,____.%" = sepConcat
+             
 print.rlang_lambda_function <- function(x, ...) {
   #cat_line("<lambda>")
   #x%>%str
