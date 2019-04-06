@@ -6,7 +6,19 @@
 #' @import tidyverse
 #" @export
 .onAttach <- function(...) {
- suppressPackageStartupMessages({library("tidyverse")
+ suppressPackageStartupMessages({
+ library("magrittr")
+ library("tidyverse")
+ library("wrapr")
+ library("rlist")
+  library("data.table")
+  })
+)
+#}
+
+loadPkgUsefull=function(){
+  suppressPackageStartupMessages({
+   library("tidyverse")
   library("wrapr")
  library("purrr")
  library("data.table")
@@ -19,10 +31,9 @@ library("magrittr")
  library("withr") 
  library("R6") 
  library("future")
-                                 
-                                 
-                                 })
-}
+      })                    
+ 
+ }
 
 #a finir, avec individus en col, et interaction entre col
 icor = function(data_,verbose=F,pValueMin_=0.05,seuil_=0.3,graph=T,normul=F,signeOK=T,pcorOK=T,criticalSup=T){
