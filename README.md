@@ -24,12 +24,32 @@
   > c(4,2,1) %&% c(9,4,0)  < 3
 [1] FALSE FALSE  TRUE
   ```
-# Func
- **%,% %,_%** pareil que dans l*()</br>
- **%...>%** pareil que listToDotsFn_?</br>
+# list To Parameters of a function
+ **%...>% %listToDotsFn_% %listToDotsFn%**</br>
+ *%...>% list to parameters of a function*</br>
+ *%listToDotsFn% list to parameters of a function *</br>
+ *%listToDotsFn_% list to parameters of a function without names*</br>
+ *(see "smth" below)*</br>
  ```R
- 3 %,% 4 %,% l(d=3) %->% lm
- 1 %,% 2 %,% "kkk" %,% rnorm %,% l1___(rnorm(10))
+> list(ind="a",day=3,month=4) %...>% smth
+List of 3
+ $ ind  : chr "a"
+ $ day  : num 3
+ $ month: num 4
+ 
+ > list(ind="a",day=3,month=4) %listToDotsFn% smth
+List of 3
+ $ ind  : chr "a"
+ $ day  : num 3
+ $ month: num 4
+ 
+ > list(ind="a",day=3,month=4) %listToDotsFn_% smth
+List of 3
+ $ : chr "a"
+ $ : num 3
+ $ : num 4
+ 
+ #EXEMPLE WITH <>
  ```
 # String Concat
  A VOIR%.=%</br>
@@ -198,6 +218,40 @@ In testit() : testit
  icor.studentToCorr</br>
  icor.graph</br>
  # Lists</br>
+ ## LISTS OPS
+ *%*1,*2%*</br>
+ * *1 must be constructed with _ and .*</br>
+ * if you want that the left side must be interprete with "l_", you have to write _ for the left (%1)%</br>
+ * *1 = _ *</br>
+ * if you want *2 be normal like "l", just write nothing for *1 *</br>
+ * *1 = _ *</br>
+ * *2 = *</br>
+ * Operator = %_,%*</br>
+ ```R
+ > rnorm(3) %_,% rnorm(3) #SAME AS l( l1_(rnorm(3)), rnorm(3) )
+[[1]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(., 3)
+
+[[2]]
+[1]  0.2080809  1.2826301 -0.4169875
+
+ ```
+ * if you want you can change the *2, with "__" for interprete the right side with "l__"*</br>
+ ```R
+ > rnorm(3) %_,__% rnorm(3) #SAME AS l( l1_(rnorm(3)), l1__(rnorm(3)) )
+ [[1]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(., 3)
+
+[[2]]
+<icor_list>
+function (..., .x = ..1, .y = ..2, . = ..1) 
+rnorm(3)
+
+ ```
  **l l. %,% %.,.% %.,% %,.% **</br>
  *normal list but understand .()*</br>
  ```R
@@ -253,11 +307,10 @@ rnorm(.)
      ~rnorm(4),
      { rnorm(mean=4) },
      rnorm
- )
+ ) # SAME AS rnorm(1) %_,_% (~rnorm(4)) %,_% { rnorm(mean=4) } %,_% rnorm %...>% l1
 <icor_list>
 function (..., .x = ..1, .y = ..2, . = ..1) 
 rnorm(., 1)
-
 
 
 > 3 %,_% rnorm(1) 
