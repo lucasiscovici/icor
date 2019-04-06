@@ -985,7 +985,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
      .call2 <- if(noQuote) calls else do.call(bquote, list(substitute(list(...)),
                                                    where = .env),
                                      envir = .env)
-      pls=as.list(.calls)
+      pls=as.list(.call2)
       splitArgs(pls[-1],env,parent,T)
     }
     l___=function(...,noQuote=FALSE){
