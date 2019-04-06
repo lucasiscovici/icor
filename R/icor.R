@@ -480,7 +480,7 @@ ancientBail = function(ll,rr){
   else do.call(rr,list(ll))
 }
  `%..._>%` = function(ll,rr){
-  listll = if(!s.list(ll)) ll else list(ll)
+  listll = if(!is.list(ll)) ll else list(ll)
   names(listll)=NULL
   do.call(rr,listll)
 }
