@@ -879,7 +879,7 @@ removeParamsInCall=function(params,calls){
   al
 }
 
-l_.=function(...,x=NULL,n=NULL,i=1){
+lintern=function(...,x=NULL,n=NULL,i=1){
   a=match.call()
   fn=a[[1]]
   fns=lazyeval::as_name(fn)
@@ -912,41 +912,41 @@ l_.=function(...,x=NULL,n=NULL,i=1){
              return(cc)
 } 
                                         
-l1= l_.
-l1_ = l_.
-l1__ = l_.
-l1___ = l_.
-l1____ = l_.
-
-l1.= l_.
-l1_. = l_.
-l1__. = l_.
-l1___. = l_.
-l1____. = l_.
-
-lx =  l_. 
-lx_ =  l_.
-lx__ =  l_.
-lx___ =  l_.
-lx____ =  l_.
-
-ln =  l_. 
-ln_ =  l_.
-ln__ =  l_.
-ln___ =  l_.
-ln____ =  l_.
-
-lx. =  l_. 
-lx_. =  l_.
-lx__. =  l_.
-lx___. =  l_.
-lx____. =  l_.
-
-ln. =  l_. 
-ln_. =  l_.
-ln__. =  l_.
-ln___. =  l_.
-ln____. =  l_.
+#l = lintern
+ln = lintern
+lx = lintern
+l1 = lintern
+#l_ = lintern
+ln_ = lintern
+lx_ = lintern
+l1_ = lintern
+#l__ = lintern
+ln__ = lintern
+lx__ = lintern
+l1__ = lintern
+#l___ = lintern
+ln___ = lintern
+lx___ = lintern
+l1___ = lintern
+#l____ = lintern
+ln____ = lintern
+lx____ = lintern
+l1____ = lintern
+ln. = lintern
+lx. = lintern
+l1. = lintern
+ln_. = lintern
+lx_. = lintern
+l1_. = lintern
+ln__. = lintern
+lx__. = lintern
+l1__. = lintern
+ln___. = lintern
+lx___. = lintern
+l1___. = lintern
+ln____. = lintern
+lx____. = lintern
+l1____. = lintern
                                         
 #l.=list
                                         
@@ -995,6 +995,13 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
     l____=function(...,noQuote=FALSE){
          do.call(l__,list(substitute(...)))
      }
+                                        
+    l. = lintern                                        
+    l_. = lintern                                        
+    l__. = lintern                                        
+    l___. = lintern                                        
+    l____. = lintern                                    
+                                        
     prepare_function <- function(f)
     {
       as.call(list(f, quote(.)))
