@@ -198,20 +198,34 @@ In testit() : testit
  icor.studentToCorr</br>
  icor.graph</br>
  # Lists</br>
- **l %,%**</br>
- *normal list but understand .()*
+ **l l. %,% %.,.% %.,% %,.% **</br>
+ *normal list but understand .()*</br>
+ ```R
+ > i = 3
+> l(.(i),4) #SAME .(i) %,% 4
+[[1]]
+[1] 3
+
+[[2]]
+[1] 4
+
+
+> l.(.(i),4) #SAME .(i) %.,% 4
+Error in .(i) : impossible de trouver la fonction "."
+
+```
  **ll**</br>
  *normal list but nested list(list())*
  **l_ l1_ %_,_% %_,% %,_% %__,_% %___,_% AND  symetrics **</br>
  *normal list but for each parameters return a function | l1_ return the first one | %,% *</br>
  *a parameter: function, formula*</br>
  ```R
- > l_(
+ > l_( 
      rnorm(1),
      ~rnorm(4),
      { rnorm(mean=4)},
      rnorm
- )
+ ) #SAME  rnorm(1) %_,_% (~rnorm(4)) %,_% { rnorm(mean=4) } %,_% rnorm
 [[1]]
 <icor_list>
 function (..., .x = ..1, .y = ..2, . = ..1) 
@@ -244,30 +258,6 @@ rnorm(.)
 function (..., .x = ..1, .y = ..2, . = ..1) 
 rnorm(., 1)
 
-> rnorm(1) %_,_% ~rnorm(4) %_,_% { rnorm(mean=4) } %_,_% rnorm
-[[1]]
-<icor_list>
-function (..., .x = ..1, .y = ..2, . = ..1) 
-rnorm(., 1)
-
-[[2]]
-<icor_list>
-function (..., .x = ..1, .y = ..2, . = ..1) 
-rnorm(4)
-
-[[3]]
-<icor_list>
-function (..., .x = ..1, .y = ..2, . = ..1) 
-{
-    rnorm(mean = 4)
-}
-
-[[4]]
-<icor_list>
-function (..., .x = ..1, .y = ..2, . = ..1) 
-rnorm(.)
-
-# SAME AS l_( rnorm(1), ~rnorm(4), { rnorm(mean=4)}, rnorm)
 
 
 > 3 %,_% rnorm(1) 
