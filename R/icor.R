@@ -456,7 +456,7 @@ notCatCol = function(a,b=NULL){
 `%!catCol%`= notCatCol
                                 
 
-`%,.%` = function(ll,rr){
+ancientBail = function(ll,rr){
   listElems=if(is.list(ll) && inherits(ll,"Args")) ll
             else list(ll)
   class(listElems) = append(class(listElems),"Args")
