@@ -466,7 +466,7 @@ notCatCol = function(a,b=NULL){
   return(listElems)
 }
 
-`%->.%` = function(ll,rr){
+`%...>%` = function(ll,rr){
   if(is.list(ll)) do.call(rr,ll)
   else do.call(rr,list(ll))
 }
