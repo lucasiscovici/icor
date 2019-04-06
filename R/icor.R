@@ -1466,28 +1466,23 @@ lConcat_ <- function(e1, e2,l1=l1,l2=l1,noQuoteLeft=F,noQuoteR=F) {
   .env <- parent.frame()
     lsub=list()
     if(!noQuoteLeft)
-        lsub=list.append(lsub,substitute(e1))
+        lsub=list.append(lsub,bquote(substitute(e1),where=.env))
     if(!noQuoteR)
-        lsub=list.append(lsub,substitute(e2))
-    lsub=list.append(list,lsub)
+        lsub=list.append(lsub,bquote(substitute(e2),where=.env))
     #print(lsub)
-    lsm=eval(
-            do.call(
-                bquote,list(lsub,where = .env),
-                envir=.env)
-            )
+ 
     if(noQuoteLeft)
-        lsm=list.append(substitute(e1),lsm)
+        lsub=list.append(substitute(e1),lsub)
     if(noQuoteR)
-        lsm=list.append(lsm,substitute(e2))
+        lsub=list.append(lsub,substitute(e2))
     #concatList2=curry(concatList(l1=l1,l2=l2,both=both))
    
      #lsm=(called)
      #print(lsm)
-     lsm[["l1"]]=substitute(l1)
-     lsm[["l2"]]=substitute(l2)
+     lsub[["l1"]]=substitute(l1)
+     lsub[["l2"]]=substitute(l2)
      #print(lsm)
- do.call(concatList,lsm,envir = .env)
+ do.call(concatList,lsub,envir = .env)
 }
 l1=function(...){l(...)%getElem%1}
 sepConcat = function(ll,rr,callOp=NULL){
