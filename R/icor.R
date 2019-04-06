@@ -894,16 +894,20 @@ lintern=function(...,x=NULL,n=NULL,i=1){
   else if(stringr::str_detect(fns,"^ln.*$"))
     what=i:n
   #print(what)
-  if(!is.null(what)){
-    fn=stringr::str_replace(fns,"[1xn]","")
-    #fn=lazyeval::as_call(fn)
-  }
+
    lo=as.list(amoins1)
    if(stringr::str_detect(fns,"^l[1xn]?_{0,4}\\.$")){
     lo=list.append(lo,noQuote=TRUE)
-    fn=stringr::str_replace(fn,".","")
+    if(is.null(what)){
+       fn=stringr::str_replace(fns,".","")
+     }
     }
-  print(fn)
+   
+   if(!is.null(what)){
+    fn=stringr::str_replace(fns,"[1xn]","")
+    #fn=lazyeval::as_call(fn)
+  }
+  #print(fn)
   cc=do.call(fn,lo)
              if(!is.null(what)){
                 if(length(what)>1)
