@@ -1470,10 +1470,10 @@ lConcat_ <- function(e1, e2,l1=l1,l2=l1,noQuoteLeft=F,noQuoteR=F) {
     if(!noQuoteR)
         lsub=list.append(lsub,substitute(e2))
     lsub=list.append(list,lsub)
-    lsub=list.append(lsub,where = .env)
+    #print(lsub)
     lsm=eval(
             do.call(
-                bquote,lsub,
+                bquote,list(lsub,where = .env)
                 envir=.env)
             )
     if(noQuoteLeft)
