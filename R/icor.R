@@ -898,8 +898,11 @@ lintern=function(...,x=NULL,n=NULL,i=1){
    lo=as.list(amoins1)
    if(stringr::str_detect(fns,"^l[1xn]?_{0,4}\\.$")){
     lo=list.append(lo,noQuote=TRUE)
+    fn.=stringr::str_replace(fns,"\\.","")
     if(is.null(what)){
-       fn=stringr::str_replace(fns,"\\.","")
+       fn=fn.
+     }else{
+      fns=fn. 
      }
     }
    
