@@ -899,8 +899,10 @@ lintern=function(...,x=NULL,n=NULL,i=1){
     #fn=lazyeval::as_call(fn)
   }
    lo=as.list(amoins1)
-   if(stringr::str_detect(fns,"^l[1xn]_{0,4}.$"))
+   if(stringr::str_detect(fns,"^l[1xn]_{0,4}.$")){
     lo=list.append(lo,noQuote=TRUE)
+    fn=stringr::str_replace(fn,"\\.","")
+    }
   #print(what)
   cc=do.call(fn,lo)
              if(!is.null(what)){
