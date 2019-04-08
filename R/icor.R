@@ -1767,14 +1767,14 @@ templateToR=function(name,f="lucas_plan.txt"){
   cat(y, file=paste0("lucasPlan_",name,"/lucas_plan_",name,".R"), sep="\n")
     paste0("lucas_plan_",name,".R")
 }
-login=NULL
-pass=NULL
+
 sshConnectMoi=function(...){
-    return(function(...){
-        if (is.null(icor::login) || is.null(icor::pass) ){
+      login=getOption("icor-ssh-login")
+      pass==getOption("icor-ssh-pass")
+        if (is.null(login) || is.null(pass) ){
             stop("you have to set icor::login and icor::pass")
         }
-        ssh_connect(icor::login,passwd=icor::pass,...)})
+        ssh_connect(icor::login,passwd=icor::pass,...)
 }
  askHavePkg = function(pkgs){
      dd=paste0("\"",unlist(pkgs),"\"",collapse =",")
