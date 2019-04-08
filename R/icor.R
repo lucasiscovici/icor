@@ -16,6 +16,7 @@
 #h <- sapply(seq(1, nchar(templateLucas_plan), by=2), function(x) substr(templateLucas_plan, x, x+1))
 #templateLucas_plan_str=rawToChar(as.raw(strtoi(h, 16L)))
 }
+templateLucas_plan_str="caca"
 loadPkgUsefull=function(){
   suppressPackageStartupMessages({
  library("purrr")
