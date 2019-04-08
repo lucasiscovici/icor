@@ -16,16 +16,11 @@
 }
 loadPkgUsefull=function(){
   suppressPackageStartupMessages({
-   library("tidyverse")
-  library("wrapr")
  library("purrr")
- library("data.table")
  library("Hmisc")
   library("Matrix")
     library("MASS")
-library("magrittr")
  library("dplyr")
- library("rlist")   
  library("withr") 
  library("R6") 
  library("future")
@@ -1774,7 +1769,7 @@ sshConnectMoi=function(...){
         if (is.null(login) || is.null(pass) ){
             stop("you have to set icor::login and icor::pass")
         }
-        ssh_connect(icor::login,passwd=icor::pass,...)
+        ssh_connect(login,passwd=pass,...)
 }
  askHavePkg = function(pkgs){
      dd=paste0("\"",unlist(pkgs),"\"",collapse =",")
