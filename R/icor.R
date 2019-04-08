@@ -1655,7 +1655,219 @@ print.rlang_lambda_function <- function(x, ...) {
   cat("<icor_list>\n")
   catJ
 }
+lucas_plan = function(...){
+    
+    dots=lazyeval::lazy_dots(...)
+    depsp=lapply(dots,function(f)list(deps=deps_code(f$expr),env=f$env))
+    #print(depsp)
+    #envi=depsp[[1]]$env
+    ad=tempfile()
+    b=new.env(parent = parent.frame())
+    system(paste0("mkdir -p ",ad))             
+    #packrat::init(a,restart = F,enter = F,infer.dependencies = F)
+    a=new.env()
+    #fe=list()
+   #packrat::on()
+                 #print()
+    fe  = lapply(depsp,function(depsl){
+    
+        fep= lapply(depsl$deps$name,function(x){
+            qa=NULL
+            #print(x)
+            try({
+            qa=get(x, envir = b)
+                },T)
 
+            #print(find(x))
+            if(!is.null(qa)){
+                #print(x)
+                au=find(x)
+                ao=lapply(au,function(d){
+                        if(d!=".GlobalEnv"){
+                            u=stringr::str_sub(d,9)
+                            #print(u)
+                            u
+                        }
+                    })
+                if(length(au)==1 && au[[1]]==".GlobalEnv"){
+                     a[[x]]=qa
+                }
+                #t=names(getNamespaceImports(au))
+                #install.packages(au)
+
+                return(ao)
+                }
+
+                })
+        return(fep)
+          })
+                 #print(fe)
+                # packrat::off()
+    pkg=Reduce("c",Reduce("c",Reduce("c",fe)))
+    pkg=c(pkg,"lazyeval")
+     pkg=pkg[!duplicated(pkg)]
+    ds=askHavePkg(pkg)
+    pkg2=pkg[!ds]
+    o=lapply(pkg2,function(u){
+        #package_dependencies
+        uu=find.package(u)
+        system(paste0("cp -R ",uu," ",ad,"/",u))
+        tools::package_dependencies(u,recursive = T)[[u]]
+    })
+        pkg3=unlist(o[!duplicated(o)])
+        ds2=askHavePkg(pkg3)   
+        pkg4=pkg3[!ds2]
+             
+
+    o=lapply(c(pkg4),function(u){
+        #package_dependencies
+        uu=find.package(u)
+        system(paste0("cp -R ",uu," ",ad,"/",u))
+    })
+     #uu=find.package("lazyeval")
+     #system(paste0("cp -R ",uu," ",ad,"/","lazyeval"))
+     list(a,ad,dots,pkg)
+}
+lucas_plan_export = function(d,name){
+    er=paste0("lucasPlan_",name,".RData")
+    oo=paste0("lucasPlan_",name,".tar.gz")
+    save(d,file = er)
+    fd=getwd()
+    fq=paste0("mv ",er," ",d[[2]],"/ && cd ",d[[2]]," && tar -zcf ",oo," * ",er," && mv ",oo," ",fd,"/")
+    #print(fq)
+    system(fq)
+    system(paste0("mkdir -p lucasPlan_",name," && mv ",oo," lucasPlan_",name,"/"))
+    #fq
+    paste0("lucasPlan_",name)
+}
+lucas_plan_import = function(name){
+  #a=name
+  nam=paste0("lucasPlan_",name)
+  er=paste0(nam,".tar.gz")
+  system(paste0("mkdir -p ",nam))
+  system(paste0("cp ",er," ",nam,"/"))
+  system(paste0("cd ",nam," && tar -xzf ",er))
+  o=load(paste0(nam,"/",nam,".RData"))
+  #untar(paste0("lucasPlan_",name,".tar.gz"), files = c(d[[2]],er))
+  
+  a=get(o)
+  lapply(a[[4]],function(i)library(i,lib.loc = getwd(),character.only = T))
+  lapply(names(a[[1]]),function(i)assign(i, a[[1]][[i]], envir = globalenv()))
+  a
+}
+         tg. = function(f){
+    suppressMessages(suppressPackageStartupMessages(suppressWarnings(f)))
+}
+          tg = function(f){
+    s=capture.output(suppressMessages(suppressPackageStartupMessages(suppressWarnings(f))))
+}
+templateToR=function(name,f="lucas_plan.txt"){
+    x <- readLines(f)
+  y <- gsub( "\\{\\{name\\}\\}", name, x )
+  cat(y, file=paste0("lucasPlan_",name,"/lucas_plan_",name,".R"), sep="\n")
+    paste0("lucas_plan_",name,".R")
+}
+login=NULL
+pass=NULL
+sshConnectMoi=function(...){
+    return(function(...){
+        if (is.null(icor::login) || is.null(icor::pass) ){
+            stop("you have to set icor::login and icor::pass")
+        }
+        ssh_connect(icor::login,passwd=icor::pass,...)})
+}
+ askHavePkg = function(pkgs){
+     dd=paste0("\"",unlist(pkgs),"\"",collapse =",")
+
+        dd2=paste0("c(",dd,")")
+     ed=tempfile()
+     cat(paste0("cat(",dd2,"%in% rownames(installed.packages()))"),file=ed)
+     #print(cat(readLines(ed)))
+    tg({session <- sshConnectMoi(verbose = F)})
+    scp_upload(session,ed,verbose = F)
+    a=ssh_exec_wait(session, command =c(
+        paste0("Rscript ",basename(ed)),
+        paste0("rm -rf ",basename(ed))
+        ),std_out=ed,std_err=ed)
+     ssh_disconnect(session)
+     a=tg.(readLines(ed))
+     system(paste0("rm -rf ",ed))
+     b=lapply(strsplit(a[[1]]," "),as.logical)
+     b[[1]]
+
+ }
+sendToSsh=function(name,printOut=T,printErr=T,globally=T){
+    #system(paste0("mkdir -p ","lucasPlan_",name))
+    fileName=paste0("lucasPlan_",name,".tar.gz")
+    template=templateToR(name)
+    tg({session <- sshConnectMoi(verbose = F)})
+    tg(scp_upload(session,paste0("lucasPlan_",name,"/",fileName),verbose = F))
+    tg(scp_upload(session,paste0("lucasPlan_",name,"/",template),verbose = F))
+    r=ssh_exec_wait(session, command = c(
+    paste0('Rscript ',template) )
+                 ,std_out = paste0("lucasPlan_",name,"/lucasPlan_",name,".log"),std_err = paste0("lucasPlan_",name,"/lucasPlan_",name,"_err.log"))
+    tg(scp_download(session,paste0("lucasPlan_",name,"/lucasPlan_",name,"_rep.RData"),paste0("lucasPlan_",name,"/"),verbose=F))
+    tg(ssh_exec_wait(session,command=c(
+        paste0("rm -rf lucasPlan_",name," lucasPlan_",name,".tar.gz lucas_plan_",name,".R")
+    )))
+    ssh_disconnect(session)
+    envi=new.env()
+       # print(paste0("lucasPlan_",name,"/lucasPlan_",name,"_rep.RData"))
+   # print(file.exists(paste0("lucasPlan_",name,"/lucasPlan_",name,"_rep.RData")))
+    if(file.exists(paste0("lucasPlan_",name,"/lucasPlan_",name,"_rep.RData"))){
+    u=load(paste0("lucasPlan_",name,"/lucasPlan_",name,"_rep.RData"),envir = envi,verbose = F)
+        #print(u)
+        p=get(u,envir = envi)[[1]]
+        system(paste0("rm -rf ","lucasPlan_",name))
+        
+        #print(p)
+        if(globally){
+                    
+        for(i in names(p)){
+            assign(i,p[[i]],envir = globalenv())
+            
+        }
+        }else{
+             return(p)
+        }
+        }else{
+         if(printOut)cat(cat(file = paste0(name,".log")))
+        if(printErr){
+            cat(cat("ERROR\n"))
+            cat(readLines(paste0(name,"_err.log")))
+        }
+        return(NULL)
+        }
+    
+    
+}
+randomString <- function(n=1, lenght=12)
+{
+    randomString <- c(1:n)                  # initialize vector
+    for (i in 1:n)
+    {
+        randomString[i] <- paste(sample(c(0:9, letters, LETTERS),
+                                 lenght, replace=TRUE),
+                                 collapse="")
+    }
+    return(randomString)
+}
+doInSSH = function(...,printName=F,printErr=F,printOut=F,noSSH=F){
+    #print(list(substitute(list(...))))
+    name=randomString()
+    #return(substitute(list(...)))
+    d=do.call(lucas_plan,list(substitute(list(...))))
+    dd=lucas_plan_export(d,name)
+    if(noSSH){
+        return(dd)
+    }
+    #cat("ssh...\n")
+    tg.({rep=sendToSsh(name,printErr=printErr,printOut=printOut)})
+    if(printName)print(name)
+    invisible(return(invisible(rep)))
+    #dd
+}
+deps=function(...)deps_code(substitute(...))
              #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
