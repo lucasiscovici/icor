@@ -27,7 +27,7 @@
 # list To Parameters of a Function
  *Call function of the right side, with elements of the list passed in the left side*</br>
 ## Operators
- - %...>%(#list|#atomic,#function) (keep names)
+ **%...>%(#list|#atomic,#function) (keep names)**
  ```R
 > list(mean=10,n=5,sd = 2) %...>% rnorm
 [1] 12.817348 10.284119 11.355081  7.372176  7.795275
@@ -40,7 +40,7 @@ List of 3
  
  
  ```
-  - %..._>%(#list|#atomic,#function) (not keep names)
+  **%..._>%(#list|#atomic,#function) (not keep names)**
  ```R
 > list(mean=10,n=5,sd = 2) %..._>% rnorm
  [1]  4.5024198  8.4893204 10.0372266  4.5468650  3.7732437  4.1219222
@@ -53,7 +53,7 @@ List of 3
  $ : num 2
  
  ```
- - %listToDotsFn%(#list,#function) (keep names) 
+ **%listToDotsFn%(#list,#function) (keep names) **
  ```R
  > list(mean=10,n=5,sd = 2) %listToDotsFn% rnorm
 [1] 11.396479 10.744122  8.012919 11.297808 12.601390
@@ -65,7 +65,7 @@ List of 3
  $ month: num 4
  
  ```
- - %listToDotsFn_%(#list,#function) (not keep names) 
+ **%listToDotsFn_%(#list,#function) (not keep names)**
  *(see "smth" below)*</br>
  ```R
  > list(ind="a",day=3,month=4) %listToDotsFn_% smth
@@ -232,10 +232,59 @@ Levels: 10 b5
  # Aleatoire</br>
  Aleatoire</br>
  # Categorical</br>
- %by% %byGraph%</br>
- corrCatCon<br></br>
- graphCatCon<br></br>
- int.hist<br></br>
+ **corrCatCon(#vector,#vector)**</br>
+ *graph of the values in the first params for each cat in the second parameters*</br>
+ ```R
+ iris$Sepal.Length %,% iris$Species %...>% graphCatCon 
+ #SAME AS graphCatCon(iris$Sepal.Length,iris$Species)
+ #SAME AS iris %$% graphCatCon(Sepal.Length,Species)
+ 
+ ```
+ ![byGraph](https://raw.githubusercontent.com/luluperet/icor/master/img/byGraph.png)
+ 
+ **%by%**</br>
+ *create list with as name differents categories and as value, the value associate with this value*</br>
+ ```R
+ > iris$Sepal.Length %by% iris$Species
+$setosa
+ [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.6 5.0 4.4 4.9 5.4 4.8 4.8 4.3 5.8 5.7 5.4 5.1 5.7 5.1 5.4
+[22] 5.1 4.6 5.1 4.8 5.0 5.0 5.2 5.2 4.7 4.8 5.4 5.2 5.5 4.9 5.0 5.5 4.9 4.4 5.1 5.0 4.5
+[43] 4.4 5.0 5.1 4.8 5.1 4.6 5.3 5.0
+
+$versicolor
+ [1] 7.0 6.4 6.9 5.5 6.5 5.7 6.3 4.9 6.6 5.2 5.0 5.9 6.0 6.1 5.6 6.7 5.6 5.8 6.2 5.6 5.9
+[22] 6.1 6.3 6.1 6.4 6.6 6.8 6.7 6.0 5.7 5.5 5.5 5.8 6.0 5.4 6.0 6.7 6.3 5.6 5.5 5.5 6.1
+[43] 5.8 5.0 5.6 5.7 5.7 6.2 5.1 5.7
+
+$virginica
+ [1] 6.3 5.8 7.1 6.3 6.5 7.6 4.9 7.3 6.7 7.2 6.5 6.4 6.8 5.7 5.8 6.4 6.5 7.7 7.7 6.0 6.9
+[22] 5.6 7.7 6.3 6.7 7.2 6.2 6.1 6.4 7.2 7.4 7.9 6.4 6.3 6.1 7.7 6.3 6.4 6.0 6.9 6.7 6.9
+[43] 5.8 6.8 6.7 6.7 6.3 6.5 6.2 5.9
+
+ 
+ ```
+ **%byGraph**</br>
+ *same as %by% but plot graph(see corrCatCon) of values for differents cat (only works if the right arguments is a vector)*</br>
+ ```R
+ > iris$Sepal.Length %byGraph% iris$Species
+$setosa
+ [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.6 5.0 4.4 4.9 5.4 4.8 4.8 4.3 5.8 5.7 5.4 5.1 5.7 5.1 5.4
+[22] 5.1 4.6 5.1 4.8 5.0 5.0 5.2 5.2 4.7 4.8 5.4 5.2 5.5 4.9 5.0 5.5 4.9 4.4 5.1 5.0 4.5
+[43] 4.4 5.0 5.1 4.8 5.1 4.6 5.3 5.0
+
+$versicolor
+ [1] 7.0 6.4 6.9 5.5 6.5 5.7 6.3 4.9 6.6 5.2 5.0 5.9 6.0 6.1 5.6 6.7 5.6 5.8 6.2 5.6 5.9
+[22] 6.1 6.3 6.1 6.4 6.6 6.8 6.7 6.0 5.7 5.5 5.5 5.8 6.0 5.4 6.0 6.7 6.3 5.6 5.5 5.5 6.1
+[43] 5.8 5.0 5.6 5.7 5.7 6.2 5.1 5.7
+
+$virginica
+ [1] 6.3 5.8 7.1 6.3 6.5 7.6 4.9 7.3 6.7 7.2 6.5 6.4 6.8 5.7 5.8 6.4 6.5 7.7 7.7 6.0 6.9
+[22] 5.6 7.7 6.3 6.7 7.2 6.2 6.1 6.4 7.2 7.4 7.9 6.4 6.3 6.1 7.7 6.3 6.4 6.0 6.9 6.7 6.9
+[43] 5.8 6.8 6.7 6.7 6.3 6.5 6.2 5.9
+ 
+ ```
+ ![byGraph](https://raw.githubusercontent.com/luluperet/icor/master/img/byGraph.png)
+ **int.hist**</br>
  # Usefull Utils</br>
  ## capture</br>
  captureCat capturePrint</br>
@@ -374,7 +423,7 @@ function (..., .x = ..1, .y = ..2, . = ..1)
 rnorm(3)
 
  ```
- **l l. %,% %.,.% %.,% %,.% **</br>
+ **l l. lx ln lx. ln. %,% %.,.% %.,% %,.% **</br>
  *normal list but understand .()*</br>
  ```R
  > i = 3
@@ -392,7 +441,7 @@ Error in .(i) : impossible de trouver la fonction "."
 ```
  **ll**</br>
  *normal list but nested list(list())*
- **l_ l1_ %_,_% %_,% %,_% %__,_% %___,_% AND  symetrics **</br>
+ **l_ lx_ ln_ l1_ %_,_% %_,% %,_% %__,_% %___,_% AND  symetrics **</br>
  *normal list but for each parameters return a function | l1_ return the first one | %,% *</br>
  *a parameter: function, formula*</br>
  ```R
