@@ -505,7 +505,7 @@ mapFns = function(left,right){
     }
                                   
 `%mapFns%`=mapFns
-toDF=function(left,rr=NULL){
+toDF.=function(left,rr=NULL){
   if(!is.null(rr) && substitute(rr)==".")rr=NULL
   right=rr
   if(!is.null(right) && substitute(rr)==".")right=NULL
@@ -516,7 +516,11 @@ toDF=function(left,rr=NULL){
   row.names(df)=names(left)
   return(df)
 }
-
+toDF=function(left,rr=NULL){
+  df=data.frame(matrix(unlist(left),ncol=length(left), byrow=F),stringsAsFactors=FALSE)
+  colnames(df)=names(left)
+  return(t(df))
+}
 `%toDF%`=toDF
 toDFt=function(left,right=NULL){
   df=data.frame(matrix(unlist(left),ncol=length(left), byrow=F),stringsAsFactors=FALSE)
