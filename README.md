@@ -118,23 +118,121 @@ rnorm(10, ...)
   ..- attr(*, "body")= language ~(function (n, mean = 0, sd = 1)  .Call(C_rnorm, n, mean, sd))(10, ...)
   .. ..- attr(*, ".Environment")=<environment: 0x177e31b0> 
   ..- attr(*, "fn")= symbol rnorm
+  
  ```
  **startsWithFromList(list,string)**</br>
  *filter list with element who begin with string*</br>
+ ```R
+ > c("hello","he lo","hehe","bonjour","au revoir") %>% startsWithFromList("he")
+[1] "hello" "he lo" "hehe"
  
+ ```
  **addNamesToList(list,names)**</br>
  *add names to list*</br>
+ ```R
+ > c("hello","he lo","hehe","bonjour","au revoir") %>% addNamesToList(1:5)
+          1           2           3           4           5 
+    "hello"     "he lo"      "hehe"   "bonjour" "au revoir" 
+ 
+ > c("hello","he lo","hehe","bonjour","au revoir") %>% addNamesToList(1:5 %each% {"d"%.%.})
+         d1          d2          d3          d4          d5 
+    "hello"     "he lo"      "hehe"   "bonjour" "au revoir" 
+  
+ > l("hello","he lo","hehe","bonjour","au revoir") %>% addNamesToList(1:5 %each% {"d"%.%.})
+$d1
+[1] "hello"
+
+$d2
+[1] "he lo"
+
+$d3
+[1] "hehe"
+
+$d4
+[1] "bonjour"
+
+$d5
+[1] "au revoir"
+
+ ```
  **nothing(...)**</br>
- *nothing*</br>
+ *return nothing with whatever params *</br>
 # Usefull DataFrame</br>
- toDF %toDF% toDFt %toDFt%<br></br>
- add_row_with_name<br></br>
- dfRowToList<br></br>
- dfToHTML<br></br>
+ **toDF(list) toDFt(list)** </br>
+ *convert an list to a dataframe with good colnames, rownames*</br>
+ ```R
+ > l("hello","he lo","hehe","bonjour","au revoir") %>% addNamesToList(1:5 %each% {"d"%.%.}) %>% toDF
+   [,1]       
+d1 "hello"    
+d2 "he lo"    
+d3 "hehe"     
+d4 "bonjour"  
+d5 "au revoir"
+
+> l("hello","he lo","hehe","bonjour","au revoir") %>% addNamesToList(1:5 %each% {"d"%.%.}) %>% toDFt
+     d1    d2   d3      d4        d5
+1 hello he lo hehe bonjour au revoir
+
+ ```
+ **add_row_with_name(#data.frame)**</br>
+ *add row with rowname in a data frame*</br>
+ ```R
+ > data.frame(a=6:10,b=1:5%each%{"b"%.%.})
+   a  b
+1  6 b1
+2  7 b2
+3  8 b3
+4  9 b4
+5 10 b5
+
+> data.frame(a=6:10,b=1:5%each%{"b"%.%.}) %>% add_row_with_name(a=9,b="b5",name="9")
+   a  b
+1  6 b1
+2  7 b2
+3  8 b3
+4  9 b4
+5 10 b5
+9  9 b5
+ 
+ ```
+ **dfRowToList**</br>
+ *convert row of data frame to list*</br>
+ ```R
+ > data.frame(a=6:10,b=1:5%each%{"b"%.%.}) %>% dfRowToList
+$V1
+ a  b 
+ 6 b1 
+Levels:  6 b1
+
+$V2
+ a  b 
+ 7 b2 
+Levels:  7 b2
+
+$V3
+ a  b 
+ 8 b3 
+Levels:  8 b3
+
+$V4
+ a  b 
+ 9 b4 
+Levels:  9 b4
+
+$V5
+ a  b 
+10 b5 
+Levels: 10 b5
+
+
+ ```
+ **dfToHTML(#data.frame)**</br>
+ *show an data frame in html (only in jupyter notebook)*</br>
+ ![img](https://raw.githubusercontent.com/luluperet/icor/master/img/dfToHTML.png)
  # Aleatoire</br>
  Aleatoire</br>
  # Categorical</br>
- %by% %byGraph%<br></br>
+ %by% %byGraph%</br>
  corrCatCon<br></br>
  graphCatCon<br></br>
  int.hist<br></br>
