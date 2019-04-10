@@ -756,7 +756,10 @@ Aleatoire <- R6Class("Aleatoire",
      if(!dontShow)pp
     }
     `%eachFn%` = eachFn
-         
+   `%eachFnTg%` = function(a,b){
+    
+      do.call(eachFn,list(substitute(a),substitute(b),dontShow=T)) 
+    }
     
     is.doubledot=function(str){
       if(length(str)==3 && str[[1]] %in% c("$","@"))str=str[[3]]
@@ -1145,7 +1148,6 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
 }
 "%getElem2%"=getElem2
  `%getElem%` = getElem
-     `%eachFnTg%` = l1__(eachFn(...,dontShow=T)) 
     smth = function(...){
       a=list(...)
       str(a)
