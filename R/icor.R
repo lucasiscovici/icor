@@ -738,7 +738,7 @@ Aleatoire <- R6Class("Aleatoire",
         l(1:Xti) %each% .p.
     }
     `%Xtimes%` = runFnXtimes
-    eachFn = function(a,b){
+    eachFn = function(a,b,dontShow=F){
       aa=match.call()
       parent <- parent.frame()
       env    <- new.env(parent = parent)
@@ -753,9 +753,11 @@ Aleatoire <- R6Class("Aleatoire",
         aq= do.call(bb[[i]],list(a[[k]]))
        pp=rlist::list.append(pp,aq)
       }
-     pp
+     if(!dontShow)pp
     }
     `%eachFn%` = eachFn
+        `%eachFntg%` = curry(eachFn(dontShow=T))             
+    
     is.doubledot=function(str){
       if(length(str)==3 && str[[1]] %in% c("$","@"))str=str[[3]]
       str_detect(str,"^\\..+\\.$")
