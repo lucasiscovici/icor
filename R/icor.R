@@ -762,7 +762,8 @@ Aleatoire <- R6Class("Aleatoire",
     eachRowCol = function(ll,rr,INDEX){
       n=if(INDEX==2)colnames(ll)else rownames(ll)
       lapply(1:length(n),function(i){
-                                    rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
+                                     if(c("...",".y") %in% {args(rr) %>% as.list %>% names} %>% any) rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
+                                     else rr(if(INDEX==2)ll[,i]else ll[i,])
                                     }
             )
     }
@@ -778,7 +779,7 @@ Aleatoire <- R6Class("Aleatoire",
       eachRowCol2 = function(ll,rr,INDEX){
       n=if(INDEX==2)colnames(ll)else rownames(ll)
       lapply(1:length(n),function(i){
-          z=rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
+           z= if(c("...",".y") %in% {args(rr) %>% as.list %>% names} %>% any) rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i]) else rr(if(INDEX==2)ll[,i]else ll[i,])
                                   l(.(n[i])%:=%list(.(z))) %getElem% 1
                                   # wrapr::`:=`(bquote(.(n[i])) ,bquote(.(z)))
                                     }
