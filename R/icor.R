@@ -702,6 +702,18 @@ Aleatoire <- R6Class("Aleatoire",
     capturePrint = function(w){
       capture.output(print(w))
     }
+                      curry = function(...){
+  a=match.call()
+  parent <- parent.frame()
+  env    <- new.env(parent = parent)
+  a2=a[[-1]]
+  argss=as.list(a2)
+  function_name = argss[[1]]
+  argsFunc=argss[-1]
+  #print(argsFunc)
+  e=eval(as.call(c(purrr::partial,function_name,argsFunc)),env,env)
+  e
+}
     runFnXtimes = function(fn,Xtimes=100){
       aa=match.call()
       aa2=aa[[2]]
@@ -1131,18 +1143,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
       str(a)
     }
                                         
- curry = function(...){
-  a=match.call()
-  parent <- parent.frame()
-  env    <- new.env(parent = parent)
-  a2=a[[-1]]
-  argss=as.list(a2)
-  function_name = argss[[1]]
-  argsFunc=argss[-1]
-  #print(argsFunc)
-  e=eval(as.call(c(purrr::partial,function_name,argsFunc)),env,env)
-  e
-}
+
                                         StrCls=function(a=""){
   d=list()
   d$str=a
