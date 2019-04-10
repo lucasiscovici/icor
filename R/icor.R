@@ -756,7 +756,7 @@ Aleatoire <- R6Class("Aleatoire",
      if(!dontShow)pp
     }
     `%eachFn%` = eachFn
-        `%eachFntg%` = curry(eachFn(dontShow=T))             
+        `%eachFnTg%` = curry(eachFn(dontShow=T))             
     
     is.doubledot=function(str){
       if(length(str)==3 && str[[1]] %in% c("$","@"))str=str[[3]]
