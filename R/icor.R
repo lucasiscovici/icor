@@ -1108,7 +1108,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
   f=datas
   for(id in row){
     i=id
-    if (inherits(i,"StrCls") || is.character(i)) {
+    if (inherits(i,"StrCls")) {
       i=if(inherits(i,"StrCls"))i$str else i
       if(length(i) > 1) {
         ind=lapply(i,function(e){
@@ -1139,7 +1139,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
   return(f)
 }
 "%getElem2%"=getElem2
- `%getElem%` = getElem2
+ `%getElem%` = getElem
     
     smth = function(...){
       a=list(...)
@@ -1176,13 +1176,24 @@ getElems = function(datas,row){
   f=datas
   res=list()
   for(i in row){
-    f=getElem2(datas,i)
+    f=getElem(datas,i)
     res=append(res,l(f))
   }
   return(res)
 }
 "%getElems%"=getElems      
    
+   getElems2 = function(datas,row){
+  if(length(row) == 1) row=c(row)
+  f=datas
+  res=list()
+  for(i in row){
+    f=getElem2(datas,i)
+    res=append(res,l(f))
+  }
+  return(res)
+}
+"%getElems2%"=getElems2  
    
  captureListRegex.=function(stri){
   str_extract_all(stri,"~~[^:]:?[^:]+|~[^:]:?[^:]+|[-'\"+*/.0-9a-zA-Z ]+")
