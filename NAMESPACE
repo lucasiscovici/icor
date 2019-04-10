@@ -17,7 +17,7 @@ export("%,%","%,_%","%,__%","%,___%","%,____%","%_,%","%_,_%","%_,__%","%_,___%"
 export("%...>%","%..._>%","%filter%")
 export("detachFast","%rep%","%join%")
 export(l,ln,lx,l1,l_,ln_,lx_,l1_,l__,ln__,lx__,l1__,l___,ln___,lx___,l1___,l____,ln____,lx____,l1____,l.,ln.,lx.,l1.,l_.,ln_.,lx_.,l1_.,l__.,ln__.,lx__.,l1__.,l___.,ln___.,lx___.,l1___.,l____.,ln____.,lx____.,l1____.)
-export("toDF","toDFt","%.=%",".last","%getElems%","%getElem2%","%eachRowCol.%","formulatoList.","%each:%","%from%",".matchCall","toMatchCall.",".list","StrCls","captureCat","capturePrint")
+export("toDF","toDFt","%.=%",".last","%getElems%","%getElems2%","%getElem2%","%eachRowCol.%","formulatoList.","%each:%","%from%",".matchCall","toMatchCall.",".list","StrCls","captureCat","capturePrint")
 export("add_row_with_name")
 export("test_same_distrib","%Xtimes%","%eachFn%",with_plotWH,"plotWHDefault","defaultH","defaultW","%future%","suppressWarningsGgplot")
 export("int.hist","Aleatoire")
