@@ -442,7 +442,10 @@ corrCatCon = function(cat,con,signif=FALSE){
     else res
 }
 
-
+`%filter%` = function(left,right){
+    left %>% {Filter(right,.)}
+}
+                                                  
 filterCol   = function(a,func){
   a %>% Filter(func,.)
 }
