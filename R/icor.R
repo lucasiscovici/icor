@@ -750,8 +750,8 @@ Aleatoire <- R6Class("Aleatoire",
         if(is.null(listNames[i]) || listNames[i]==""){
           k=i
         }
-        a= do.call(bb[[i]],list(a[[k]]))
-       pp=rlist::list.append(pp,a)
+        aq= do.call(bb[[i]],list(a[[k]]))
+       pp=rlist::list.append(pp,aq)
       }
      pp
     }
