@@ -1909,3 +1909,6 @@ deps=function(...)deps_code(substitute(...))
 
 #1:100 %each% ~al$loi_discrete(c(0.05,0.05,0.1,0.6,0,0.2))
 #{1:500 %each% ~rexp(1) }%>% density %>% plot ; {1:500 %each% ~al$exp(1) }%>% density %>% lines(col="red")
+#doInSSH(noSSH = F,printErr = T,printOut = T,
+#    dataSimDescribe=questionr::describe()
+#    )
