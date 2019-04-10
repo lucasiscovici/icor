@@ -756,7 +756,7 @@ Aleatoire <- R6Class("Aleatoire",
      if(!dontShow)pp
     }
     `%eachFn%` = eachFn
-        `%eachFnTg%` = curry(eachFn(dontShow=T))             
+         
     
     is.doubledot=function(str){
       if(length(str)==3 && str[[1]] %in% c("$","@"))str=str[[3]]
@@ -1099,7 +1099,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
       !any(vapply(expr[-1L], identical, logical(1L), quote(.)))
     }
     
-
+      `%eachFnTg%` = l1__(eachFn(...,dontShow=T))   
     getElem = function(datas,row){
      if(length(row) == 1) row=l(row)
      f=datas
