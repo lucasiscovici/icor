@@ -1098,8 +1098,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
     {
       !any(vapply(expr[-1L], identical, logical(1L), quote(.)))
     }
-    
-      `%eachFnTg%` = l1__(eachFn(...,dontShow=T))   
+      
     getElem = function(datas,row){
      if(length(row) == 1) row=l(row)
      f=datas
@@ -1146,7 +1145,7 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
 }
 "%getElem2%"=getElem2
  `%getElem%` = getElem
-    
+     `%eachFnTg%` = l1__(eachFn(...,dontShow=T)) 
     smth = function(...){
       a=list(...)
       str(a)
