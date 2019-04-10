@@ -744,13 +744,16 @@ Aleatoire <- R6Class("Aleatoire",
       env    <- new.env(parent = parent)
       bb=splitArgsl_(aa[[3]],env,parent)
       listNames=names(a)
+      pp=list()
       for(i in 1:length(a)){
         k=listNames[i]
         if(is.null(listNames[i]) || listNames[i]==""){
           k=i
         }
-        do.call(bb[[i]],list(a[[k]]))
+        a= do.call(bb[[i]],list(a[[k]]))
+       pp=rlist::list.append(pp,a)
       }
+     pp
     }
     `%eachFn%` = eachFn
     is.doubledot=function(str){
