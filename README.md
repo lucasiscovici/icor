@@ -476,7 +476,7 @@ In testit() : testit
  ```R
  > iris %>% numericCol %getCol% 1 %>% densityPlt
  ```
- !(densityPlt)[https://raw.githubusercontent.com/luluperet/icor/master/img/densityIris.png]
+ ![densityPlt](https://raw.githubusercontent.com/luluperet/icor/master/img/densityIris.png)
  **densityLines(#numericVector)**</br>
  *Give and plot the density but here use: lines (graphics::lines) (usefull for append density to an existing plot)*</br>
  ```R
@@ -486,13 +486,13 @@ In testit() : testit
  #SAME 
  > iris %>% numericCol %getCol% 1:2 %eachFn% l_(densityPlt,densityLines(col="red")) (by default eachFn use names(), and names for data.frame is colnames)
  ```
- !(densityLines)[https://raw.githubusercontent.com/luluperet/icor/master/img/densityIrisLines.png]
+ ![densityLines](https://raw.githubusercontent.com/luluperet/icor/master/img/densityIrisLines.png)
  **qplotSameGraphEachCol(#matrix|#data.frame,...)**</br>
  *Plot geom asked for each col in d (boxplot,violin,...)*</br>
  ```R
  > iris %>% numericCol %getCol% 1:2 %>% qplotSameGraphEachCol(geom="boxplot")
  ```
- !(qplotSame)[https://raw.githubusercontent.com/luluperet/icor/master/img/qplotSame.png]
+ ![qplotSame](https://raw.githubusercontent.com/luluperet/icor/master/img/qplotSame.png)
  **hidePlot(func)**</br>
  *Hide plot printed in func (Exemple with thomasp85/patchwork)*</br>
  ```R
@@ -512,7 +512,7 @@ In testit() : testit
     suppressWarningsGgplot
     
  ```
-!(plotDensity)[https://raw.githubusercontent.com/luluperet/icor/master/img/plotDensity.png]
+![plotDensity](https://raw.githubusercontent.com/luluperet/icor/master/img/plotDensity.png)
  **loadPlotUsefull**</br>
  # Usefull Library
  **lib + #string|#Stringvector**</br>
@@ -730,7 +730,7 @@ lib + "git:cran/MASS"
 > iris %>% numericCol %getCol% 1:3 %eachCol% density %eachFnTg% l_(plot(main="iris col 1:3"),lines(col="red"),lines(col="yellow")) 
 
 ```
-!(eachFns)[https://raw.githubusercontent.com/luluperet/icor/master/img/eachFns.png]
+![eachFns](https://raw.githubusercontent.com/luluperet/icor/master/img/eachFns.png)
  
  ## MAP
  **%map%**</br>
