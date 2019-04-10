@@ -759,6 +759,18 @@ Aleatoire <- R6Class("Aleatoire",
     }
     `%eachCol%` = eachCol
     `%eachRow%` = eachRow
+     
+      eachRowCol2 = function(ll,rr,INDEX){
+      n=if(INDEX==2)colnames(ll)else rownames(ll)
+      lapply(1:length(n),function(i){
+          z=rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
+                                  l(.(n[i])%:=%list(.(z))) %getElem% 1
+                                  # wrapr::`:=`(bquote(.(n[i])) ,bquote(.(z)))
+                                    }
+            )
+    }
+             `%eachCol2%` = curry(eachRowCol2(INDEX=2))
+             `%eachRow2%` = curry(eachRowCol2(INDEX=1))
                      
     eachRowCol. = function(ll,rr,INDEX){
        apply(ll,INDEX,rr)
@@ -1068,11 +1080,11 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
     
 
     getElem = function(datas,row){
-     if(length(row) == 1) row=c(row)
+     if(length(row) == 1) row=l(row)
      f=datas
      for(i in row){
       
-      f=if(!stringi::stri_detect_regex(i,"^-?[0-9]+$"))f[[i]]
+      f=f[[i]]
      }
      return(f)
     }
