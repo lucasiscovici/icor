@@ -1515,24 +1515,24 @@ layout_build_matrix = function(...){
  }
 
 lConcat_ <- function(e1, e2,l1=l1,l2=l1,noQuoteLeft=F,noQuoteR=F) {
-  .env <- parent.frame()
+  .env <- new.env(parent=parent.frame())
     lsub=list()
     if(!noQuoteLeft)
-        lsub=list.append(lsub,do.call(bquote,list(substitute(e1),where=.env)))
+        lsub=list.append(lsub,do.call(bquote,list(lazyeval::lazy(e1),where=.env)))
     if(!noQuoteR)
-        lsub=list.append(lsub,do.call(bquote,list(substitute(e2),where=.env)))
+        lsub=list.append(lsub,do.call(bquote,list(lazyeval::lazy(e2),where=.env)))
     #print(lsub)
  
     if(noQuoteLeft)
-        lsub=list.append(substitute(e1),lsub)
+        lsub=list.append(lazyeval::lazy(e1),lsub)
     if(noQuoteR)
-        lsub=list.append(lsub,substitute(e2))
+        lsub=list.append(lsub,lazyeval::lazy(e2))
     #concatList2=curry(concatList(l1=l1,l2=l2,both=both))
    
      #lsm=(called)
      #print(lsm)
-     lsub[["l1"]]=substitute(l1)
-     lsub[["l2"]]=substitute(l2)
+     lsub[["l1"]]=lazyeval::lazy(l1)
+     lsub[["l2"]]=lazyeval::lazy(l2)
      #print(lsm)
  do.call(concatList,lsub,envir = .env)
 }
@@ -1566,7 +1566,7 @@ sepConcat = function(ll,rr,callOp=NULL){
         l1i=as.name(lfn1OK)
         l2i=as.name(lfn2OK)
     }
-    do.call(lConcat_,list(substitute(ll),substitute(rr),l1=l1i,l2=l2i,noQuoteLeft=noQuoteLeft,noQuoteR=noQuoteR))
+    do.call(lConcat_,list(lazyeval::lazy(ll),lazyeval::lazy(rr),l1=l1i,l2=l2i,noQuoteLeft=noQuoteLeft,noQuoteR=noQuoteR))
    # lConcat_(l1=l1i,l2=l2i,ll,rr)
 }
 #"%.%"=icor::`%.%`
