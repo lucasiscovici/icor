@@ -1,5 +1,45 @@
 # ICOR, Correlation and Usefull Functions, Operators and Classes
+# EXAMPLES
 
+```R
+iris %>% 
+    numericCol %getCol% 
+                 1:4    %>skip>% {
+                            layout_build_matrix(
+                                  1,2,3|
+                                  0,4,0
+                            ); 
+                            resetPlt = plotWH(7,5)
+                        }%each% l__(
+                            {
+                                name=names(dimnames(.))
+                                hist(.x,xlab = name,main = name%.%" hist + Density",probability = T);
+                                densityLines(.x,col="red")
+                            }
+                                ) %>% invisible
+#SAME 
+#We use eachCol instead of each (.y is the colname)
+#We use tg instead of invisible (same, but remove warnings too)
+
+iris %>% 
+    numericCol %getCol% 
+                 1:4    %>skip>% {
+                            layout_build_matrix(
+                                  1,2,3|
+                                  0,4,0
+                            ); 
+                            resetPlt = plotWH(7,5)
+                        } %eachCol% l1__(
+                            {
+                                name=.y
+                                hist(.x,xlab = name,main = name%.%" hist + Density",probability = T);
+                                densityLines(.x,col="red")
+                            }
+                                ) %>% tg 
+          
+
+```
+!(example1)[https://raw.githubusercontent.com/luluperet/icor/master/img/example1.png]
 # EQ</br>
  *Test values each in vector*</br>
  < <= == >= ></br>
@@ -920,24 +960,3 @@ rnorm(., 1)
  %future%</br>
 //e= d %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
 
-# EXAMPLES
-
-```R
-iris %>% 
-    numericCol %getCol% 
-                 1:4    %>skip>% {
-                            layout_build_matrix(
-                                  1,2,3|
-                                  0,4,0
-                            ); 
-                            resetPlt = plotWH(7,5)
-                        }%each% l__(
-                            {
-                                name=names(dimnames(.))
-                                hist(.x,xlab = name,main = name%.%" hist + Density",probability = T);
-                                densityLines(.x,col="red")
-                            }
-                                ) %>% invisible
-
-
-```
