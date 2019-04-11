@@ -1497,8 +1497,8 @@ layout_build_matrix = function(...){
  "%join%" = function(ll,rr){
     paste0(ll,collapse = rr)
 }
- concatList = function(ll,rr,l1=list,l2=list){
-    .env=parent.frame()
+ concatList = function(ll,rr,l1=list,l2=list,env=parent.frame()){
+   .env <- new.env(parent=env)
 
         #print(substitute(l2))
         call1=as.call(list(substitute(l1),substitute(ll)))
@@ -1506,7 +1506,7 @@ layout_build_matrix = function(...){
         #print(do.call(substitute(l2),list(substitute(rr)),envir = .env))
         eval1=eval(call1,.env,.env)
         eval2=eval(call2,.env,.env)
-        if(is.list(eval1)){
+        if(class(eval1)=="list"){
             list.append(eval1,eval2)
         }else{
             list(eval1,eval2)
@@ -1514,30 +1514,33 @@ layout_build_matrix = function(...){
     
  }
 
-lConcat_ <- function(e1, e2,l1=l1,l2=l1,noQuoteLeft=F,noQuoteR=F) {
-  .env <- new.env(parent=parent.frame())
+lConcat_ <- function(e1, e2,l1=l1,l2=l1,noQuoteLeft=F,noQuoteR=F,env=parent.frame()) {
+  .env <- new.env(parent=env)
     lsub=list()
     if(!noQuoteLeft)
-        lsub=list.append(lsub,do.call(bquote,list(lazyeval::lazy(e1),where=.env)))
+        lsub=list.append(lsub,do.call(bquote,list(substitute(e1),where=.env)))
     if(!noQuoteR)
-        lsub=list.append(lsub,do.call(bquote,list(lazyeval::lazy(e2),where=.env)))
+        lsub=list.append(lsub,do.call(bquote,list(substitute(e2),where=.env)))
     #print(lsub)
  
     if(noQuoteLeft)
-        lsub=list.append(lazyeval::lazy(e1),lsub)
+        lsub=list.append(substitute(e1),lsub)
     if(noQuoteR)
-        lsub=list.append(lsub,lazyeval::lazy(e2))
+        lsub=list.append(lsub,substitute(e2))
     #concatList2=curry(concatList(l1=l1,l2=l2,both=both))
    
      #lsm=(called)
      #print(lsm)
-     lsub[["l1"]]=lazyeval::lazy(l1)
-     lsub[["l2"]]=lazyeval::lazy(l2)
+     lsub[["l1"]]=substitute(l1)
+     lsub[["l2"]]=substitute(l2)
+     lsub[["env"]]=.env
+ 
      #print(lsm)
  do.call(concatList,lsub,envir = .env)
 }
 l1=function(...){l(...)%getElem%1}
 sepConcat = function(ll,rr,callOp=NULL){
+ .env=new.env(parent=parent.frame())
     `%.%` = icor::`%.%`
     a=match.call()
     aa=a[[1]]
@@ -1566,7 +1569,7 @@ sepConcat = function(ll,rr,callOp=NULL){
         l1i=as.name(lfn1OK)
         l2i=as.name(lfn2OK)
     }
-    do.call(lConcat_,list(lazyeval::lazy(ll),lazyeval::lazy(rr),l1=l1i,l2=l2i,noQuoteLeft=noQuoteLeft,noQuoteR=noQuoteR))
+    do.call(lConcat_,list(substitute(ll),substitute(rr),l1=l1i,l2=l2i,noQuoteLeft=noQuoteLeft,noQuoteR=noQuoteR,env=.env))
    # lConcat_(l1=l1i,l2=l2i,ll,rr)
 }
 #"%.%"=icor::`%.%`
