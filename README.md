@@ -192,6 +192,12 @@ $d5
  ```
  **nothing(...)**</br>
  *return nothing with whatever params *</br>
+ 
+ **%call%(#fn,#list)**</br>
+ *call fn with elements of list as parameters</br>
+ 
+ **%>skip>%(data,#fn) doAndSkip %-|skip|->%**</br>
+ *Execute fn and return data ! all above do the same*</br>
 # Usefull DataFrame</br>
  **toDF(list) toDFt(list)** </br>
  *convert an list to a dataframe with good colnames, rownames*</br>
