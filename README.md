@@ -39,7 +39,7 @@ iris %>%
           
 
 ```
-!(example1)[https://raw.githubusercontent.com/luluperet/icor/master/img/example1.png]
+![example1](https://raw.githubusercontent.com/luluperet/icor/master/img/example1.png)
 # EQ</br>
  *Test values each in vector*</br>
  < <= == >= ></br>
