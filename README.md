@@ -919,3 +919,25 @@ rnorm(., 1)
  (HenrikBengtsson/future)</br>
  %future%</br>
 //e= d %>% girafe(ggobj = .) %>% girafe_options(opts_hover(css = "fill:red;r:4pt;"))
+
+# EXAMPLES
+
+```R
+iris %>% 
+    numericCol %getCol% 
+                 1:4    %>skip>% {
+                            layout_build_matrix(
+                                  1,2,3|
+                                  0,4,0
+                            ); 
+                            resetPlt = plotWH(7,5)
+                        }%each% l__(
+                            {
+                                name=names(dimnames(.))
+                                hist(.x,xlab = name,main = name%.%" hist + Density",probability = T);
+                                densityLines(.x,col="red")
+                            }
+                                ) %>% invisible
+
+
+```
