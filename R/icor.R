@@ -1910,7 +1910,13 @@ doInSSH = function(...,printName=F,printErr=F,printOut=F,noSSH=F){
 }
 deps=function(...)deps_code(substitute(...))
          
-         
+doAndSkip =function(data,fn,env=parent.frame()){ 
+        a=match.call()
+        eval(a[[3]],envir = env,enclos = env)
+        data
+}
+`%>skip>%` = doAndSkip
+`%-|skip|->%` = doAndSkip    
 
              #al = Aleatoire$new()
 #al$generer()
