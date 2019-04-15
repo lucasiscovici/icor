@@ -907,6 +907,7 @@ Aleatoire <- R6Class("Aleatoire",
           rhs=lazyeval::f_capture(rhs)
         }
         rhss[[namesL[i]]]=purrr::as_mapper(rhs)
+        environment(rhss[[namesL[i]]]) = parent
         i = i + 1L
       }
       if(stop)return(NULL)
@@ -935,7 +936,7 @@ removeParamsInCall=function(params,calls){
 
 lintern=function(...,x=NULL,n=NULL,i=1,envi=parent.frame()){
  force(envi)
-  env=new.env(parent=envi)
+  env=envi
  
   a=match.call()
   fn=a[[1]]
