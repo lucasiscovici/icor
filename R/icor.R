@@ -907,6 +907,7 @@ Aleatoire <- R6Class("Aleatoire",
           rhs=lazyeval::f_capture(rhs)
         }
         rhss[[namesL[i]]]=purrr::as_mapper(rhs)
+       #TODO: PB HERE !!!!!!!!!!!!! wrap_function maybe
         environment(rhss[[namesL[i]]]) = parent
         i = i + 1L
       }
@@ -1018,7 +1019,16 @@ lx____. = lintern
 l1____. = lintern
                                         
 #l.=list
-                                        
+wrap_function <- function(body, pipe, env)
+{
+ 
+  if (is_tee(pipe)) {
+    body <- call("{", body, quote(.))
+  } else if (is_dollar(pipe)) {
+    body <- substitute(with(., b), list(b = body))
+  } 
+  eval(call("function", as.pairlist(alist(.=)), body), env, env)
+}                                        
 l<- function(...,noQuote=FALSE) {
     .env=parent.frame()
  u=if(noQuote) list(...) else eval(do.call(bquote, list(substitute(list(...)),
@@ -1698,9 +1708,9 @@ print.rlang_lambda_function <- function(x, ...) {
   attributes(x) <- NULL
   x <- structure(x)
   a=capturePrint(x)
-  a %getElems% 1:(length(a)-1)%each% {.} %>% cat(sep = "\n") %->% catJ
+  a %getElems% 1:(length(a))%each% {.} %>% cat(sep = "\n") %->% catJ #attention length(a)-1 ici quand pas splitArgs avec envitionmmne =
   cat("<icor_list>\n")
-  catJ
+ invisible(catJ)
 }
 lucas_plan = function(...){
     
