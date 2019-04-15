@@ -933,9 +933,9 @@ removeParamsInCall=function(params,calls){
   al
 }
 
-lintern=function(...,x=NULL,n=NULL,i=1,env=parent.frame()){
- force(env)
-  env=new.env(parent=env)
+lintern=function(...,x=NULL,n=NULL,i=1,envi=parent.frame()){
+ force(envi)
+  env=new.env(parent=envi)
  
   a=match.call()
   fn=a[[1]]
@@ -968,8 +968,8 @@ lintern=function(...,x=NULL,n=NULL,i=1,env=parent.frame()){
     #fn=lazyeval::as_call(fn)
   }
   #print(fn)
-    cc=eval(as.call(list(fn, lo)), envir = env, 
-        enclos = env)
+    cc=eval(as.call(list(fn, lo)), envir = envi, 
+        enclos = envi)
   #cc=do.call(fn,lo,envir=parent.frame())
              if(!is.null(what)){
                 if(length(what)>1)
