@@ -935,6 +935,7 @@ removeParamsInCall=function(params,calls){
 
 lintern=function(...,x=NULL,n=NULL,i=1){
   env=new.env(parent=parent.frame())
+  print(ls(envir=env))
   a=match.call()
   fn=a[[1]]
   fns=lazyeval::as_name(fn)
