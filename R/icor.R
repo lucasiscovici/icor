@@ -968,9 +968,9 @@ lintern=function(...,x=NULL,n=NULL,i=1,envi=parent.frame()){
     #fn=lazyeval::as_call(fn)
   }
   #print(fn)
-    cc=eval(as.call(list(fn, lo)), envir = envi, 
-        enclos = envi)
-  #cc=do.call(fn,lo,envir=parent.frame())
+    #cc=eval(as.call(list(fn, lo)), envir = env, 
+      #  enclos = envi)
+  cc=do.call(fn,lo,envir=env)
              if(!is.null(what)){
                 if(length(what)>1)
                   return(cc%getElems%what)
