@@ -25,5 +25,6 @@ Imports:
     magrittr,
     wrapr,
     patchwork,
-    grid
+    grid,
+    drake
 RoxygenNote: 6.1.1.9000
