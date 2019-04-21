@@ -22,5 +22,8 @@ Imports:
     rlist,
     R6,
     lazyeval,
-    magrittr
+    magrittr,
+    wrapr,
+    patchwork,
+    grid
 RoxygenNote: 6.1.1.9000
