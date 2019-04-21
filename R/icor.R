@@ -13,6 +13,7 @@
  library("rlist")
   library("data.table")
   library("patchwork")
+   library("future")
  })
 #h <- sapply(seq(1, nchar(templateLucas_plan), by=2), function(x) substr(templateLucas_plan, x, x+1))
 #templateLucas_plan_str=rawToChar(as.raw(strtoi(h, 16L)))
@@ -22,14 +23,11 @@ h <- sapply(seq(1, nchar(templateLucas_plan), by=2), function(x) substr(template
 templateLucas_plan_str=rawToChar(as.raw(strtoi(h, 16L)))
  loadPkgUsefull=function(){
   suppressPackageStartupMessages({
- library("purrr")
  library("Hmisc")
   library("Matrix")
     library("MASS")
- library("dplyr")
- library("withr") 
  library("R6") 
- library("future")
+
       })                    
  
  }
@@ -1962,9 +1960,7 @@ doAndSkip =function(data,fn,env=parent.frame()){
     #plotA=..recordPlot(aa)
     eval(call("<-", bb, plotA), parent, parent)
 }
-           hidePlot({
-    plot_blank=as_ggplot(grid::grid.rect(gp=grid::gpar(col="white")))
-})
+          
 
 `%+=%`=function(value,i){
     if(is.numeric(i)){
@@ -2344,6 +2340,9 @@ getDescription = function(df,variable){
 updateIcor_special = function(){# update icor from github, (bug sometimes with updateReloadIcor from icor package)
        updateX_special("luluperet/icor")
 }
+            hidePlot({
+    plot_blank=as_ggplot(grid::grid.rect(gp=grid::gpar(col="white")))
+})
            #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
