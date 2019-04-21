@@ -1397,7 +1397,7 @@ hidePlot= curry(with_(l1__({pdf(NULL);dev.control(displaylist="enable")}),l1__(i
 nothing=function(...){}
              
              
-             build_matrix <- function(..., cf_eval_environment = parent.frame()) {
+             build_matrix <- function(..., cf_eval_environment = parent.frame(),force_numeric=T) {
   v <- as.list(substitute(list(...))[-1])
   force(cf_eval_environment)
   lv <- length(v)
@@ -1471,6 +1471,7 @@ nothing=function(...){}
   if(abs(nrow - round(nrow))>0.1) {
     stop("wrapr::build_frame confused as to cell count")
   }
+   if(force_numeric) vu = as.numeric(vu)
   matrix(vu,byrow=T,ncol=ncol)
 }
 
