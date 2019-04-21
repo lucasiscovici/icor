@@ -771,6 +771,11 @@ Aleatoire <- R6Class("Aleatoire",
     
     eachRowCol = function(ll,rr,INDEX){
       n=if(INDEX==2)colnames(ll)else rownames(ll)
+       if(is.null(n)) {
+        if(INDEX==2) n = 1:ncol(ll)
+        else n = 1:nrow(ll)
+        
+        }
       lapply(1:length(n),function(i){
                                      if(c("...",".y") %in% {args(rr) %>% as.list %>% names} %>% any) rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
                                      else rr(if(INDEX==2)ll[,i]else ll[i,])
