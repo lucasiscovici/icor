@@ -373,17 +373,7 @@ inf <- function(e1, e2){
    return(EQ(rhs,lhs,"||"))
 }
                                                   
-.onLoad <- function(...) {
-  registerS3method("+", "Lib", plus)
-  registerS3method(">", "EQ", sup)
-  registerS3method(">=", "EQ", supEq)
-    registerS3method("==", "EQ", eq)
-    registerS3method("<", "EQ", inf)
-    registerS3method("<=", "EQ", infEq)
-   
-       registerS3method("-", "StrCls", minusStrCls)
 
-}
                                                   
    
 detachFast = function(name){
@@ -2167,7 +2157,7 @@ dataUpAdd = function(a,b){
     #}
     
 }
-`+.dataUpdate` = function(a,b){
+dataUpPlus = function(a,b){
     #print("d")
     #print("\n")
     #print(a$..current)
@@ -2198,7 +2188,6 @@ dataUpAdd = function(a,b){
     }
   a
 }
-
 print.dataUpdate = function(aa){
     a=aa$..datas %filter%  l1_({str_sub(.,end=2)!=".."})
     #print("ici")
@@ -2320,7 +2309,7 @@ planForInfo = function(myPlan,forWhat){
 addAttr = function(df,attrName,attrValue=NULL,dotRemove=TRUE){
     if(is.null(attrValue)){
         fs=as.character(substitute(df))
-        print(fs)
+        #print(fs)
         attrValue=ifelse(str_sub(fs,1,1)==".",str_sub(fs,2),fs)
     }
     attr(df,attrName)=attrValue
@@ -2360,6 +2349,18 @@ updateIcor_special = function(){# update icor from github, (bug sometimes with u
 	if (length(package.list) > 0) {
 		for (package in package.list) detach(package, character.only = TRUE,unload = T,force = T)
 	}
+}
+	   .onLoad <- function(...) {
+  registerS3method("+", "Lib", plus)
+  registerS3method(">", "EQ", sup)
+  registerS3method(">=", "EQ", supEq)
+    registerS3method("==", "EQ", eq)
+    registerS3method("<", "EQ", inf)
+    registerS3method("<=", "EQ", infEq)
+   
+       registerS3method("-", "StrCls", minusStrCls)
+registerS3method("+", "dataUpdate", dataUpPlus)
+
 }
            #al = Aleatoire$new()
 #al$generer()
