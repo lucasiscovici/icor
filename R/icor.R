@@ -1184,6 +1184,8 @@ l_ = function(...,.env = parent.frame(),noQuote=FALSE){
   class(d) = append(class(d),"StrCls")
   d
 }
+   
+   
  .last=StrCls("last")
 
 `%.=%` = function(a,b){
@@ -2103,7 +2105,129 @@ ggplot_add.recordedplot <- function(object, plot, object_name) {
             patchwork:::`-.ggplot`(e1,e2)
 }
 
-             #al = Aleatoire$new()
+  apply_left.gg <- function(pipe_left_arg,
+                          pipe_right_arg,
+                          pipe_environment,
+                          left_arg_name,
+                          pipe_string,
+                          right_arg_name) {
+  pipe_right_arg <- eval(pipe_right_arg,
+                         envir = pipe_environment,
+                         enclos = pipe_environment)
+  pipe_left_arg + pipe_right_arg 
+}
+           copyDtplyr = function(d){
+    data.table::copy(d)
+}
+           catn = function(...) cat(...,sep="\n")
+addToList = function(f,...){
+    d=list(...)
+    d=list.append(list(...),f) 
+    do.call(list.append,d)
+}
+listI = function(...){
+    a=match.call()
+    b=list(...)
+    name=as.character(as.list(a)[-1])
+    names(b)=name
+    b
+}
+dataUpdate = function(.dataOrigin=NULL){
+    lo=list()
+    lo$..datas=list()
+    lo$..count=0
+    lo$..dataName="dataSet"
+     class(lo)="dataUpdate"
+    if(!is.null(.dataOrigin)){
+        lo$..dataName=ifelse(is.null(attributes(.dataOrigin)[["dataName"]]),"dataSet",attributes(.dataOrigin)[["dataName"]])
+        lo=lo + l...(.dataOrigin=.dataOrigin)
+    }
+   
+    lo
+}
+l... = function(...){
+    lazyeval::lazy_dots(...)
+}
+
+dataUpAdd = function(a,b){
+     #if(is.list(b) && !is.data.frame(b) && length(b)==1){
+        name=names(b)[1]
+        a$..count = a$..count+ 1
+        if(is.null(name) || name == ""){
+            name="."%.%a$..count
+            value=b[[1]]
+        }else{
+            value=b[[name]]
+        }
+    #print("na")
+    #print(name)
+   # print("<nae")
+        a$..datas=list.append(a$..datas,as.character(name))
+        value=addAttr(value,attrName = "maj",attrValue =a$..count,dotRemove = FALSE )
+        value=addAttr(value,attrName = "majName",attrValue =name,dotRemove = FALSE )
+        a[[as.character(name)]]=value
+        a$..current = value
+        a
+    #}
+    
+}
+`+.dataUpdate` = function(a,b){
+    #print("d")
+    #print("\n")
+    #print(a$..current)
+    #  print("\n")
+    namesb= names(b)
+    counti=0
+    for(ina in namesb){
+        counti=counti+1
+        if(ina==""){
+            ina=counti
+        }
+        i2=b[[ina]]
+        ab=i2
+        #print(ab)
+         for(i in a$..datas){
+            #print(i)
+            if(is.character(i)) assign(i,a[[i]],envir = ab$env)
+            
+          }
+         ab$env$..current=a$..current
+    
+        ab=lazyeval::lazy_eval(ab)
+        #prin
+        ab2=list()
+        ab2[[ina]]=ab
+        #print(ab2)
+        a=dataUpAdd(a,ab2)
+    }
+  a
+}
+
+print.dataUpdate = function(aa){
+    a=aa$..datas %filter%  l1_({str_sub(.,end=2)!=".."})
+    #print("ici")
+    
+    #print(a)
+    #print("b")
+    y="DataSet Name: <b>"%.%aa$..dataName%.%"</b></br>"
+    y=y%.%length(a)%.%" maj with names:</br>"%.%"<ul>"
+    for(i in a){
+        u=capture.output(glimpse(aa[[i]]))
+        y=y%.%"<li><details><summary>maj "%.%attributes(aa[[i]])[["maj"]]%.%": <b>"%.%i%.%"</b></summary><pre>"%.%paste(u,collapse = "</br>")%.%"</pre></details></li>"
+        }
+    y=y%.%"</ul>"
+#     for(i in a){
+#          u=capture.output(glimpse(aa[[i]]))
+#         y=y%.%"<details><summary><b>$"%.%i%.%" maj "%.%attributes(aa[[i]])[["maj"]]%.%"</b></summary><pre>"%.%paste(u,collapse = "</br>")%.%"</pre></details>"
+       
+#         #cat(u,sep="\n")
+#     #display_html(catn())
+#     }
+    display_html(y)
+}
+           
+           
+           #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
 #{1:100 %each% ~al$generer(max=10,double = T) }%>% hist
