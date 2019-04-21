@@ -12,6 +12,7 @@
  library("wrapr")
  library("rlist")
   library("data.table")
+  library("patchwork")
  })
 #h <- sapply(seq(1, nchar(templateLucas_plan), by=2), function(x) substr(templateLucas_plan, x, x+1))
 #templateLucas_plan_str=rawToChar(as.raw(strtoi(h, 16L)))
@@ -1941,6 +1942,166 @@ doAndSkip =function(data,fn,env=parent.frame()){
 }
 `%>skip>%` = doAndSkip
 `%-|skip|->%` = doAndSkip    
+
+       
+.recordPlot = function(aa,toGG=T){
+    #print(class(aa))
+    #return("rien")
+    plotA=hidePlot({
+        if(lazyeval:::is.lazy(aa))lazyeval::lazy_eval(aa)else aa
+        recordPlot()
+    })
+    return(if(toGG) plotToGG(plotA) else plotA)
+    #eval(call("<-", bb, plotA), parent, parent)
+}
+           
+
+.affectToVar = function(plotA,bb,parent=parent.frame()){
+    #plotA=..recordPlot(aa)
+    eval(call("<-", bb, plotA), parent, parent)
+}
+           hidePlot({
+    plot_blank=as_ggplot(grid::grid.rect(gp=grid::gpar(col="white")))
+})
+
+`%+=%`=function(value,i){
+    if(is.numeric(i)){
+        .affectToVar(substitute(value),value+i,parent.frame())
+    }else{
+        stop("not implemented")
+    }
+}
+plot_arrange_matrix = function(...,mat=NULL,grid_options=list()){
+    
+    if(is.null(mat)){
+        stop("use grid.arange")
+    }else{
+        plots=list(...)
+        plots = plots  %map% l_({ 
+            if("recordedplot" %in% class(.)) plotToGG(.)
+            else .
+            }) %each% {.}
+       #str(plots)
+        matMaj = mat +  1 
+        qd=list.insert(plots,1,blank)
+        grid_options=list.append(grid_options,layout_matrix=mat)
+        #str(qd)
+        qd= grid_options %...>%curry(list.append(qd))
+        #str(qd)
+        do.call(grid.arrange,qd)
+        
+    }
+}
+
+recordPlotOpsGG= function(thePlot,theVariable){
+    
+    
+    parent=parent.frame()
+    ama=match.call()
+
+    from = l("%<plotToGG%","%<plotToGG-%")
+    to = l("%plotToGG>%","%-plotToGG>%")
+    
+    if(as.character(ama[[1]]) %in% to){
+        thePlot=lazyeval::lazy(thePlot) 
+        theVariable=substitute(theVariable)
+    }else{
+        tmp=substitute(thePlot)
+        thePlot=lazyeval::lazy(theVariable) 
+        theVariable=tmp
+    }
+        
+    .affectToVar(thePlot %>% .recordPlot(toGG = T),theVariable,parent)
+}
+recordPlotOps= function(thePlot,theVariable){
+    
+    
+    parent=parent.frame()
+    ama=match.call()
+
+    from = l("%<recordPlot%","%<recordPlot-%")
+    to = l("%recordPlot>%","%-recordPlot>%")
+    #print(as.character(ama[[1]]))
+    #return(F)
+    if(as.character(ama[[1]]) %in% to){
+        thePlot=lazyeval::lazy(thePlot) 
+        theVariable=substitute(theVariable)
+    }else{
+        tmp=substitute(thePlot)
+        thePlot=lazyeval::lazy(theVariable) 
+        theVariable=tmp
+    }
+        
+    .affectToVar(.recordPlot(thePlot,toGG = F),theVariable,parent)
+}
+recordGGPlotOps= function(thePlot,theVariable){
+    
+    
+    parent=parent.frame()
+    ama=match.call()
+
+    from = l("%<ggToPlot%","%<ggToPlot-%")
+    to = l("%ggToPlot>%","%-ggToPlot>%")
+    
+    if(as.character(ama[[1]]) %in% to){
+       # thePlot=lazyeval::lazy(thePlot) 
+        theVariable=substitute(theVariable)
+    }else{
+        tmp=theVariable
+        theVariable=substitute(thePlot)
+        thePlot=tmp
+        #theVariable=tmp
+    }
+        
+    .affectToVar(.recordPlot(print(thePlot),toGG = F),theVariable,parent)
+}
+plotToGG= function(ploti){   
+    if("recordedplot" %in% class(ploti)){
+        return(as_ggplot(cowplot::plot_to_gtable(ploti)))
+    }
+}
+ as_ggplot = function (x) 
+{
+    cowplot::ggdraw() + cowplot::draw_grob(grid::grobTree(x))
+}
+ggToPlot = function(ggploti){
+    .recordPlot(print(ggploti),toGG = F)
+}
+ggToPlot2 = function(ggploti){
+    .recordPlot(print(ggploti),toGG = T)
+}
+`%-recordPlot>%` = `%<recordPlot-%` = `%recordPlot>%` = `%<recordPlot%` =  recordPlotOps
+`%-plotToGG>%` = `%<plotToGG-%` = `%plotToGG>%` = `%<plotToGG%` =  recordPlotOpsGG
+`%-ggToPlot>%` = `%<ggToPlot-%` = `%ggToPlot>%` = `%<ggToPlot%` =  recordGGPlotOps
+resetPar <- function() {
+    dev.new()
+    op <- par(no.readonly = TRUE)
+    dev.off()
+    op
+}
+show.recordedplot=recordedplot.show=recordedplot.print = print.recordedplot = function(a){
+    replayPlot(a)
+}
+           
+recordedplotAdd = function(a,b){
+    a + plotToGG(b)
+}
+ggplot_add.recordedplot <- function(object, plot, object_name) {
+    recordedplotAdd(plot,object)
+}
+
+"/.ggplot" <- function(e1, e2) {
+        if(class(e2)=="recordedplot"){
+            e2 = plotToGG(e2)
+        }
+            patchwork:::`/.ggplot`(e1,e2)
+}
+"-.ggplot" <- function(e1, e2) {
+        if(class(e2)=="recordedplot"){
+            e2 = plotToGG(e2)
+        }
+            patchwork:::`-.ggplot`(e1,e2)
+}
 
              #al = Aleatoire$new()
 #al$generer()
