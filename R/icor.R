@@ -2226,7 +2226,124 @@ print.dataUpdate = function(aa){
     display_html(y)
 }
            
+getFor=function(desc){
+    nd=names(desc)
+    if(is.null(nd)){
+        nd=rep("",times = length(desc))
+    }
+    f=c()
+    cou=0
+    for(i in 1:length(nd)){
+        name=nd[i]
+        if(name==""){
+            cou=cou+1
+            val=desc[[cou]]
+        }else{
+            val=desc[[name]]
+
+        }
+       
+        if(length(val)>1 || is.list(val)){
+            if(name == ''){
+               if(!is.null(val[["for"]])){
+                   ff=rep(val[["for"]],times = length(val) - 1 )
+                   f=c(f,ff)
+               }else{
+                   ff=rep("",times = length(val))
+                   f=c(f,ff)
+               }
+            }else{
+                if(!is.null(val[["for"]])){
+                   ff=rep(val[["for"]],times = length(val) - 1 )
+                   f=c(f,ff)
+               }else{
+                   ff=rep(name,times = length(val))
+                   f=c(f,ff)
+               }
+            }
+        }else{
+            if(name==''){
+                f=c(f,"")
+            }else{
+                f=c(f,name)
+            }
+        }
+    }
+    f
+}
+getDesc=function(desc){
+    df=c()
+    
+    for(i in desc){
+        namesi=names(i)
+        if(length(i)>1 || is.list(i)){
+            if(is.null(namesi))
+                df=c(df,i)
+            else{
+                ff=i[namesi!="for"]
+                df=c(df,ff)
+            }
+        }else{
+            df=c(df,i)
+        }
+    }
+    as.character(df)
+}
+drake_plan_description = function(...,description=c()){
+    a=eval(substitute(alist(...)),parent.frame(),parent.frame())
+    a=do.call(drake_plan,a,envir = parent.frame())
+    if(length(description)==0)description=rep("",nrow(a))
+    #if(length(`for`)==0)`for`=rep("",nrow(a))
+    
+    a=cbind(a,description=getDesc(description),`for`=getFor(description))
+    a
+} 
+rbind_from = function(...,from=c()){
+    if(from=='auto'){
+        from = as.list(match.call())[2:3]
+        a=lapply(from,function(i){rep(as.character(i),nrow(get(as.character(i))))})
+    }
+    #print(from)
+    rb=rbind(...)
+    a=unlist(a)
+    if(length(from)>0)cbind(rb,from=a)
+    else rbind(...)
+}
+planFromInfo = function(myPlan){
+    planFrom=get(myPlan)  %each% {as.character(.)} %>% as.data.frame %>% select(from,everything());
+    planFrom %by% planFrom$from %map% {select(.,-c("from"))}
+}
+planForInfo = function(myPlan,forWhat){
+    
+    newDf=myPlan %>% cbind(.,icor_plan_internal.=rownames(.)) %>% dfRowToList %filter% l1__(.[["for"]]==forWhat)
+    newDf=as.data.frame(newDf) %>% t %>% as.data.frame()
+    rownames(newDf) = newDf[,"icor_plan_internal."]
+    newDf %>% select(-c("for","icor_plan_internal."))
+}
+
+addAttr = function(df,attrName,attrValue=NULL,dotRemove=TRUE){
+    if(is.null(attrValue)){
+        fs=as.character(substitute(df))
+        print(fs)
+        attrValue=ifelse(str_sub(fs,1,1)==".",str_sub(fs,2),fs)
+    }
+    attr(df,attrName)=attrValue
+    df
+}
+getDescription = function(df,variable){
+    get("Description_"%.%attr(df,"dataName"))[[variable]]
+}
            
+           updateX_special = function(x){# update icor from github, (bug sometimes with updateReloadIcor from icor package)
+    
+    system(paste0("git clone https://github.com/",x," xxx"))
+    system("R CMD INSTALL xxx")
+    system("rm -rf xxx")
+    library(basename(x))
+}
+updateIcor_special = function(){# update icor from github, (bug sometimes with updateReloadIcor from icor package)
+       updateX_special("luluperet/icor")
+}
            #al = Aleatoire$new()
 #al$generer()
 #al$generer(max=10)
