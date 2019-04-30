@@ -761,7 +761,7 @@ Aleatoire <- R6Class("Aleatoire",
     
     eachRowCol = function(ll,rr,INDEX){
       n=if(INDEX==2)colnames(ll)else rownames(ll)
-	      if(INDEX==0) n= names(ll
+	      if(INDEX==0) n= names(ll)
        if(is.null(n)) {
         if(INDEX==2) n = 1:ncol(ll)
         else n = 1:nrow(ll)
