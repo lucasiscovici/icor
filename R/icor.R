@@ -761,16 +761,22 @@ Aleatoire <- R6Class("Aleatoire",
     
     eachRowCol = function(ll,rr,INDEX){
       n=if(INDEX==2)colnames(ll)else rownames(ll)
+	      if(INDEX==0) n= names(ll
        if(is.null(n)) {
         if(INDEX==2) n = 1:ncol(ll)
         else n = 1:nrow(ll)
+	       if(INDEX==0) n = 1:length(ll)
         
         }
       lapply(1:length(n),function(i){
-                                     if(c("...",".y") %in% {args(rr) %>% as.list %>% names} %>% any) rr(if(INDEX==2)ll[,i]else ll[i,],.y=n[i])
-                                     else rr(if(INDEX==2)ll[,i]else ll[i,])
+                                     if(c("...",".y") %in% {args(rr) %>% as.list %>% names} %>% any) rr(if(INDEX==2)ll[,i]else if(INDEX==1) ll[i,] else ll[[i]],.y=n[i])
+                                     else rr(if(INDEX==2)ll[,i]else if(INDEX==1)ll[i,] else ll[[i]])
                                     }
             )
+    }
+					     
+eachElem = function(ll,rr){
+      eachRowCol(ll,rr,0)
     }
     eachCol = function(ll,rr){
       eachRowCol(ll,rr,2)
@@ -780,7 +786,8 @@ Aleatoire <- R6Class("Aleatoire",
     }
     `%eachCol%` = eachCol
     `%eachRow%` = eachRow
-     
+    `%eachElem%` = eachElem
+					     
       eachRowCol2 = function(ll,rr,INDEX){
       n=if(INDEX==2)colnames(ll)else rownames(ll)
       lapply(1:length(n),function(i){
