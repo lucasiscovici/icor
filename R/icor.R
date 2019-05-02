@@ -2314,7 +2314,7 @@ planForInfo = function(myPlan,forWhat){
     newDf=myPlan %>% cbind(.,icor_plan_internal.=rownames(.)) %>% dfRowToList %filter% l1__(.[["for"]]==forWhat)
     newDf=as.data.frame(newDf) %>% t %>% as.data.frame()
     rownames(newDf) = newDf[,"icor_plan_internal."]
-    newDf %>% select(-c("for","icor_plan_internal."))
+    if(ncol(newDf)>0) newDf %>% select(-c("for","icor_plan_internal."))
 }
 
 addAttr = function(df,attrName,attrValue=NULL,dotRemove=TRUE){
