@@ -2293,7 +2293,10 @@ drake_plan_description = function(...,description=c()){
 } 
 rbind_from = function(...,from=c()){
     if(from=='auto'){
-        from = as.list(match.call())[2:3]
+	    fe=as.list(match.call())
+    		dfm=length(fe)
+    #fe[2:(dfm-1)]
+        from = as.list(match.call())[2:(dfm-1)]
         a=lapply(from,function(i){rep(as.character(i),nrow(get(as.character(i))))})
     }
     #print(from)
