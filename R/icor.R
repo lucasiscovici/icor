@@ -1953,7 +1953,7 @@ doAndSkip =function(data,fn,env=parent.frame()){
     return(if(toGG) plotToGG(plotA) else plotA)
     #eval(call("<-", bb, plotA), parent, parent)
 }
-.grobPlot = function(aa,toGG=T){
+.grabPlot = function(aa,toGG=T){
     #print(class(aa))
     #return("rien")
     plotA=hidePlot({
@@ -1998,7 +1998,7 @@ plot_arrange_matrix = function(...,mat=NULL,grid_options=list()){
         
     }
 }
-
+options(icor_plot_record = curry(.recordPlot(toGG=T)))(
 recordPlotOpsGG= function(thePlot,theVariable){
     
     
@@ -2017,7 +2017,7 @@ recordPlotOpsGG= function(thePlot,theVariable){
         theVariable=tmp
     }
         
-    .affectToVar(thePlot %>% .recordPlot(toGG = T),theVariable,parent)
+    .affectToVar(thePlot %>% {getOption("icor_plot_record")(.)},theVariable,parent)
 }
 recordPlotOps= function(thePlot,theVariable){
     
@@ -2040,14 +2040,14 @@ recordPlotOps= function(thePlot,theVariable){
         
     .affectToVar(.recordPlot(thePlot,toGG = F),theVariable,parent)
 }
-grobPlotOps= function(thePlot,theVariable){
+grabPlotOps= function(thePlot,theVariable){
     
     
     parent=parent.frame()
     ama=match.call()
 
-    from = l("%<grobPlot%","%<grobPlot-%")
-    to = l("%grobPlot>%","%-grobPlot>%")
+    from = l("%<grabPlot%","%<grabPlot-%")
+    to = l("%grabPlot>%","%-grabPlot>%")
     #print(as.character(ama[[1]]))
     #return(F)
     if(as.character(ama[[1]]) %in% to){
@@ -2059,7 +2059,7 @@ grobPlotOps= function(thePlot,theVariable){
         theVariable=tmp
     }
         
-    .affectToVar(.grobPlot(thePlot,toGG = F),theVariable,parent)
+    .affectToVar(grabPlot(thePlot,toGG = F),theVariable,parent)
 }
 recordGGPlotOps= function(thePlot,theVariable){
     
@@ -2097,7 +2097,7 @@ ggToPlot = function(ggploti){
 ggToPlot2 = function(ggploti){
     .recordPlot(print(ggploti),toGG = T)
 }
-`%-grobPlot>%` = `%<grobPlot-%` = `%grobPlot>%` = `%<grobPlot%` =  grobPlotOps
+`%-grabPlot>%` = `%<grabPlot-%` = `%grabPlot>%` = `%<grabPlot%` =  grobPlotOps
 `%-recordPlot>%` = `%<recordPlot-%` = `%recordPlot>%` = `%<recordPlot%` =  recordPlotOps
 `%-plotToGG>%` = `%<plotToGG-%` = `%plotToGG>%` = `%<plotToGG%` =  recordPlotOpsGG
 `%-ggToPlot>%` = `%<ggToPlot-%` = `%ggToPlot>%` = `%<ggToPlot%` =  recordGGPlotOps
