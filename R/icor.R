@@ -1952,7 +1952,16 @@ doAndSkip =function(data,fn,env=parent.frame()){
     return(if(toGG) plotToGG(plotA) else plotA)
     #eval(call("<-", bb, plotA), parent, parent)
 }
-           
+.grobPlot = function(aa,toGG=T){
+    #print(class(aa))
+    #return("rien")
+    plotA=hidePlot({
+        if(lazyeval:::is.lazy(aa))lazyeval::lazy_eval(aa)else aa
+        grid.grob()
+    })
+    return(if(toGG) plotToGG(plotA) else plotA)
+    #eval(call("<-", bb, plotA), parent, parent)
+}        
 
 .affectToVar = function(plotA,bb,parent=parent.frame()){
     #plotA=..recordPlot(aa)
@@ -2030,6 +2039,27 @@ recordPlotOps= function(thePlot,theVariable){
         
     .affectToVar(.recordPlot(thePlot,toGG = F),theVariable,parent)
 }
+grobPlotOps= function(thePlot,theVariable){
+    
+    
+    parent=parent.frame()
+    ama=match.call()
+
+    from = l("%<grobPlot%","%<grobPlot-%")
+    to = l("%grobPlot>%","%-grobPlot>%")
+    #print(as.character(ama[[1]]))
+    #return(F)
+    if(as.character(ama[[1]]) %in% to){
+        thePlot=lazyeval::lazy(thePlot) 
+        theVariable=substitute(theVariable)
+    }else{
+        tmp=substitute(thePlot)
+        thePlot=lazyeval::lazy(theVariable) 
+        theVariable=tmp
+    }
+        
+    .affectToVar(.grobPlot(thePlot,toGG = F),theVariable,parent)
+}
 recordGGPlotOps= function(thePlot,theVariable){
     
     
@@ -2066,6 +2096,7 @@ ggToPlot = function(ggploti){
 ggToPlot2 = function(ggploti){
     .recordPlot(print(ggploti),toGG = T)
 }
+`%-grobPlot>%` = `%<grobPlot-%` = `%grobPlot>%` = `%<grobPlot%` =  grobPlotOps
 `%-recordPlot>%` = `%<recordPlot-%` = `%recordPlot>%` = `%<recordPlot%` =  recordPlotOps
 `%-plotToGG>%` = `%<plotToGG-%` = `%plotToGG>%` = `%<plotToGG%` =  recordPlotOpsGG
 `%-ggToPlot>%` = `%<ggToPlot-%` = `%ggToPlot>%` = `%<ggToPlot%` =  recordGGPlotOps
