@@ -15,6 +15,7 @@
   library("patchwork")
 	 library("drake")
    library("future")
+	 library("gridGraphics")
  })
 #h <- sapply(seq(1, nchar(templateLucas_plan), by=2), function(x) substr(templateLucas_plan, x, x+1))
 #templateLucas_plan_str=rawToChar(as.raw(strtoi(h, 16L)))
