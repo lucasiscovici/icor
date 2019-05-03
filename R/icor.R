@@ -2098,7 +2098,7 @@ ggToPlot = function(ggploti){
 ggToPlot2 = function(ggploti){
     .recordPlot(print(ggploti),toGG = T)
 }
-`%-grabPlot>%` = `%<grabPlot-%` = `%grabPlot>%` = `%<grabPlot%` =  grobPlotOps
+`%-grabPlot>%` = `%<grabPlot-%` = `%grabPlot>%` = `%<grabPlot%` =  grabPlotOps
 `%-recordPlot>%` = `%<recordPlot-%` = `%recordPlot>%` = `%<recordPlot%` =  recordPlotOps
 `%-plotToGG>%` = `%<plotToGG-%` = `%plotToGG>%` = `%<plotToGG%` =  recordPlotOpsGG
 `%-ggToPlot>%` = `%<ggToPlot-%` = `%ggToPlot>%` = `%<ggToPlot%` =  recordGGPlotOps
