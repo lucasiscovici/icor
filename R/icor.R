@@ -16,6 +16,7 @@
 	 library("drake")
    library("future")
 	 library("gridGraphics")
+	 options(icor_plot_record = curry(.recordPlot(toGG=T)))
  })
 #h <- sapply(seq(1, nchar(templateLucas_plan), by=2), function(x) substr(templateLucas_plan, x, x+1))
 #templateLucas_plan_str=rawToChar(as.raw(strtoi(h, 16L)))
@@ -1998,7 +1999,7 @@ plot_arrange_matrix = function(...,mat=NULL,grid_options=list()){
         
     }
 }
-options(icor_plot_record = curry(.recordPlot(toGG=T)))(
+
 recordPlotOpsGG= function(thePlot,theVariable){
     
     
@@ -2059,7 +2060,7 @@ grabPlotOps= function(thePlot,theVariable){
         theVariable=tmp
     }
         
-    .affectToVar(grabPlot(thePlot,toGG = F),theVariable,parent)
+    .affectToVar(.grabPlot(thePlot,toGG = F),theVariable,parent)
 }
 recordGGPlotOps= function(thePlot,theVariable){
     
