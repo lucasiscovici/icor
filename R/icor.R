@@ -1959,7 +1959,7 @@ doAndSkip =function(data,fn,env=parent.frame()){
     #return("rien")
     plotA=hidePlot({
         if(lazyeval:::is.lazy(aa))lazyeval::lazy_eval(aa)else aa
-        grid.grob()
+        grid.grab()
     })
     return(if(toGG) plotToGG(plotA) else plotA)
     #eval(call("<-", bb, plotA), parent, parent)
@@ -2086,7 +2086,9 @@ recordGGPlotOps= function(thePlot,theVariable){
 plotToGG= function(ploti){   
     if("recordedplot" %in% class(ploti)){
         return(as_ggplot(cowplot::plot_to_gtable(ploti)))
-    }
+    }else{
+	    return(as_ggplot(ploti))
+	    }
 }
  as_ggplot = function (x) 
 {
