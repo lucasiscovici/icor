@@ -846,7 +846,7 @@ eachElem = function(ll,rr){
       if(!stringr::str_detect(ae,"^l__?_?.*$")){
         p=splitArgs(list(dfn),env,parent)
       }else{
-        p=eval(dfn)
+        p=eval(dfn,parent,parent)
       }
       return(p)
     }
